@@ -57,11 +57,10 @@ export default async function WhatsappCoursesPage() {
               </div>
 
               <div className="space-y-5">
-                {coursesWithSteps.map((course, index) => (
+                {coursesWithSteps.map((course) => (
                   <div
                     key={course.id}
-                    className="card-farmer animate-sprout-in p-7 sm:p-9"
-                    style={{ animationDelay: `${index * 80}ms` }}
+                    className="card-farmer p-7 sm:p-9"
                   >
                     <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
                       <span className="inline-flex items-center gap-1.5 rounded-xl bg-slate-100 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-slate-700 border border-slate-200">

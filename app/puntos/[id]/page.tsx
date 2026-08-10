@@ -40,7 +40,7 @@ export default async function PuntoDetailPage({ params }: { params: Promise<{ id
             {/* Back button */}
             <Link
               href="/puntos"
-              className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-bold text-slate-700 border border-slate-200 hover:bg-slate-50 transition-colors shadow-xs"
+              className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-bold text-slate-700 border border-slate-200 hover:bg-slate-50 transition-colors shadow-2xs cursor-pointer"
             >
               <ArrowLeftIcon className="w-4 h-4" />
               <span>Volver a Puntos Digitales</span>
@@ -66,11 +66,10 @@ export default async function PuntoDetailPage({ params }: { params: Promise<{ id
 
             {/* Courses List */}
             <div className="space-y-5">
-              {publishedCourses.map((course, index) => (
+              {publishedCourses.map((course) => (
                 <div
                   key={course.id}
-                  className="card-farmer animate-sprout-in p-7 sm:p-9"
-                  style={{ animationDelay: `${index * 80}ms` }}
+                  className="card-farmer p-7 sm:p-9"
                 >
                   <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
                     <span className="inline-flex items-center gap-1.5 rounded-xl bg-slate-100 px-3 py-1 text-xs font-bold uppercase tracking-wider text-slate-700 border border-slate-200">

@@ -46,11 +46,10 @@ export default async function PuntosPublicPage() {
               </div>
 
               <div className="grid gap-6 md:grid-cols-2">
-                {puntos.map((punto, index) => (
+                {puntos.map((punto) => (
                   <div
                     key={punto.id}
-                    className="card-farmer animate-sprout-in flex flex-col justify-between p-7"
-                    style={{ animationDelay: `${index * 80}ms` }}
+                    className="card-farmer flex flex-col justify-between p-7"
                   >
                     <div>
                       <div className="flex items-center justify-between gap-2 mb-4">
