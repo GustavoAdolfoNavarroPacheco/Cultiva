@@ -1,3 +1,4 @@
+import Link from "next/link";
 import StampBadge from "./StampBadge";
 
 type Pillar = {
@@ -9,6 +10,8 @@ type Pillar = {
   description: string;
   details: string[];
   rotate: number;
+  demoHref: string;
+  demoLabel: string;
 };
 
 const pillars: Pillar[] = [
@@ -26,6 +29,8 @@ const pillars: Pillar[] = [
       "Control de qué se publica y cuándo",
     ],
     rotate: -5,
+    demoHref: "/admin/login",
+    demoLabel: "Entrar al panel administrativo",
   },
   {
     sello: { top: "PUNTO DIGITAL", bottom: "DESCARGA OFFLINE", center: "02" },
@@ -41,6 +46,8 @@ const pillars: Pillar[] = [
       "Ideal para grupos y comunidades",
     ],
     rotate: 4,
+    demoHref: "/puntos",
+    demoLabel: "Simular un Punto Digital",
   },
   {
     sello: { top: "AGENTE WHATSAPP", bottom: "APRENDIZAJE GUIADO", center: "03" },
@@ -56,6 +63,8 @@ const pillars: Pillar[] = [
       "Fase demo: preguntas y respuestas fijas",
     ],
     rotate: -3,
+    demoHref: "/whatsapp",
+    demoLabel: "Probar el chat guiado",
   },
 ];
 
@@ -121,6 +130,14 @@ export default function Pillars() {
                   </li>
                 ))}
               </ul>
+
+              <Link
+                href={pillar.demoHref}
+                className="mt-6 inline-flex items-center gap-1.5 self-start font-mono text-[12px] uppercase tracking-[0.1em] transition-colors"
+                style={{ color: pillar.ink }}
+              >
+                {pillar.demoLabel} →
+              </Link>
             </article>
           ))}
         </div>
