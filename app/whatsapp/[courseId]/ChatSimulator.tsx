@@ -35,7 +35,7 @@ type Session = {
 };
 
 function storageKey(courseId: number) {
-  return `agro_ai_chat_token_${courseId}`;
+  return `plataforma_educativa_chat_token_${courseId}`;
 }
 
 function LessonBubbleExtra({ lesson }: { lesson?: Lesson }) {
@@ -117,7 +117,7 @@ export function ChatSimulator({
   if (!session) {
     return (
       <div className="rounded-2xl bg-white border border-slate-200 p-10 text-center text-base font-bold text-slate-600 animate-pulse">
-        Conectando con el Agente de Agro.ai…
+        Conectando con el Agente de Plataforma Educativa…
       </div>
     );
   }
@@ -161,7 +161,7 @@ export function ChatSimulator({
           <span className="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full bg-emerald-400 border-2 border-slate-900" />
         </div>
         <div>
-          <p className="text-base font-bold leading-tight text-white">Agente Agro.ai</p>
+          <p className="text-base font-bold leading-tight text-white">Agente Plataforma Educativa</p>
           <p className="text-xs font-semibold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5 mt-0.5">
             <span className="inline-block h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
             {session.completed ? "Curso Finalizado" : "En línea — Asistente de Capacitación"}

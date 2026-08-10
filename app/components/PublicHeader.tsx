@@ -17,17 +17,14 @@ export function PublicHeader({ role }: { role?: string }) {
     <header className="sticky top-0 z-50 w-full border-b border-emerald-900/10 bg-white/90 backdrop-blur-xl shadow-2xs">
       <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 py-3 sm:px-6 sm:py-3.5">
         {/* Brand logo & tagline - Redirects to /info */}
-        <Link href="/info" className="flex items-center gap-3 group cursor-pointer" title="Ver información del proyecto Agro.ai">
+        <Link href="/info" className="flex items-center gap-3 group cursor-pointer" title="Ver información de Plataforma Educativa">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-800 text-white shadow-sm transition-transform group-hover:scale-105">
             <SproutIcon className="w-5 h-5 text-white" />
           </div>
           <div>
             <div className="flex items-center gap-2">
               <span className="font-display text-2xl font-black tracking-tight text-slate-900">
-                Agro<span className="text-emerald-700">.ai</span>
-              </span>
-              <span className="rounded-full bg-emerald-100/80 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider text-emerald-900 border border-emerald-300/60">
-                Plataforma Agropecuaria
+                Plataforma<span className="text-emerald-700"> Educativa</span>
               </span>
             </div>
           </div>

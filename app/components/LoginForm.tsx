@@ -25,7 +25,7 @@ export function LoginForm() {
             autoComplete="email"
             autoFocus
             className="w-full min-h-[52px] rounded-2xl border-2 border-slate-200 bg-slate-50/50 px-4 text-base font-medium text-slate-900 placeholder:text-slate-400 outline-none transition-all focus:border-emerald-700 focus:bg-white focus:ring-4 focus:ring-emerald-700/10"
-            placeholder="admin@agro.ai"
+            placeholder="admin@plataformaeducativa.com"
           />
         </div>
 

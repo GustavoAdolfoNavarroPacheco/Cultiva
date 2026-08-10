@@ -18,16 +18,16 @@ export function BrandPanel() {
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       className="flex flex-col justify-center px-2 lg:px-4"
     >
-      <Link href="/info" className="flex items-center gap-3.5 group cursor-pointer w-fit" title="Ver información del proyecto Agro.ai">
+      <Link href="/info" className="flex items-center gap-3.5 group cursor-pointer w-fit" title="Ver información de Plataforma Educativa">
         <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-emerald-800 text-white shadow-md transition-transform group-hover:scale-105">
           <SproutIcon className="w-7 h-7 text-white" />
         </div>
         <div className="flex flex-col">
           <span className="font-display text-3xl font-black leading-none tracking-tight text-slate-900 sm:text-4xl">
-            Agro<span className="text-emerald-700">.ai</span>
+            Plataforma<span className="text-emerald-700"> Educativa</span>
           </span>
           <p className="mt-2 text-xs font-bold uppercase tracking-widest text-emerald-800">
-            Plataforma de Capacitación Agropecuaria
+            Capacitación Agropecuaria
           </p>
         </div>
       </Link>

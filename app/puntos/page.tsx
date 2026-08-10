@@ -6,7 +6,7 @@ import { PublicHeader } from "@/app/components/PublicHeader";
 import { PageTransition } from "@/app/components/PageTransition";
 import { SignalIcon, MapPinIcon, BuildingIcon, UserIcon, ArrowRightIcon } from "@/app/components/icons";
 
-export const metadata = { title: "Puntos Digitales — Agro.ai" };
+export const metadata = { title: "Puntos Digitales — Plataforma Educativa" };
 export const dynamic = "force-dynamic";
 
 export default async function PuntosPublicPage() {

@@ -29,7 +29,7 @@ export function UserCreateForm() {
 
       <div>
         <label className={labelClass}>Correo Electrónico *</label>
-        <input name="email" type="email" required className={fieldClass} placeholder="carlos@agro.ai" />
+        <input name="email" type="email" required className={fieldClass} placeholder="carlos@plataformaeducativa.com" />
       </div>
 
       <div>

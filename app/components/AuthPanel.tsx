@@ -13,7 +13,7 @@ const headings: Record<Mode, { icon: typeof LockIcon; title: string; subtitle: s
   admin: {
     icon: LockIcon,
     title: "Acceso Administrativo",
-    subtitle: "Entra a Agro.ai para gestionar contenidos.",
+    subtitle: "Entra a Plataforma Educativa para gestionar contenidos.",
   },
   "student-login": {
     icon: PhoneIcon,

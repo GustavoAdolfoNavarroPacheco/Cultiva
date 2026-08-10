@@ -31,15 +31,15 @@ export function AdminSidebar() {
   return (
     <aside className="fixed top-0 left-0 bottom-0 z-40 hidden md:flex w-64 h-screen flex-col bg-slate-900 text-slate-100 border-r border-slate-800 p-5 overflow-y-auto">
       {/* Brand Header - Redirects to /info */}
-      <Link href="/info" className="flex items-center gap-3 px-2 py-3 border-b border-slate-800/80 mb-6 group cursor-pointer" title="Ver información del proyecto Agro.ai">
+      <Link href="/info" className="flex items-center gap-3 px-2 py-3 border-b border-slate-800/80 mb-6 group cursor-pointer" title="Ver información de Plataforma Educativa">
         <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-700 text-white shadow-sm shrink-0 transition-transform group-hover:scale-105">
           <SproutIcon className="w-6 h-6" />
         </div>
         <div>
-          <span className="font-display text-2xl font-black tracking-tight text-white block">
-            Agro<span className="text-emerald-500">.ai</span>
+          <span className="font-display text-lg font-black tracking-tight text-white block leading-tight">
+            Plataforma<span className="text-emerald-500"> Educativa</span>
           </span>
-          <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-400 mt-0.5">
             Panel Administrativo
           </p>
         </div>

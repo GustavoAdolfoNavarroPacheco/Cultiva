@@ -77,18 +77,13 @@ function StatCard({
   label,
   value,
   icon: IconComponent,
-  delay,
 }: {
   label: string;
   value: number;
   icon: React.ComponentType<{ className?: string }>;
-  delay: number;
 }) {
   return (
-    <div
-      className="card-farmer animate-sprout-in p-6 flex items-center justify-between"
-      style={{ animationDelay: `${delay}ms` }}
-    >
+    <div className="card-farmer p-6 flex items-center justify-between">
       <div>
         <p className="text-xs font-bold uppercase tracking-wider text-slate-500">{label}</p>
         <p className="mt-1 font-display text-4xl font-black text-slate-900">{value}</p>
@@ -118,17 +113,17 @@ export default async function AdminDashboardPage() {
           Panel General de Control
         </h1>
         <p className="mt-1 text-base text-slate-600 font-medium">
-          Resumen en tiempo real de los tres pilares de capacitación de Agro.ai.
+          Resumen en tiempo real de los tres pilares de la Plataforma Educativa.
         </p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        <StatCard label="Cursos Creados" value={stats.courses} icon={BookIcon} delay={0} />
-        <StatCard label="Lecciones Totales" value={stats.lessons} icon={LessonIcon} delay={60} />
-        <StatCard label="Puntos Digitales" value={stats.puntos} icon={SignalIcon} delay={120} />
-        <StatCard label="Descargas Registradas" value={stats.downloads} icon={DownloadIcon} delay={180} />
-        <StatCard label="Sesiones WhatsApp" value={stats.chats} icon={ChatIcon} delay={240} />
-        <StatCard label="Cursos Completados" value={stats.chatsCompleted} icon={CheckIcon} delay={300} />
+        <StatCard label="Cursos Creados" value={stats.courses} icon={BookIcon} />
+        <StatCard label="Lecciones Totales" value={stats.lessons} icon={LessonIcon} />
+        <StatCard label="Puntos Digitales" value={stats.puntos} icon={SignalIcon} />
+        <StatCard label="Descargas Registradas" value={stats.downloads} icon={DownloadIcon} />
+        <StatCard label="Sesiones WhatsApp" value={stats.chats} icon={ChatIcon} />
+        <StatCard label="Cursos Completados" value={stats.chatsCompleted} icon={CheckIcon} />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">

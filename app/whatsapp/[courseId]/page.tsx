@@ -59,7 +59,7 @@ export default async function WhatsappCoursePage({
               {course.title}
             </h1>
             <p className="mt-2 text-base text-slate-600 font-medium">
-              Simulador interactivo del Agente Agro.ai. Responde las preguntas para completar el curso.
+              Simulador interactivo del Agente de Plataforma Educativa. Responde las preguntas para completar el curso.
             </p>
           </div>
 

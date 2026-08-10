@@ -14,12 +14,12 @@ export function AdminTopBar({
     <header className="sticky top-0 z-30 w-full border-b border-slate-200 bg-white/90 backdrop-blur-md px-4 sm:px-8 py-3 flex items-center justify-between shadow-2xs">
       {/* Left side: Mobile brand title & breadcrumb info */}
       <div className="flex items-center gap-3">
-        <Link href="/info" className="flex md:hidden items-center gap-2 cursor-pointer" title="Ver información del proyecto Agro.ai">
+        <Link href="/info" className="flex md:hidden items-center gap-2 cursor-pointer" title="Ver información de Plataforma Educativa">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-800 text-white font-bold">
             <SproutIcon className="w-5 h-5 text-white" />
           </div>
-          <span className="font-display text-xl font-black text-slate-900">
-            Agro<span className="text-emerald-700">.ai</span>
+          <span className="font-display text-lg font-black text-slate-900">
+            Plataforma<span className="text-emerald-700"> Educativa</span>
           </span>
         </Link>
         <div className="hidden sm:block text-xs font-semibold uppercase tracking-wider text-slate-400">

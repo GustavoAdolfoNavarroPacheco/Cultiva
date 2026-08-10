@@ -21,17 +21,17 @@ export default async function UsersPage() {
           Usuarios Administrativos
         </h1>
         <p className="mt-1 text-base text-slate-600 font-medium">
-          Cuentas autorizadas con acceso a la gestión de contenidos de Agro.ai.
+          Cuentas autorizadas con acceso a la gestión de contenidos de Plataforma Educativa.
         </p>
       </div>
 
       {/* Creation Form */}
-      <div className="animate-sprout-in">
+      <div>
         <UserCreateForm />
       </div>
 
       {/* Table of Users with clear row dividers */}
-      <div className="card-farmer animate-sprout-in overflow-hidden" style={{ animationDelay: "120ms" }}>
+      <div className="card-farmer overflow-hidden">
         <div className="p-6 border-b border-slate-200 bg-slate-50/60 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <UsersIcon className="w-5 h-5 text-emerald-700" />

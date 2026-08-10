@@ -12,7 +12,7 @@ import {
   CheckIcon,
 } from "@/app/components/icons";
 
-export const metadata = { title: "Acerca de Agro.ai — Plataforma Educativa" };
+export const metadata = { title: "Acerca de Plataforma Educativa" };
 
 export default function InfoPage() {
   return (
@@ -26,15 +26,15 @@ export default function InfoPage() {
             <div className="rounded-3xl bg-slate-900 p-8 sm:p-14 text-white shadow-xl relative overflow-hidden border border-slate-800">
               <div className="relative z-10 max-w-3xl space-y-4">
                 <div className="inline-flex items-center gap-2 rounded-full bg-emerald-950 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-emerald-300 border border-emerald-800/80">
-                  <SproutIcon className="w-4 h-4 text-emerald-400" /> Plataforma Educativa Agropecuaria
+                  <SproutIcon className="w-4 h-4 text-emerald-400" /> Plataforma Educativa
                 </div>
 
                 <h1 className="font-display text-3xl font-black tracking-tight sm:text-5xl leading-tight text-white">
-                  Información General del Proyecto Agro<span className="text-emerald-500">.ai</span>
+                  Información General de la Plataforma <span className="text-emerald-500">Educativa</span>
                 </h1>
 
                 <p className="text-lg text-slate-300 font-medium leading-relaxed">
-                  Agro.ai es una solución estructurada en tres pilares fundamentales, diseñada para brindar educación y capacitación accesible a estudiantes e integrantes del sector agropecuario, adaptándose tanto a zonas rurales sin conectividad como a entornos con acceso a internet.
+                  La Plataforma Educativa es una solución estructurada en tres pilares fundamentales, diseñada para brindar educación y capacitación accesible a estudiantes e integrantes del sector agropecuario, adaptándose tanto a zonas rurales sin conectividad como a entornos con acceso a internet.
                 </p>
               </div>
             </div>
@@ -51,7 +51,7 @@ export default function InfoPage() {
               </div>
 
               <div className="grid gap-8 lg:grid-cols-3">
-                {/* Pillar 1 */}
+                {/* Pilar 1 */}
                 <div className="card-farmer flex flex-col justify-between p-8">
                   <div>
                     <div className="p-3.5 bg-emerald-50 text-emerald-800 rounded-2xl w-fit mb-5 border border-emerald-200">
@@ -93,7 +93,7 @@ export default function InfoPage() {
                   </div>
                 </div>
 
-                {/* Pillar 2 */}
+                {/* Pilar 2 */}
                 <div className="card-farmer flex flex-col justify-between p-8">
                   <div>
                     <div className="p-3.5 bg-emerald-50 text-emerald-800 rounded-2xl w-fit mb-5 border border-emerald-200">
@@ -135,7 +135,7 @@ export default function InfoPage() {
                   </div>
                 </div>
 
-                {/* Pillar 3 */}
+                {/* Pilar 3 */}
                 <div className="card-farmer flex flex-col justify-between p-8">
                   <div>
                     <div className="p-3.5 bg-emerald-50 text-emerald-800 rounded-2xl w-fit mb-5 border border-emerald-200">
@@ -208,7 +208,7 @@ export default function InfoPage() {
             <div className="flex flex-wrap items-center justify-between gap-4 p-8 rounded-3xl bg-slate-900 text-white">
               <div>
                 <p className="text-xl font-bold">¿Listo para comenzar?</p>
-                <p className="text-sm text-slate-300 font-medium mt-0.5">Explora los contenidos de capacitación agropecuaria.</p>
+                <p className="text-sm text-slate-300 font-medium mt-0.5">Explora los contenidos de la Plataforma Educativa.</p>
               </div>
               <div className="flex items-center gap-3 flex-wrap">
                 <Link href="/puntos" className="btn-farmer-primary text-sm">

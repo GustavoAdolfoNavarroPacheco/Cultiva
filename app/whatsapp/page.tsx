@@ -6,7 +6,7 @@ import { PublicHeader } from "@/app/components/PublicHeader";
 import { PageTransition } from "@/app/components/PageTransition";
 import { ChatIcon, BookIcon, TagIcon, ArrowRightIcon } from "@/app/components/icons";
 
-export const metadata = { title: "Agente de WhatsApp — Agro.ai" };
+export const metadata = { title: "Agente de WhatsApp — Plataforma Educativa" };
 export const dynamic = "force-dynamic";
 
 export default async function WhatsappCoursesPage() {
