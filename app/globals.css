@@ -1,26 +1,101 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Paper */
+  --paper: #efe7d3;
+  --paper-deep: #e3d7b8;
+  --paper-line: #d8c9a3;
+
+  /* Ink */
+  --ink: #241d12;
+  --ink-soft: #59492f;
+  --ink-faint: #8a7a5c;
+
+  /* Sello (stamp) inks — one per pilar */
+  --sello-admin: #b6791f;
+  --sello-admin-ink: #7a4f11;
+  --sello-offline: #33563a;
+  --sello-offline-ink: #1f3623;
+  --sello-whatsapp: #2f5d68;
+  --sello-whatsapp-ink: #1c3940;
+
+  /* Accent / CTA */
+  --clay: #a8462a;
+  --clay-deep: #7f2f18;
+  --gold: #c68a2e;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-paper: var(--paper);
+  --color-paper-deep: var(--paper-deep);
+  --color-paper-line: var(--paper-line);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-faint: var(--ink-faint);
+
+  --color-admin: var(--sello-admin);
+  --color-admin-ink: var(--sello-admin-ink);
+  --color-offline: var(--sello-offline);
+  --color-offline-ink: var(--sello-offline-ink);
+  --color-whatsapp: var(--sello-whatsapp);
+  --color-whatsapp-ink: var(--sello-whatsapp-ink);
+
+  --color-clay: var(--clay);
+  --color-clay-deep: var(--clay-deep);
+  --color-gold: var(--gold);
+
+  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-plex-sans);
+  --font-mono: var(--font-plex-mono);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+::selection {
+  background: var(--clay);
+  color: var(--paper);
+}
+
+:focus-visible {
+  outline: 2px solid var(--clay);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.paper-texture {
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(36, 29, 18, 0.06) 1px, transparent 0);
+  background-size: 18px 18px;
+}
+
+.tear-edge {
+  position: relative;
+}
+
+.tear-edge::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 9px;
+  background-image: linear-gradient(135deg, var(--paper) 50%, transparent 50%),
+    linear-gradient(45deg, var(--paper) 50%, transparent 50%);
+  background-size: 14px 14px;
+  background-position: bottom left;
+  background-repeat: repeat-x;
 }
