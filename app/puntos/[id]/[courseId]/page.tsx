@@ -73,7 +73,7 @@ export default async function PuntoCoursePage({
             <div className="flex items-center gap-2.5">
               <BookIcon className="w-6 h-6 text-emerald-700" />
               <h2 className="text-2xl font-black text-slate-900">
-                Lecciones para Descarga y Previsualización
+                Lecciones para Descarga Directa
               </h2>
             </div>
 
@@ -101,7 +101,7 @@ export default async function PuntoCoursePage({
                   </p>
                 )}
 
-                {/* Download and Preview Actions Container */}
+                {/* Direct Download Actions Container */}
                 <div className="mt-7 pt-5 border-t border-slate-100">
                   <LessonMediaActions
                     puntoId={puntoId}
