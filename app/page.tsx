@@ -11,9 +11,9 @@ export default async function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex h-dvh flex-col overflow-y-auto lg:overflow-hidden">
       <PublicHeader />
-      <main className="flex flex-1 items-center justify-center px-4 py-8 sm:px-6 lg:py-16">
+      <main className="flex flex-1 items-center justify-center px-4 py-6 sm:px-6 lg:py-8">
         <div className="grid w-full max-w-5xl items-center gap-8 lg:grid-cols-2 lg:gap-14">
           <BrandPanel />
           <div className="flex justify-center lg:justify-end">
