@@ -3,6 +3,7 @@ import { and, eq, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { courses, whatsappSteps } from "@/lib/db/schema";
 import { PublicHeader } from "@/app/components/PublicHeader";
+import { ChatIcon, BookIcon, TagIcon, ArrowRightIcon } from "@/app/components/icons";
 
 export const metadata = { title: "Agente de WhatsApp — Agro.ai" };
 export const dynamic = "force-dynamic";
@@ -24,76 +25,77 @@ export default async function WhatsappCoursesPage() {
   const coursesWithSteps = publishedCourses.filter((course) => course.stepCount > 0);
 
   return (
-    <div className="flex min-h-screen flex-col bg-emerald-50/40">
+    <div className="flex min-h-screen flex-col bg-slate-50/50">
       <PublicHeader />
 
       <main className="flex-1 px-4 py-8 sm:px-6 sm:py-12">
-        <div className="mx-auto max-w-4xl">
+        <div className="mx-auto max-w-5xl space-y-10">
           {/* Hero Banner */}
-          <div className="rounded-3xl bg-gradient-to-r from-emerald-800 via-green-700 to-emerald-900 p-6 sm:p-10 text-white shadow-xl shadow-emerald-900/20 relative overflow-hidden">
-            <div className="absolute right-0 top-0 -mt-6 -mr-6 text-8xl opacity-10 pointer-events-none select-none">
-              💬
-            </div>
-            <div className="relative z-10">
-              <span className="inline-flex items-center gap-2 rounded-full bg-white/20 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-green-100 backdrop-blur-md border border-white/20">
-                <span>🟢</span> Asistente Virtual Interactivo
+          <div className="rounded-3xl bg-slate-900 p-8 sm:p-12 text-white shadow-xl border border-slate-800">
+            <div className="max-w-3xl">
+              <span className="inline-flex items-center gap-2 rounded-full bg-emerald-950 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-emerald-300 border border-emerald-800/80 mb-4">
+                <ChatIcon className="w-4 h-4 text-emerald-400" /> Asistente Virtual Interactivo
               </span>
-              <h1 className="mt-4 font-display text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl leading-tight">
+              <h1 className="font-display text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl leading-tight text-white">
                 Aprende desde tu WhatsApp
               </h1>
-              <p className="mt-3 max-w-2xl text-lg text-emerald-100 font-medium leading-relaxed">
+              <p className="mt-3 text-lg text-slate-300 font-medium leading-relaxed">
                 Selecciona un curso a continuación para simular una conversación interactiva con nuestro asistente de inteligencia agropecuaria.
               </p>
             </div>
           </div>
 
           {/* Courses List */}
-          <div className="mt-10">
-            <h2 className="text-2xl font-black text-emerald-950 flex items-center gap-2 mb-6">
-              <span>📚</span> Cursos Disponibles para WhatsApp ({coursesWithSteps.length})
-            </h2>
+          <div>
+            <div className="flex items-center gap-2.5 mb-6">
+              <BookIcon className="w-6 h-6 text-emerald-700" />
+              <h2 className="text-2xl font-black text-slate-900">
+                Cursos Disponibles para WhatsApp ({coursesWithSteps.length})
+              </h2>
+            </div>
 
             <div className="space-y-5">
               {coursesWithSteps.map((course, index) => (
                 <div
                   key={course.id}
-                  className="card-farmer animate-sprout-in p-6 sm:p-8"
+                  className="card-farmer animate-sprout-in p-7 sm:p-9"
                   style={{ animationDelay: `${index * 80}ms` }}
                 >
-                  <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
-                    <span className="rounded-full bg-emerald-100 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-emerald-900 border border-emerald-200">
-                      🏷️ {course.category ?? "Agroindustria"}
+                  <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+                    <span className="inline-flex items-center gap-1.5 rounded-xl bg-slate-100 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-slate-700 border border-slate-200">
+                      <TagIcon className="w-3.5 h-3.5 text-slate-500" /> {course.category ?? "Agroindustria"}
                     </span>
-                    <span className="rounded-full bg-green-100 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-green-900 border border-green-300">
-                      💬 {course.stepCount} Pasos de Chat
+                    <span className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-50 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-emerald-900 border border-emerald-200">
+                      <ChatIcon className="w-3.5 h-3.5 text-emerald-700" /> {course.stepCount} Pasos de Chat
                     </span>
                   </div>
 
-                  <h3 className="font-display text-2xl font-bold text-emerald-950 sm:text-3xl leading-snug">
+                  <h3 className="font-display text-2xl font-bold text-slate-900 sm:text-3xl leading-snug">
                     {course.title}
                   </h3>
 
                   {course.description && (
-                    <p className="mt-2 text-base text-emerald-900/80 font-medium leading-relaxed">
+                    <p className="mt-2 text-base text-slate-600 font-medium leading-relaxed">
                       {course.description}
                     </p>
                   )}
 
-                  <div className="mt-6 pt-4 border-t border-emerald-900/10 flex justify-end">
+                  <div className="mt-8 pt-5 border-t border-slate-100 flex justify-end">
                     <Link
                       href={`/whatsapp/${course.id}`}
-                      className="btn-farmer-primary text-base min-h-[52px]"
+                      className="btn-farmer-primary text-base"
                     >
-                      <span>Iniciar Clase por WhatsApp 💬</span>
+                      <span>Iniciar Clase por WhatsApp</span>
+                      <ArrowRightIcon className="w-5 h-5" />
                     </Link>
                   </div>
                 </div>
               ))}
 
               {coursesWithSteps.length === 0 && (
-                <div className="text-center py-12 bg-white rounded-3xl border border-emerald-900/10 p-8">
-                  <span className="text-4xl">📭</span>
-                  <p className="mt-3 text-lg font-bold text-emerald-950">
+                <div className="text-center py-12 bg-white rounded-3xl border border-slate-200 p-8">
+                  <ChatIcon className="w-10 h-10 text-slate-300 mx-auto" />
+                  <p className="mt-3 text-lg font-bold text-slate-900">
                     Todavía no hay cursos con un flujo de WhatsApp configurado.
                   </p>
                 </div>

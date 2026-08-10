@@ -5,6 +5,14 @@ import { db } from "@/lib/db";
 import { courses, lessons, puntosDigitales } from "@/lib/db/schema";
 import { logDownloadAction } from "@/lib/actions/downloads";
 import { PublicHeader } from "@/app/components/PublicHeader";
+import {
+  ArrowLeftIcon,
+  MapPinIcon,
+  BookIcon,
+  VideoIcon,
+  PdfIcon,
+  DownloadIcon,
+} from "@/app/components/icons";
 
 export const dynamic = "force-dynamic";
 
@@ -34,7 +42,9 @@ function DownloadButton({
         type="submit"
         className={isVideo ? "btn-farmer-primary w-full text-base" : "btn-farmer-secondary w-full text-base"}
       >
-        <span>{isVideo ? "🎬 DESCARGAR VIDEO" : "📄 DESCARGAR GUÍA (PDF)"}</span>
+        {isVideo ? <VideoIcon className="w-5 h-5" /> : <PdfIcon className="w-5 h-5" />}
+        <span>{isVideo ? "Descargar Video (MP4)" : "Descargar Guía (PDF)"}</span>
+        <DownloadIcon className="w-4 h-4 opacity-70" />
       </button>
     </form>
   );
@@ -61,35 +71,35 @@ export default async function PuntoCoursePage({
     .orderBy(asc(lessons.order));
 
   return (
-    <div className="flex min-h-screen flex-col bg-emerald-50/40">
+    <div className="flex min-h-screen flex-col bg-slate-50/50">
       <PublicHeader />
 
       <main className="flex-1 px-4 py-8 sm:px-6 sm:py-12">
-        <div className="mx-auto max-w-4xl">
+        <div className="mx-auto max-w-5xl space-y-8">
           {/* Back button */}
           <Link
             href={`/puntos/${puntoId}`}
-            className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-base font-bold text-emerald-900 border border-emerald-200 hover:bg-emerald-100 transition-colors shadow-sm mb-6 min-h-[48px]"
+            className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-bold text-slate-700 border border-slate-200 hover:bg-slate-50 transition-colors shadow-xs"
           >
-            <span>⬅</span>
+            <ArrowLeftIcon className="w-4 h-4" />
             <span>Volver a {punto.name}</span>
           </Link>
 
           {/* Course Banner Header */}
-          <div className="rounded-3xl bg-gradient-to-r from-green-900 to-green-700 p-6 sm:p-10 text-white shadow-xl shadow-green-900/20 mb-8">
+          <div className="rounded-3xl bg-slate-900 p-8 sm:p-11 text-white shadow-xl border border-slate-800">
             <div className="flex items-center gap-2 mb-3">
-              <span className="rounded-full bg-white/20 px-3 py-1 text-xs font-bold uppercase tracking-wider text-green-100 backdrop-blur-md">
-                📍 {punto.name}
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-800 px-3 py-1 text-xs font-bold uppercase tracking-wider text-slate-200 border border-slate-700">
+                <MapPinIcon className="w-3.5 h-3.5 text-emerald-400" /> {punto.name}
               </span>
-              <span className="rounded-full bg-amber-400 text-green-950 px-3 py-1 text-xs font-black uppercase tracking-wider">
+              <span className="rounded-full bg-emerald-700 text-white px-3 py-1 text-xs font-bold uppercase tracking-wider">
                 {courseLessons.length} Lecciones
               </span>
             </div>
-            <h1 className="font-display text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl leading-tight">
+            <h1 className="font-display text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl leading-tight text-white">
               {course.title}
             </h1>
             {course.description && (
-              <p className="mt-3 text-lg text-emerald-100 font-medium leading-relaxed max-w-2xl">
+              <p className="mt-3 text-lg text-slate-300 font-medium leading-relaxed max-w-3xl">
                 {course.description}
               </p>
             )}
@@ -97,37 +107,40 @@ export default async function PuntoCoursePage({
 
           {/* Lessons List */}
           <div className="space-y-6">
-            <h2 className="text-2xl font-black text-emerald-950 flex items-center gap-2">
-              <span>📚</span> Lecciones para Descarga
-            </h2>
+            <div className="flex items-center gap-2.5">
+              <BookIcon className="w-6 h-6 text-emerald-700" />
+              <h2 className="text-2xl font-black text-slate-900">
+                Lecciones para Descarga
+              </h2>
+            </div>
 
             {courseLessons.map((lesson, index) => (
               <div
                 key={lesson.id}
-                className="card-farmer animate-sprout-in p-6 sm:p-8"
+                className="card-farmer animate-sprout-in p-7 sm:p-9"
                 style={{ animationDelay: `${index * 80}ms` }}
               >
                 <div className="flex items-center gap-3 mb-2">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-green-700 font-display text-base font-black text-white shadow-md">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-800 font-display text-sm font-bold text-white shadow-xs">
                     {lesson.order}
                   </span>
-                  <span className="text-sm font-bold uppercase tracking-wider text-green-800">
+                  <span className="text-xs font-bold uppercase tracking-wider text-emerald-800">
                     Lección {lesson.order}
                   </span>
                 </div>
 
-                <h3 className="font-display text-2xl font-bold text-emerald-950 sm:text-3xl mt-1">
+                <h3 className="font-display text-2xl font-bold text-slate-900 sm:text-3xl mt-1">
                   {lesson.title}
                 </h3>
 
                 {lesson.summary && (
-                  <p className="mt-2 text-base text-emerald-900/80 font-medium leading-relaxed">
+                  <p className="mt-2 text-base text-slate-600 font-medium leading-relaxed">
                     {lesson.summary}
                   </p>
                 )}
 
                 {/* Download Actions Container */}
-                <div className="mt-6 pt-4 border-t border-emerald-900/10 flex flex-wrap gap-3">
+                <div className="mt-7 pt-5 border-t border-slate-100 flex flex-wrap gap-3">
                   {lesson.videoUrl && (
                     <DownloadButton
                       puntoId={puntoId}
@@ -147,7 +160,7 @@ export default async function PuntoCoursePage({
                     />
                   )}
                   {!lesson.videoUrl && !lesson.pdfUrl && (
-                    <p className="text-base text-emerald-900/60 font-medium italic">
+                    <p className="text-sm text-slate-400 font-medium italic">
                       Archivos de esta lección aún no están subidos.
                     </p>
                   )}
@@ -156,9 +169,9 @@ export default async function PuntoCoursePage({
             ))}
 
             {courseLessons.length === 0 && (
-              <div className="text-center py-12 bg-white rounded-3xl border border-emerald-900/10 p-8">
-                <span className="text-4xl">📄</span>
-                <p className="mt-3 text-lg font-bold text-emerald-950">Este curso todavía no tiene lecciones.</p>
+              <div className="text-center py-12 bg-white rounded-3xl border border-slate-200 p-8">
+                <BookIcon className="w-10 h-10 text-slate-300 mx-auto" />
+                <p className="mt-3 text-lg font-bold text-slate-900">Este curso todavía no tiene lecciones.</p>
               </div>
             )}
           </div>
