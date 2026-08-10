@@ -34,31 +34,31 @@ export default async function CourseDetailPage({
     <div>
       <Link
         href="/admin/cursos"
-        className="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-faint hover:text-clay"
+        className="text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-faint hover:text-green-700"
       >
         ← Cursos
       </Link>
 
       <div className="mt-3 flex flex-wrap items-start justify-between gap-4">
-        <h1 className="font-display text-3xl font-semibold text-ink">{course.title}</h1>
+        <h1 className="font-display text-3xl font-extrabold text-ink">{course.title}</h1>
         <ConfirmDeleteForm
           action={deleteCourse.bind(null, course.id)}
           confirmText={`¿Eliminar el curso "${course.title}" y todo su contenido? Esta acción no se puede deshacer.`}
         >
           <button
             type="submit"
-            className="rounded-full border border-clay/40 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.1em] text-clay hover:bg-clay/10"
+            className="rounded-full border border-red-200 bg-red-50/70 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-red-600 transition-colors hover:bg-red-100"
           >
             Eliminar curso
           </button>
         </ConfirmDeleteForm>
       </div>
 
-      <div className="mt-6 rounded-xl border border-paper-line bg-paper p-6">
+      <div className="glass animate-sprout-in mt-6 rounded-[var(--radius-lg)] p-6">
         <CourseEditForm course={course} />
       </div>
 
-      <div className="mt-8 grid gap-8 lg:grid-cols-2">
+      <div className="mt-8 grid gap-6 lg:grid-cols-2">
         <LessonsManager courseId={course.id} lessons={courseLessons} />
         <WhatsappStepsManager
           courseId={course.id}

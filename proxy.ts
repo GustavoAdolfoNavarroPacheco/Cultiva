@@ -4,15 +4,11 @@ import { SESSION_COOKIE, verifySession } from "@/lib/auth/session";
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  if (pathname === "/admin/login") {
-    return NextResponse.next();
-  }
-
   const token = request.cookies.get(SESSION_COOKIE)?.value;
   const session = token ? await verifySession(token) : null;
 
   if (!session) {
-    const loginUrl = new URL("/admin/login", request.url);
+    const loginUrl = new URL("/", request.url);
     loginUrl.searchParams.set("next", pathname);
     return NextResponse.redirect(loginUrl);
   }
@@ -21,5 +17,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/admin/:path*", "/puntos/:path*", "/whatsapp/:path*"],
 };

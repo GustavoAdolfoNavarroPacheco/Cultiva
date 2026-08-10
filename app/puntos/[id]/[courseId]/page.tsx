@@ -29,10 +29,10 @@ function DownloadButton({
       <input type="hidden" name="url" value={url} />
       <button
         type="submit"
-        className={`rounded-full px-4 py-2 font-mono text-[12px] uppercase tracking-[0.1em] ${
+        className={`btn-glow rounded-full px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.06em] ${
           fileType === "video"
-            ? "bg-offline text-paper"
-            : "border border-offline/50 text-offline-ink"
+            ? "bg-gradient-to-r from-green-500 to-green-600 text-white shadow-md shadow-green-600/25"
+            : "glass text-green-700"
         }`}
       >
         Descargar {fileType === "video" ? "video" : "PDF"}
@@ -62,25 +62,29 @@ export default async function PuntoCoursePage({
     .orderBy(asc(lessons.order));
 
   return (
-    <div className="min-h-screen bg-paper px-6 py-16">
+    <div className="min-h-screen px-6 py-16">
       <div className="mx-auto max-w-2xl">
         <Link
           href={`/puntos/${puntoId}`}
-          className="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-faint hover:text-clay"
+          className="text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-faint hover:text-green-700"
         >
           ← {punto.name}
         </Link>
 
-        <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight text-ink">
+        <h1 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink">
           {course.title}
         </h1>
         {course.description && <p className="mt-3 text-ink-soft">{course.description}</p>}
 
         <ul className="mt-10 space-y-4">
-          {courseLessons.map((lesson) => (
-            <li key={lesson.id} className="rounded-xl border border-paper-line bg-paper-deep/40 p-5">
-              <p className="font-mono text-[11px] text-ink-faint">Lección {lesson.order}</p>
-              <p className="mt-1 font-display text-lg font-semibold text-ink">{lesson.title}</p>
+          {courseLessons.map((lesson, index) => (
+            <li
+              key={lesson.id}
+              className="glass animate-sprout-in rounded-[var(--radius-lg)] p-5"
+              style={{ animationDelay: `${index * 80}ms` }}
+            >
+              <p className="text-[11px] font-medium text-ink-faint">Lección {lesson.order}</p>
+              <p className="mt-1 font-display text-lg font-bold text-ink">{lesson.title}</p>
               {lesson.summary && <p className="mt-1 text-[14px] text-ink-soft">{lesson.summary}</p>}
 
               <div className="mt-4 flex flex-wrap gap-3">

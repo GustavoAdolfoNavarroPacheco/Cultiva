@@ -25,36 +25,39 @@ export default async function CoursesPage() {
 
   return (
     <div>
-      <h1 className="font-display text-3xl font-semibold text-ink">Cursos</h1>
+      <h1 className="font-display text-3xl font-extrabold text-ink">Cursos</h1>
       <p className="mt-1 text-ink-soft">
         Cada curso alimenta a la vez las lecciones descargables y el flujo del agente de WhatsApp.
       </p>
 
-      <div className="mt-8">
+      <div className="mt-8 animate-sprout-in">
         <CourseCreateForm />
       </div>
 
-      <div className="mt-8 overflow-x-auto rounded-xl border border-paper-line bg-paper">
+      <div
+        className="glass animate-sprout-in mt-8 overflow-x-auto rounded-[var(--radius-lg)]"
+        style={{ animationDelay: "120ms" }}
+      >
         <table className="w-full min-w-[560px] text-left text-[14px]">
           <thead>
-            <tr className="border-b border-paper-line text-ink-faint">
-              <th className="px-5 py-3 font-mono text-[11px] uppercase tracking-[0.1em]">Título</th>
-              <th className="px-5 py-3 font-mono text-[11px] uppercase tracking-[0.1em]">Categoría</th>
-              <th className="px-5 py-3 font-mono text-[11px] uppercase tracking-[0.1em]">Lecciones</th>
-              <th className="px-5 py-3 font-mono text-[11px] uppercase tracking-[0.1em]">Estado</th>
+            <tr className="border-b border-white/60 text-ink-faint">
+              <th className="px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.08em]">Título</th>
+              <th className="px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.08em]">Categoría</th>
+              <th className="px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.08em]">Lecciones</th>
+              <th className="px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.08em]">Estado</th>
               <th className="px-5 py-3" />
             </tr>
           </thead>
           <tbody>
             {courseList.map((course) => (
-              <tr key={course.id} className="border-b border-paper-line last:border-0">
+              <tr key={course.id} className="border-b border-white/50 transition-colors last:border-0 hover:bg-white/40">
                 <td className="px-5 py-3 font-medium text-ink">{course.title}</td>
                 <td className="px-5 py-3 text-ink-soft">{course.category ?? "—"}</td>
                 <td className="px-5 py-3 text-ink-soft">{course.lessonCount}</td>
                 <td className="px-5 py-3">
                   <span
-                    className={`rounded-full px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.08em] ${
-                      course.published ? "bg-offline/15 text-offline-ink" : "bg-ink/5 text-ink-faint"
+                    className={`rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.06em] ${
+                      course.published ? "bg-green-100 text-green-700" : "bg-ink/5 text-ink-faint"
                     }`}
                   >
                     {course.published ? "Publicado" : "Borrador"}
@@ -63,7 +66,7 @@ export default async function CoursesPage() {
                 <td className="px-5 py-3 text-right">
                   <Link
                     href={`/admin/cursos/${course.id}`}
-                    className="font-mono text-[12px] uppercase tracking-[0.08em] text-clay hover:underline"
+                    className="text-[12px] font-semibold uppercase tracking-[0.06em] text-green-700 hover:underline"
                   >
                     Editar
                   </Link>

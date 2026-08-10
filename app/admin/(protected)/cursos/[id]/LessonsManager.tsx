@@ -14,8 +14,10 @@ type Lesson = {
 };
 
 const fieldClass =
-  "mt-1.5 w-full rounded-lg border border-paper-line bg-paper px-3.5 py-2.5 text-[14px] text-ink focus:border-clay";
-const labelClass = "font-mono text-[10px] uppercase tracking-[0.12em] text-ink-soft";
+  "mt-1.5 w-full rounded-[var(--radius-sm)] border border-white/70 bg-white/60 px-3.5 py-2.5 text-[14px] text-ink outline-none transition-all focus:border-green-500 focus:bg-white/90 focus:ring-4 focus:ring-green-500/15";
+const labelClass = "text-[10px] font-semibold uppercase tracking-[0.1em] text-ink-soft";
+const primaryBtnSm =
+  "btn-glow rounded-full bg-gradient-to-r from-green-500 to-green-600 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.06em] text-white shadow-md shadow-green-600/20";
 
 function LessonEditForm({ lesson, courseId, onDone }: { lesson: Lesson; courseId: number; onDone: () => void }) {
   return (
@@ -54,17 +56,14 @@ function LessonEditForm({ lesson, courseId, onDone }: { lesson: Lesson; courseId
           placeholder="https://…"
         />
       </div>
-      <div className="sm:col-span-2 flex gap-3">
-        <button
-          type="submit"
-          className="rounded-full bg-ink px-4 py-2 font-mono text-[11px] uppercase tracking-[0.1em] text-paper"
-        >
+      <div className="sm:col-span-2 flex items-center gap-4">
+        <button type="submit" className={primaryBtnSm}>
           Guardar
         </button>
         <button
           type="button"
           onClick={onDone}
-          className="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-faint"
+          className="text-[11px] font-semibold uppercase tracking-[0.06em] text-ink-faint hover:text-ink"
         >
           Cancelar
         </button>
@@ -78,19 +77,19 @@ function LessonRow({ lesson, courseId }: { lesson: Lesson; courseId: number }) {
 
   if (editing) {
     return (
-      <li className="rounded-lg border border-paper-line p-4">
+      <li className="rounded-[var(--radius-md)] border border-white/60 bg-white/40 p-4">
         <LessonEditForm lesson={lesson} courseId={courseId} onDone={() => setEditing(false)} />
       </li>
     );
   }
 
   return (
-    <li className="flex flex-wrap items-start justify-between gap-3 rounded-lg border border-paper-line p-4">
+    <li className="flex flex-wrap items-start justify-between gap-3 rounded-[var(--radius-md)] border border-white/60 bg-white/40 p-4 transition-colors hover:bg-white/60">
       <div>
-        <p className="font-mono text-[11px] text-ink-faint">Lección {lesson.order}</p>
+        <p className="text-[11px] font-medium text-ink-faint">Lección {lesson.order}</p>
         <p className="font-medium text-ink">{lesson.title}</p>
         {lesson.summary && <p className="text-[13px] text-ink-soft">{lesson.summary}</p>}
-        <div className="mt-1 flex gap-3 text-[12px] text-ink-faint">
+        <div className="mt-1 flex gap-3 text-[12px] text-green-700">
           {lesson.videoUrl && <span>Video ✓</span>}
           {lesson.pdfUrl && <span>PDF ✓</span>}
         </div>
@@ -99,7 +98,7 @@ function LessonRow({ lesson, courseId }: { lesson: Lesson; courseId: number }) {
         <button
           type="button"
           onClick={() => setEditing(true)}
-          className="font-mono text-[11px] uppercase tracking-[0.1em] text-clay"
+          className="text-[11px] font-semibold uppercase tracking-[0.06em] text-green-700 hover:text-green-800"
         >
           Editar
         </button>
@@ -107,7 +106,10 @@ function LessonRow({ lesson, courseId }: { lesson: Lesson; courseId: number }) {
           action={deleteLesson.bind(null, lesson.id, courseId)}
           confirmText={`¿Eliminar la lección "${lesson.title}"?`}
         >
-          <button type="submit" className="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-faint">
+          <button
+            type="submit"
+            className="text-[11px] font-semibold uppercase tracking-[0.06em] text-ink-faint hover:text-red-600"
+          >
             Eliminar
           </button>
         </ConfirmDeleteForm>
@@ -118,8 +120,8 @@ function LessonRow({ lesson, courseId }: { lesson: Lesson; courseId: number }) {
 
 export function LessonsManager({ courseId, lessons }: { courseId: number; lessons: Lesson[] }) {
   return (
-    <div className="rounded-xl border border-paper-line bg-paper p-6">
-      <h2 className="font-display text-lg font-semibold text-ink">Lecciones</h2>
+    <div className="glass animate-sprout-in rounded-[var(--radius-lg)] p-6">
+      <h2 className="font-display text-lg font-bold text-ink">Lecciones</h2>
       <p className="mt-1 text-[13px] text-ink-faint">
         Contenido descargable en los Puntos Digitales y usado por el agente de WhatsApp.
       </p>
@@ -135,7 +137,7 @@ export function LessonsManager({ courseId, lessons }: { courseId: number; lesson
 
       <form
         action={createLesson.bind(null, courseId)}
-        className="mt-6 grid gap-3 border-t border-paper-line pt-5 sm:grid-cols-2"
+        className="mt-6 grid gap-3 border-t border-white/60 pt-5 sm:grid-cols-2"
       >
         <div className="sm:col-span-2">
           <label className={labelClass}>Título de la nueva lección</label>
@@ -154,10 +156,7 @@ export function LessonsManager({ courseId, lessons }: { courseId: number; lesson
           <input name="pdfUrl" type="url" className={fieldClass} placeholder="https://…" />
         </div>
         <div className="sm:col-span-2">
-          <button
-            type="submit"
-            className="rounded-full bg-clay px-4 py-2 font-mono text-[11px] uppercase tracking-[0.1em] text-paper"
-          >
+          <button type="submit" className={primaryBtnSm}>
             Añadir lección
           </button>
         </div>

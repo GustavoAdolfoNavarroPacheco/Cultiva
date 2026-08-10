@@ -22,8 +22,10 @@ type Step = {
 type Lesson = { id: number; title: string };
 
 const fieldClass =
-  "mt-1.5 w-full rounded-lg border border-paper-line bg-paper px-3.5 py-2.5 text-[14px] text-ink focus:border-clay";
-const labelClass = "font-mono text-[10px] uppercase tracking-[0.12em] text-ink-soft";
+  "mt-1.5 w-full rounded-[var(--radius-sm)] border border-white/70 bg-white/60 px-3.5 py-2.5 text-[14px] text-ink outline-none transition-all focus:border-green-500 focus:bg-white/90 focus:ring-4 focus:ring-green-500/15";
+const labelClass = "text-[10px] font-semibold uppercase tracking-[0.1em] text-ink-soft";
+const primaryBtnSm =
+  "btn-glow rounded-full bg-gradient-to-r from-green-500 to-green-600 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.06em] text-white shadow-md shadow-green-600/20";
 
 const kindLabels: Record<string, string> = {
   welcome: "Bienvenida",
@@ -146,17 +148,14 @@ function StepEditForm({
       className="grid gap-3 sm:grid-cols-2"
     >
       <StepFields lessons={lessons} defaultValues={step} />
-      <div className="sm:col-span-2 flex gap-3">
-        <button
-          type="submit"
-          className="rounded-full bg-ink px-4 py-2 font-mono text-[11px] uppercase tracking-[0.1em] text-paper"
-        >
+      <div className="sm:col-span-2 flex items-center gap-4">
+        <button type="submit" className={primaryBtnSm}>
           Guardar
         </button>
         <button
           type="button"
           onClick={onDone}
-          className="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-faint"
+          className="text-[11px] font-semibold uppercase tracking-[0.06em] text-ink-faint hover:text-ink"
         >
           Cancelar
         </button>
@@ -179,17 +178,17 @@ function StepRow({
 
   if (editing) {
     return (
-      <li className="rounded-lg border border-paper-line p-4">
+      <li className="rounded-[var(--radius-md)] border border-white/60 bg-white/40 p-4">
         <StepEditForm step={step} courseId={courseId} lessons={lessons} onDone={() => setEditing(false)} />
       </li>
     );
   }
 
   return (
-    <li className="flex flex-wrap items-start justify-between gap-3 rounded-lg border border-paper-line p-4">
+    <li className="flex flex-wrap items-start justify-between gap-3 rounded-[var(--radius-md)] border border-white/60 bg-white/40 p-4 transition-colors hover:bg-white/60">
       <div>
         <div className="flex items-center gap-2">
-          <span className="rounded-full bg-whatsapp/15 px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.08em] text-whatsapp-ink">
+          <span className="rounded-full bg-green-100 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.06em] text-green-700">
             {step.order} · {kindLabels[step.kind] ?? step.kind}
           </span>
           {lessonTitle && <span className="text-[12px] text-ink-faint">{lessonTitle}</span>}
@@ -200,7 +199,7 @@ function StepRow({
             <p className="font-medium">{step.question}</p>
             <ul className="mt-1 list-inside list-disc">
               {step.options?.map((option, index) => (
-                <li key={option} className={index === step.correctOptionIndex ? "text-offline-ink" : ""}>
+                <li key={option} className={index === step.correctOptionIndex ? "font-medium text-green-700" : ""}>
                   {option}
                   {index === step.correctOptionIndex ? " (correcta)" : ""}
                 </li>
@@ -213,7 +212,7 @@ function StepRow({
         <button
           type="button"
           onClick={() => setEditing(true)}
-          className="font-mono text-[11px] uppercase tracking-[0.1em] text-clay"
+          className="text-[11px] font-semibold uppercase tracking-[0.06em] text-green-700 hover:text-green-800"
         >
           Editar
         </button>
@@ -221,7 +220,10 @@ function StepRow({
           action={deleteWhatsappStep.bind(null, step.id, courseId)}
           confirmText="¿Eliminar este paso del flujo de WhatsApp?"
         >
-          <button type="submit" className="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-faint">
+          <button
+            type="submit"
+            className="text-[11px] font-semibold uppercase tracking-[0.06em] text-ink-faint hover:text-red-600"
+          >
             Eliminar
           </button>
         </ConfirmDeleteForm>
@@ -240,8 +242,8 @@ export function WhatsappStepsManager({
   lessons: Lesson[];
 }) {
   return (
-    <div className="rounded-xl border border-paper-line bg-paper p-6">
-      <h2 className="font-display text-lg font-semibold text-ink">Flujo del agente de WhatsApp</h2>
+    <div className="glass animate-sprout-in rounded-[var(--radius-lg)] p-6" style={{ animationDelay: "80ms" }}>
+      <h2 className="font-display text-lg font-bold text-ink">Flujo del agente de WhatsApp</h2>
       <p className="mt-1 text-[13px] text-ink-faint">
         Secuencia fija de mensajes y preguntas que el simulador de WhatsApp recorre en orden.
       </p>
@@ -257,14 +259,11 @@ export function WhatsappStepsManager({
 
       <form
         action={createWhatsappStep.bind(null, courseId)}
-        className="mt-6 grid gap-3 border-t border-paper-line pt-5 sm:grid-cols-2"
+        className="mt-6 grid gap-3 border-t border-white/60 pt-5 sm:grid-cols-2"
       >
         <StepFields lessons={lessons} />
         <div className="sm:col-span-2">
-          <button
-            type="submit"
-            className="rounded-full bg-clay px-4 py-2 font-mono text-[11px] uppercase tracking-[0.1em] text-paper"
-          >
+          <button type="submit" className={primaryBtnSm}>
             Añadir paso
           </button>
         </div>

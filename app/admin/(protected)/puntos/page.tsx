@@ -11,28 +11,32 @@ export default async function PuntosPage() {
 
   return (
     <div>
-      <h1 className="font-display text-3xl font-semibold text-ink">Puntos Digitales</h1>
+      <h1 className="font-display text-3xl font-extrabold text-ink">Puntos Digitales</h1>
       <p className="mt-1 text-ink-soft">
         Lugares físicos donde los estudiantes descargan contenido a su teléfono sin necesidad de internet.
       </p>
 
-      <div className="mt-8">
+      <div className="mt-8 animate-sprout-in">
         <PuntoCreateForm />
       </div>
 
       <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {puntos.map((punto) => (
-          <li key={punto.id} className="rounded-xl border border-paper-line bg-paper p-5">
-            <p className="font-display text-lg font-semibold text-ink">{punto.name}</p>
+        {puntos.map((punto, index) => (
+          <li
+            key={punto.id}
+            className="glass animate-sprout-in rounded-[var(--radius-lg)] p-5"
+            style={{ animationDelay: `${100 + index * 60}ms` }}
+          >
+            <p className="font-display text-lg font-bold text-ink">{punto.name}</p>
             <p className="mt-1 text-[13px] text-ink-soft">{punto.zona}</p>
             {punto.responsable && (
               <p className="mt-0.5 text-[12px] text-ink-faint">{punto.responsable}</p>
             )}
-            <div className="mt-4 flex items-center justify-between border-t border-paper-line pt-3">
+            <div className="mt-4 flex items-center justify-between border-t border-white/60 pt-3">
               <Link
                 href={`/puntos/${punto.id}`}
                 target="_blank"
-                className="font-mono text-[11px] uppercase tracking-[0.1em] text-clay hover:underline"
+                className="text-[11px] font-semibold uppercase tracking-[0.06em] text-green-700 hover:underline"
               >
                 Ver vista pública →
               </Link>
@@ -42,7 +46,7 @@ export default async function PuntosPage() {
               >
                 <button
                   type="submit"
-                  className="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-faint"
+                  className="text-[11px] font-semibold uppercase tracking-[0.06em] text-ink-faint hover:text-red-600"
                 >
                   Eliminar
                 </button>

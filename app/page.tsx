@@ -1,21 +1,22 @@
-import Header from "./components/Header";
-import Hero from "./components/Hero";
-import Pillars from "./components/Pillars";
-import HowItWorks from "./components/HowItWorks";
-import ContactSection from "./components/ContactSection";
-import Footer from "./components/Footer";
+import { redirect } from "next/navigation";
+import { getCurrentUser } from "@/lib/auth/current-user";
+import { BrandPanel } from "@/app/components/BrandPanel";
+import { LoginForm } from "@/app/components/LoginForm";
 
-export default function Home() {
+export default async function LoginPage() {
+  const user = await getCurrentUser();
+  if (user) {
+    redirect("/admin");
+  }
+
   return (
-    <div className="flex flex-1 flex-col">
-      <Header />
-      <main className="flex-1">
-        <Hero />
-        <Pillars />
-        <HowItWorks />
-        <ContactSection />
-      </main>
-      <Footer />
-    </div>
+    <main className="flex min-h-screen items-center justify-center px-6 py-12">
+      <div className="grid w-full max-w-4xl items-center gap-10 lg:grid-cols-2 lg:gap-16">
+        <BrandPanel />
+        <div className="flex justify-center lg:justify-end">
+          <LoginForm />
+        </div>
+      </div>
+    </main>
   );
 }

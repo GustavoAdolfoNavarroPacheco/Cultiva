@@ -33,15 +33,15 @@ export default async function WhatsappCoursePage({
   const lessonsById = Object.fromEntries(courseLessons.map((lesson) => [lesson.id, lesson]));
 
   return (
-    <div className="min-h-screen bg-paper-deep/40 px-6 py-16">
+    <div className="min-h-screen px-6 py-16">
       <div className="mx-auto max-w-xl">
         <Link
           href="/whatsapp"
-          className="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-faint hover:text-clay"
+          className="text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-faint hover:text-green-700"
         >
           ← Otros cursos
         </Link>
-        <h1 className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink">
+        <h1 className="mt-3 font-display text-3xl font-extrabold tracking-tight text-ink">
           {course.title}
         </h1>
         <p className="mt-2 text-[14px] text-ink-soft">

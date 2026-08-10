@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { motion } from "motion/react";
 import { advanceChatSession, startOrResumeChatSession, submitAnswer } from "@/lib/actions/chat";
 import type { ChatAnswer } from "@/lib/db/schema";
 
@@ -37,7 +38,7 @@ function LessonBubbleExtra({ lesson }: { lesson?: Lesson }) {
           href={lesson.videoUrl}
           target="_blank"
           rel="noreferrer"
-          className="rounded-full bg-whatsapp/15 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.08em] text-whatsapp-ink"
+          className="rounded-full bg-green-600 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.06em] text-white"
         >
           ▶ Ver video
         </a>
@@ -47,7 +48,7 @@ function LessonBubbleExtra({ lesson }: { lesson?: Lesson }) {
           href={lesson.pdfUrl}
           target="_blank"
           rel="noreferrer"
-          className="rounded-full border border-whatsapp/40 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.08em] text-whatsapp-ink"
+          className="rounded-full border border-green-600/40 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.06em] text-green-700"
         >
           📄 Ver guía PDF
         </a>
@@ -58,9 +59,14 @@ function LessonBubbleExtra({ lesson }: { lesson?: Lesson }) {
 
 function BotBubble({ children }: { children: React.ReactNode }) {
   return (
-    <div className="max-w-[85%] rounded-2xl rounded-tl-sm bg-paper-deep px-4 py-3 text-[14px] leading-relaxed text-ink">
+    <motion.div
+      initial={{ opacity: 0, y: 10, scale: 0.97 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      className="glass max-w-[85%] rounded-2xl rounded-tl-sm px-4 py-3 text-[14px] leading-relaxed text-ink"
+    >
       {children}
-    </div>
+    </motion.div>
   );
 }
 
@@ -95,7 +101,7 @@ export function ChatSimulator({
 
   if (!session) {
     return (
-      <div className="rounded-2xl border border-paper-line bg-paper p-8 text-center text-ink-faint">
+      <div className="glass animate-sprout-in rounded-[var(--radius-lg)] p-8 text-center text-ink-faint">
         Conectando con el agente…
       </div>
     );
@@ -132,14 +138,14 @@ export function ChatSimulator({
   const questionCount = steps.filter((step) => step.kind === "question").length;
 
   return (
-    <div className="rounded-2xl border border-paper-line bg-paper shadow-[4px_4px_0_0_rgba(36,29,18,0.06)]">
-      <div className="flex items-center gap-3 rounded-t-2xl border-b border-paper-line bg-whatsapp-ink px-5 py-4">
-        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-paper font-display text-sm font-semibold text-whatsapp-ink">
+    <div className="glass-strong animate-sprout-in overflow-hidden rounded-[var(--radius-lg)]">
+      <div className="flex items-center gap-3 border-b border-white/50 bg-gradient-to-r from-green-600 to-green-500 px-5 py-4">
+        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white font-display text-sm font-bold text-green-700">
           C
         </div>
         <div>
-          <p className="text-[14px] font-medium text-paper">Agente Cultiva</p>
-          <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-paper/70">
+          <p className="text-[14px] font-semibold text-white">Agente Cultiva</p>
+          <p className="text-[10px] font-medium uppercase tracking-[0.1em] text-white/75">
             {session.completed ? "curso completado" : "en línea"}
           </p>
         </div>
@@ -168,24 +174,26 @@ export function ChatSimulator({
                     const isChosen = answer?.optionIndex === index;
                     const showResult = Boolean(answer);
                     return (
-                      <button
+                      <motion.button
                         key={option}
                         type="button"
                         disabled={!isCurrentUnanswered || pending}
                         onClick={() => handleAnswer(step.id, index)}
+                        whileHover={isCurrentUnanswered ? { scale: 1.03 } : undefined}
+                        whileTap={isCurrentUnanswered ? { scale: 0.96 } : undefined}
                         className={`rounded-full border px-4 py-2 text-left text-[13px] transition-colors ${
                           showResult
                             ? isChosen
                               ? answer!.correct
-                                ? "border-offline bg-offline/15 text-offline-ink"
-                                : "border-clay bg-clay/10 text-clay-deep"
-                              : "border-paper-line text-ink-faint"
-                            : "border-whatsapp/40 text-ink hover:bg-whatsapp/10"
+                                ? "border-green-500 bg-green-100 text-green-700"
+                                : "border-red-300 bg-red-50 text-red-600"
+                              : "border-white/60 text-ink-faint"
+                            : "border-green-600/30 bg-white/40 text-ink hover:bg-green-50"
                         }`}
                       >
                         {option}
                         {showResult && isChosen && (answer!.correct ? " ✓" : " ✕")}
-                      </button>
+                      </motion.button>
                     );
                   })}
                 </div>
@@ -195,20 +203,26 @@ export function ChatSimulator({
         })}
 
         {!session.completed && lastStep && lastStep.kind !== "question" && (
-          <button
+          <motion.button
             type="button"
             onClick={handleAdvance}
             disabled={pending}
-            className="rounded-full bg-whatsapp-ink px-5 py-2.5 font-mono text-[12px] uppercase tracking-[0.1em] text-paper disabled:opacity-60"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.96 }}
+            className="btn-glow rounded-full bg-gradient-to-r from-green-500 to-green-600 px-5 py-2.5 text-[12px] font-semibold uppercase tracking-[0.06em] text-white shadow-lg shadow-green-600/25 disabled:opacity-60"
           >
             {pending ? "…" : "Siguiente →"}
-          </button>
+          </motion.button>
         )}
 
         {session.completed && (
-          <div className="rounded-xl bg-offline/10 px-4 py-3 text-[13px] text-offline-ink">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="rounded-[var(--radius-md)] bg-green-100 px-4 py-3 text-[13px] font-medium text-green-700"
+          >
             Curso completado. Respondiste correctamente {correctCount} de {questionCount} preguntas.
-          </div>
+          </motion.div>
         )}
       </div>
     </div>

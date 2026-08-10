@@ -6,19 +6,19 @@ import { createCourse, updateCourse, type CourseFormState } from "@/lib/actions/
 const initialState: CourseFormState = {};
 
 const fieldClass =
-  "mt-2 w-full rounded-lg border border-paper-line bg-paper px-4 py-3 text-ink focus:border-clay";
-const labelClass = "font-mono text-[11px] uppercase tracking-[0.14em] text-ink-soft";
+  "mt-2 w-full rounded-[var(--radius-sm)] border border-white/70 bg-white/60 px-4 py-3 text-ink placeholder:text-ink-faint outline-none transition-all focus:border-green-500 focus:bg-white/90 focus:ring-4 focus:ring-green-500/15";
+const labelClass = "text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-soft";
+const errorClass = "rounded-[var(--radius-sm)] bg-red-50 px-3.5 py-2.5 text-[13px] text-red-700";
+const primaryBtn =
+  "btn-glow rounded-full bg-gradient-to-r from-green-500 to-green-600 px-5 py-2.5 text-[13px] font-semibold text-white shadow-lg shadow-green-600/25 disabled:opacity-60";
 
 export function CourseCreateForm() {
   const [state, formAction, pending] = useActionState(createCourse, initialState);
 
   return (
-    <form
-      action={formAction}
-      className="grid gap-4 rounded-xl border border-paper-line bg-paper p-6 sm:grid-cols-2"
-    >
+    <form action={formAction} className="glass grid gap-4 rounded-[var(--radius-lg)] p-6 sm:grid-cols-2">
       <div className="sm:col-span-2">
-        <h2 className="font-display text-lg font-semibold text-ink">Nuevo curso</h2>
+        <h2 className="font-display text-lg font-bold text-ink">Nuevo curso</h2>
       </div>
 
       <div>
@@ -49,22 +49,14 @@ export function CourseCreateForm() {
       </div>
 
       <label className="flex items-center gap-2 text-[13px] text-ink-soft">
-        <input type="checkbox" name="published" className="h-4 w-4 accent-clay" />
+        <input type="checkbox" name="published" className="h-4 w-4 accent-green-600" />
         Publicado
       </label>
 
-      {state.error && (
-        <p className="sm:col-span-2 rounded-lg bg-clay/10 px-3 py-2 text-[13px] text-clay-deep">
-          {state.error}
-        </p>
-      )}
+      {state.error && <p className={`sm:col-span-2 ${errorClass}`}>{state.error}</p>}
 
       <div className="sm:col-span-2">
-        <button
-          type="submit"
-          disabled={pending}
-          className="rounded-full bg-clay px-5 py-2.5 font-mono text-[12px] uppercase tracking-[0.1em] text-paper disabled:opacity-60"
-        >
+        <button type="submit" disabled={pending} className={primaryBtn}>
           {pending ? "Creando…" : "Crear curso"}
         </button>
       </div>
@@ -131,23 +123,15 @@ export function CourseEditForm({
           type="checkbox"
           name="published"
           defaultChecked={course.published}
-          className="h-4 w-4 accent-clay"
+          className="h-4 w-4 accent-green-600"
         />
         Publicado
       </label>
 
-      {state.error && (
-        <p className="sm:col-span-2 rounded-lg bg-clay/10 px-3 py-2 text-[13px] text-clay-deep">
-          {state.error}
-        </p>
-      )}
+      {state.error && <p className={`sm:col-span-2 ${errorClass}`}>{state.error}</p>}
 
       <div className="sm:col-span-2">
-        <button
-          type="submit"
-          disabled={pending}
-          className="rounded-full bg-ink px-5 py-2.5 font-mono text-[12px] uppercase tracking-[0.1em] text-paper disabled:opacity-60"
-        >
+        <button type="submit" disabled={pending} className={primaryBtn}>
           {pending ? "Guardando…" : "Guardar cambios"}
         </button>
       </div>

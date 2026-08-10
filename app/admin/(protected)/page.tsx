@@ -65,11 +65,14 @@ async function getRecentChats() {
     .limit(8);
 }
 
-function StatCard({ label, value }: { label: string; value: number }) {
+function StatCard({ label, value, delay }: { label: string; value: number; delay: number }) {
   return (
-    <div className="rounded-xl border border-paper-line bg-paper px-5 py-4">
-      <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-faint">{label}</p>
-      <p className="mt-1 font-display text-3xl font-semibold text-ink">{value}</p>
+    <div
+      className="glass animate-sprout-in rounded-[var(--radius-md)] px-5 py-4 transition-transform hover:-translate-y-1"
+      style={{ animationDelay: `${delay}ms` }}
+    >
+      <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-ink-faint">{label}</p>
+      <p className="mt-1 font-display text-3xl font-extrabold text-green-700">{value}</p>
     </div>
   );
 }
@@ -87,21 +90,21 @@ export default async function AdminDashboardPage() {
 
   return (
     <div>
-      <h1 className="font-display text-3xl font-semibold text-ink">Panel</h1>
+      <h1 className="font-display text-3xl font-extrabold text-ink">Panel</h1>
       <p className="mt-1 text-ink-soft">Resumen de actividad en los tres pilares de Cultiva.</p>
 
       <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-        <StatCard label="Cursos" value={stats.courses} />
-        <StatCard label="Lecciones" value={stats.lessons} />
-        <StatCard label="Puntos digitales" value={stats.puntos} />
-        <StatCard label="Descargas" value={stats.downloads} />
-        <StatCard label="Chats WhatsApp" value={stats.chats} />
-        <StatCard label="Chats completados" value={stats.chatsCompleted} />
+        <StatCard label="Cursos" value={stats.courses} delay={0} />
+        <StatCard label="Lecciones" value={stats.lessons} delay={60} />
+        <StatCard label="Puntos digitales" value={stats.puntos} delay={120} />
+        <StatCard label="Descargas" value={stats.downloads} delay={180} />
+        <StatCard label="Chats WhatsApp" value={stats.chats} delay={240} />
+        <StatCard label="Chats completados" value={stats.chatsCompleted} delay={300} />
       </div>
 
-      <div className="mt-10 grid gap-8 lg:grid-cols-2">
-        <div className="rounded-xl border border-paper-line bg-paper p-6">
-          <h2 className="font-display text-lg font-semibold text-ink">Descargas recientes</h2>
+      <div className="mt-8 grid gap-6 lg:grid-cols-2">
+        <div className="glass animate-sprout-in rounded-[var(--radius-lg)] p-6" style={{ animationDelay: "160ms" }}>
+          <h2 className="font-display text-lg font-bold text-ink">Descargas recientes</h2>
           <p className="mt-1 text-[13px] text-ink-faint">Actividad en Puntos Digitales</p>
 
           {recentDownloads.length === 0 ? (
@@ -109,13 +112,13 @@ export default async function AdminDashboardPage() {
           ) : (
             <ul className="mt-4 space-y-3">
               {recentDownloads.map((row) => (
-                <li key={row.id} className="border-t border-paper-line pt-3 text-[13px]">
+                <li key={row.id} className="border-t border-white/60 pt-3 text-[13px]">
                   <p className="text-ink">
                     <span className="font-medium">{row.puntoName ?? "Punto eliminado"}</span> descargó{" "}
                     <span className="uppercase text-ink-faint">{row.fileType}</span> de{" "}
                     {row.lessonTitle ?? "lección eliminada"}
                   </p>
-                  <p className="mt-0.5 font-mono text-[11px] text-ink-faint">
+                  <p className="mt-0.5 text-[11px] text-ink-faint">
                     {row.courseTitle} · {formatDate(row.createdAt)}
                   </p>
                 </li>
@@ -124,8 +127,8 @@ export default async function AdminDashboardPage() {
           )}
         </div>
 
-        <div className="rounded-xl border border-paper-line bg-paper p-6">
-          <h2 className="font-display text-lg font-semibold text-ink">Sesiones de WhatsApp</h2>
+        <div className="glass animate-sprout-in rounded-[var(--radius-lg)] p-6" style={{ animationDelay: "220ms" }}>
+          <h2 className="font-display text-lg font-bold text-ink">Sesiones de WhatsApp</h2>
           <p className="mt-1 text-[13px] text-ink-faint">Progreso del agente guiado</p>
 
           {recentChats.length === 0 ? (
@@ -133,16 +136,14 @@ export default async function AdminDashboardPage() {
           ) : (
             <ul className="mt-4 space-y-3">
               {recentChats.map((row) => (
-                <li key={row.id} className="border-t border-paper-line pt-3 text-[13px]">
+                <li key={row.id} className="border-t border-white/60 pt-3 text-[13px]">
                   <p className="text-ink">
                     {row.courseTitle} —{" "}
-                    <span className={row.completed ? "text-offline-ink" : "text-ink-faint"}>
+                    <span className={row.completed ? "font-medium text-green-700" : "text-ink-faint"}>
                       {row.completed ? "completado" : `paso ${row.currentStepOrder}`}
                     </span>
                   </p>
-                  <p className="mt-0.5 font-mono text-[11px] text-ink-faint">
-                    {formatDate(row.updatedAt)}
-                  </p>
+                  <p className="mt-0.5 text-[11px] text-ink-faint">{formatDate(row.updatedAt)}</p>
                 </li>
               ))}
             </ul>

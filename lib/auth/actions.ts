@@ -62,5 +62,5 @@ export async function loginAction(
 export async function logoutAction() {
   const store = await cookies();
   store.delete(SESSION_COOKIE);
-  redirect("/admin/login");
+  redirect("/");
 }

@@ -28,30 +28,37 @@ export default async function PuntoDetailPage({ params }: { params: Promise<{ id
     .groupBy(courses.id);
 
   return (
-    <div className="min-h-screen bg-paper px-6 py-16">
+    <div className="min-h-screen px-6 py-16">
       <div className="mx-auto max-w-3xl">
-        <Link href="/puntos" className="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-faint hover:text-clay">
+        <Link
+          href="/puntos"
+          className="text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-faint hover:text-green-700"
+        >
           ← Puntos digitales
         </Link>
 
-        <p className="mt-4 font-mono text-[12px] uppercase tracking-[0.22em] text-offline-ink">
+        <p className="mt-4 text-[12px] font-semibold uppercase tracking-[0.18em] text-green-600">
           {punto.zona}
         </p>
-        <h1 className="mt-2 font-display text-4xl font-semibold tracking-tight text-ink">{punto.name}</h1>
+        <h1 className="mt-2 font-display text-4xl font-extrabold tracking-tight text-ink">{punto.name}</h1>
         <p className="mt-3 max-w-xl text-ink-soft">
           Elige un curso para ver sus lecciones y descargarlas a tu teléfono.
         </p>
 
         <ul className="mt-10 space-y-4">
-          {publishedCourses.map((course) => (
-            <li key={course.id}>
+          {publishedCourses.map((course, index) => (
+            <li
+              key={course.id}
+              className="animate-sprout-in"
+              style={{ animationDelay: `${index * 80}ms` }}
+            >
               <Link
                 href={`/puntos/${punto.id}/${course.id}`}
-                className="block rounded-xl border border-paper-line bg-paper-deep/40 p-5 transition-colors hover:border-offline"
+                className="glass btn-glow block rounded-[var(--radius-lg)] p-5"
               >
                 <div className="flex items-center justify-between gap-3">
-                  <p className="font-display text-lg font-semibold text-ink">{course.title}</p>
-                  <span className="whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.08em] text-ink-faint">
+                  <p className="font-display text-lg font-bold text-ink">{course.title}</p>
+                  <span className="whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.06em] text-ink-faint">
                     {course.lessonCount} lecciones
                   </span>
                 </div>
