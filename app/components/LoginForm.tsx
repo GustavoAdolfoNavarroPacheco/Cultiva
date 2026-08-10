@@ -18,7 +18,7 @@ export function LoginForm() {
       className="glass-strong w-full max-w-sm rounded-[var(--radius-lg)] p-8"
     >
       <h1 className="font-display text-2xl font-bold text-ink">Inicia sesión</h1>
-      <p className="mt-1 text-[14px] text-ink-soft">Entra a Cultiva para continuar.</p>
+      <p className="mt-1 text-[14px] text-ink-soft">Entra a Agro.ai para continuar.</p>
 
       <div className="mt-7 space-y-4">
         <div>

@@ -10,9 +10,9 @@ import {
 import { hashPassword } from "../lib/auth/password";
 
 async function seedAdmin() {
-  const email = (process.env.ADMIN_EMAIL ?? "admin@cultiva.demo").toLowerCase();
+  const email = (process.env.ADMIN_EMAIL ?? "admin@agro.ai").toLowerCase();
   const password = process.env.ADMIN_PASSWORD ?? "changeme";
-  const name = process.env.ADMIN_NAME ?? "Administrador Cultiva";
+  const name = process.env.ADMIN_NAME ?? "Administrador Agro.ai";
 
   const [existing] = await db.select().from(users).where(eq(users.email, email)).limit(1);
   if (existing) {
@@ -81,7 +81,7 @@ async function seedCourse() {
       order: 1,
       kind: "welcome",
       messageText:
-        "¡Hola! Soy el asistente de Cultiva. Vamos a empezar el curso \"Buenas Prácticas en Agroindustria\". Son 3 lecciones cortas.",
+        "¡Hola! Soy el asistente de Agro.ai. Vamos a empezar el curso \"Buenas Prácticas en Agroindustria\". Son 3 lecciones cortas.",
     },
     {
       courseId: course.id,
@@ -138,7 +138,7 @@ async function seedCourse() {
       order: 7,
       kind: "closing",
       messageText:
-        "¡Felicidades, completaste el curso! Un asesor de Cultiva puede contactarte si tienes preguntas.",
+        "¡Felicidades, completaste el curso! Un asesor de Agro.ai puede contactarte si tienes preguntas.",
     },
   ]);
 

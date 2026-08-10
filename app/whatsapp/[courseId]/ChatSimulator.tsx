@@ -26,7 +26,7 @@ type Session = {
 };
 
 function storageKey(courseId: number) {
-  return `cultiva_chat_token_${courseId}`;
+  return `agro_ai_chat_token_${courseId}`;
 }
 
 function LessonBubbleExtra({ lesson }: { lesson?: Lesson }) {
@@ -141,10 +141,10 @@ export function ChatSimulator({
     <div className="glass-strong animate-sprout-in overflow-hidden rounded-[var(--radius-lg)]">
       <div className="flex items-center gap-3 border-b border-white/50 bg-gradient-to-r from-green-600 to-green-500 px-5 py-4">
         <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white font-display text-sm font-bold text-green-700">
-          C
+          A
         </div>
         <div>
-          <p className="text-[14px] font-semibold text-white">Agente Cultiva</p>
+          <p className="text-[14px] font-semibold text-white">Agente Agro.ai</p>
           <p className="text-[10px] font-medium uppercase tracking-[0.1em] text-white/75">
             {session.completed ? "curso completado" : "en línea"}
           </p>

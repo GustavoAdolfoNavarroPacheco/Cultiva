@@ -13,7 +13,7 @@ export function BrandPanel() {
       className="flex flex-col justify-center px-2 py-10 lg:px-4"
     >
       <span className="font-display text-3xl font-extrabold tracking-tight text-green-900 sm:text-4xl">
-        Cultiva
+        Agro.ai
       </span>
       <p className="mt-3 max-w-sm text-[15px] leading-relaxed text-ink-soft">
         Capacitación agropecuaria que llega al campo — con o sin señal.

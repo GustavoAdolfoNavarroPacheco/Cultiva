@@ -91,7 +91,7 @@ export default async function AdminDashboardPage() {
   return (
     <div>
       <h1 className="font-display text-3xl font-extrabold text-ink">Panel</h1>
-      <p className="mt-1 text-ink-soft">Resumen de actividad en los tres pilares de Cultiva.</p>
+      <p className="mt-1 text-ink-soft">Resumen de actividad en los tres pilares de Agro.ai.</p>
 
       <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
         <StatCard label="Cursos" value={stats.courses} delay={0} />

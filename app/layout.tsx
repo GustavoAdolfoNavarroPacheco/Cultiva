@@ -15,9 +15,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Cultiva",
+  title: "Agro.ai",
   description:
-    "Cultiva — panel administrativo, puntos digitales y agente de WhatsApp para capacitación agropecuaria.",
+    "Agro.ai — panel administrativo, puntos digitales y agente de WhatsApp para capacitación agropecuaria.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

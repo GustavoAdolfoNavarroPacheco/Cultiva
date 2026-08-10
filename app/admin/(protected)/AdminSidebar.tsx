@@ -32,7 +32,7 @@ export function AdminSidebar({
       className="glass-strong m-4 flex flex-col rounded-[var(--radius-lg)] p-5 md:sticky md:top-4 md:h-[calc(100vh-2rem)] md:w-64 md:shrink-0"
     >
       <Link href="/admin" className="font-display text-xl font-extrabold text-green-900">
-        Cultiva
+        Agro.ai
       </Link>
       <p className="mt-1 text-[11px] font-medium uppercase tracking-[0.14em] text-ink-faint">
         Panel administrativo
