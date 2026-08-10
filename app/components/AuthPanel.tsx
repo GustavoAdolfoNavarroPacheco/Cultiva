@@ -32,6 +32,8 @@ export function AuthPanel() {
   const heading = headings[mode];
   const HeadingIcon = heading.icon;
 
+  const isAdminSelected = mode === "admin";
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 24, scale: 0.97 }}
@@ -39,25 +41,40 @@ export function AuthPanel() {
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className="w-full max-w-md rounded-3xl bg-white p-8 sm:p-10 shadow-xl border border-slate-200"
     >
-      {/* Access type switcher */}
-      <div className="flex items-center rounded-2xl bg-slate-100 p-1">
+      {/* Access type switcher with smooth sliding layoutId animation */}
+      <div className="relative flex items-center rounded-2xl bg-slate-100 p-1">
         <button
           type="button"
           onClick={() => setMode("admin")}
-          className={`flex-1 rounded-xl py-2.5 text-sm font-bold transition-all ${
-            mode === "admin" ? "bg-white text-emerald-800 shadow-sm" : "text-slate-500 hover:text-slate-700"
+          className={`relative z-10 flex-1 rounded-xl py-2.5 text-sm font-bold transition-colors cursor-pointer select-none ${
+            isAdminSelected ? "text-emerald-950 font-black" : "text-slate-500 hover:text-slate-800"
           }`}
         >
-          Administrador
+          {isAdminSelected && (
+            <motion.span
+              layoutId="active-role-indicator"
+              transition={{ type: "spring", stiffness: 450, damping: 32 }}
+              className="absolute inset-0 rounded-xl bg-white shadow-md border border-slate-200/80"
+            />
+          )}
+          <span className="relative z-10">Administrador</span>
         </button>
+
         <button
           type="button"
           onClick={() => setMode((current) => (current === "admin" ? "student-login" : current))}
-          className={`flex-1 rounded-xl py-2.5 text-sm font-bold transition-all ${
-            mode !== "admin" ? "bg-white text-emerald-800 shadow-sm" : "text-slate-500 hover:text-slate-700"
+          className={`relative z-10 flex-1 rounded-xl py-2.5 text-sm font-bold transition-colors cursor-pointer select-none ${
+            !isAdminSelected ? "text-emerald-950 font-black" : "text-slate-500 hover:text-slate-800"
           }`}
         >
-          Estudiante
+          {!isAdminSelected && (
+            <motion.span
+              layoutId="active-role-indicator"
+              transition={{ type: "spring", stiffness: 450, damping: 32 }}
+              className="absolute inset-0 rounded-xl bg-white shadow-md border border-slate-200/80"
+            />
+          )}
+          <span className="relative z-10">Estudiante</span>
         </button>
       </div>
 
@@ -83,7 +100,7 @@ export function AuthPanel() {
           <button
             type="button"
             onClick={() => setMode("student-register")}
-            className="font-bold text-emerald-700 hover:text-emerald-800 hover:underline"
+            className="font-bold text-emerald-700 hover:text-emerald-800 hover:underline cursor-pointer"
           >
             Regístrate
           </button>
@@ -96,7 +113,7 @@ export function AuthPanel() {
           <button
             type="button"
             onClick={() => setMode("student-login")}
-            className="font-bold text-emerald-700 hover:text-emerald-800 hover:underline"
+            className="font-bold text-emerald-700 hover:text-emerald-800 hover:underline cursor-pointer"
           >
             Inicia sesión
           </button>
