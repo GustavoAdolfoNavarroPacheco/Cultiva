@@ -53,6 +53,11 @@ export async function advanceChatSession(token: string) {
   return updated;
 }
 
+export async function resetChatSession(courseId: number, token: string) {
+  await db.delete(chatSessions).where(eq(chatSessions.token, token));
+  return startOrResumeChatSession(courseId, null);
+}
+
 export async function submitAnswer(token: string, stepId: number, optionIndex: number) {
   const [session] = await db.select().from(chatSessions).where(eq(chatSessions.token, token)).limit(1);
   if (!session) throw new Error("Sesión no encontrada");
