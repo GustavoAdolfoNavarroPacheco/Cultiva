@@ -1,95 +1,139 @@
 import fs from "node:fs";
 import path from "node:path";
+import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
 
-function createValidPdfContent(title: string, lessonsText: string[]): Buffer {
-  const contentStream = `
-BT
-/F1 22 Tf
-50 750 Td
-(${title}) Tj
-/F1 12 Tf
-0 -30 Td
-(Plataforma Educativa - Material Oficial de Capacitacion) Tj
-0 -40 Td
-(--------------------------------------------------------------------------------) Tj
-0 -30 Td
-/F1 14 Tf
-(CONTENIDO PEDAGOGICO DEL CURSO) Tj
-/F1 11 Tf
-0 -25 Td
-${lessonsText.map(line => `(${line.replace(/\(/g, '\\(').replace(/\)/g, '\\)')}) Tj\n0 -18 Td`).join('\n')}
-0 -30 Td
-(--------------------------------------------------------------------------------) Tj
-0 -25 Td
-/F1 10 Tf
-(Este documento contiene la informacion necesaria para responder las preguntas) Tj
-0 -15 Td
-(evaluativas del Agente de WhatsApp y completar la leccion en Puntos Digitales.) Tj
-ET
-`;
+async function generatePdfBuffer(title: string): Promise<Buffer> {
+  const pdfDoc = await PDFDocument.create();
+  const fontHelveticaBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+  const fontHelvetica = await pdfDoc.embedFont(StandardFonts.Helvetica);
 
-  const streamLength = Buffer.byteLength(contentStream, 'utf8');
+  const page = pdfDoc.addPage([612, 792]); // Letter dimensions
+  const { width, height } = page.getSize();
 
-  const pdfTemplate = `%PDF-1.4
-1 0 obj
-<<
-  /Type /Catalog
-  /Pages 2 0 R
->>
-endobj
+  // Header Bar (Emerald Corporate)
+  page.drawRectangle({
+    x: 0,
+    y: height - 110,
+    width,
+    height: 110,
+    color: rgb(0.015, 0.3, 0.22), // #047857
+  });
 
-2 0 obj
-<<
-  /Type /Pages
-  /Kids [3 0 R]
-  /Count 1
->>
-endobj
+  // Header Title
+  page.drawText("PLATAFORMA EDUCATIVA", {
+    x: 40,
+    y: height - 48,
+    size: 20,
+    font: fontHelveticaBold,
+    color: rgb(1, 1, 1),
+  });
 
-3 0 obj
-<<
-  /Type /Page
-  /Parent 2 0 R
-  /Resources <<
-    /Font <<
-      /F1 <<
-        /Type /Font
-        /Subtype /Type1
-        /BaseFont /Helvetica
-      >>
-    >>
-  >>
-  /MediaBox [0 0 612 792]
-  /Contents 4 0 R
->>
-endobj
+  page.drawText("Material Oficial de Capacitacion Agropecuaria", {
+    x: 40,
+    y: height - 72,
+    size: 12,
+    font: fontHelvetica,
+    color: rgb(0.7, 0.95, 0.8),
+  });
 
-4 0 obj
-<<
-  /Length ${streamLength}
->>
-stream
-${contentStream}
-endstream
-endobj
+  let y = height - 150;
 
-xref
-0 5
-0000000000 65535 f 
-0000000009 00000 n 
-0000000058 00000 n 
-0000000115 00000 n 
-0000000281 00000 n 
-trailer
-<<
-  /Size 5
-  /Root 1 0 R
->>
-startxref
-${350 + streamLength}
-%%EOF`;
+  // Document Title
+  page.drawText(title, {
+    x: 40,
+    y,
+    size: 16,
+    font: fontHelveticaBold,
+    color: rgb(0.06, 0.09, 0.16),
+  });
 
-  return Buffer.from(pdfTemplate, 'utf8');
+  y -= 35;
+
+  const sections = [
+    {
+      num: "Leccion 1",
+      title: "Preparacion y Analisis del Terreno",
+      desc: "El primer paso indispensable antes de sembrar es preparar y analizar el terreno. Se deben realizar estudios del suelo para medir nutrientes, nivel de acidez (pH) y drenaje, garantizando las condiciones optimas para el cultivo.",
+      keyAnswer: "Pregunta evaluativa: ?Cual es el primer paso antes de sembrar?\nRespuesta correcta: Preparar y analizar el terreno.",
+    },
+    {
+      num: "Leccion 2",
+      title: "Manejo Integrado y Control de Plagas",
+      desc: "Para un control de plagas efectivo y sostenible, se recomienda la deteccion temprana mediante revisiones frecuentes y la aplicacion de metodos naturales u organicos antes de utilizar agroquimicos.",
+      keyAnswer: "Pregunta evaluativa: ?Que se recomienda para el control temprano de plagas?\nRespuesta correcta: Identificarlas a tiempo y usar control natural.",
+    },
+    {
+      num: "Leccion 3",
+      title: "Cosecha, Almacenamiento y Calidad",
+      desc: "Al momento de cosechar, se debe manipular el producto con higiene. El almacenamiento debe realizarse en bodegas secas, limpias y bien ventiladas para prevenir humedad y proliferacion de hongos.",
+      keyAnswer: "Resumen clave: Conservacion en empaques limpios y ambiente seco.",
+    },
+  ];
+
+  for (const sec of sections) {
+    page.drawText(`${sec.num}: ${sec.title}`, {
+      x: 40,
+      y,
+      size: 13,
+      font: fontHelveticaBold,
+      color: rgb(0.015, 0.47, 0.34),
+    });
+
+    y -= 18;
+
+    page.drawText(sec.desc, {
+      x: 40,
+      y,
+      size: 10,
+      font: fontHelvetica,
+      color: rgb(0.2, 0.25, 0.3),
+      maxWidth: 532,
+      lineHeight: 14,
+    });
+
+    y -= 48;
+
+    // Highlight key answer box
+    page.drawRectangle({
+      x: 40,
+      y: y - 8,
+      width: 532,
+      height: 36,
+      color: rgb(0.93, 0.98, 0.94),
+      borderColor: rgb(0.7, 0.9, 0.75),
+      borderWidth: 1,
+    });
+
+    page.drawText(sec.keyAnswer, {
+      x: 52,
+      y: y + 14,
+      size: 9,
+      font: fontHelveticaBold,
+      color: rgb(0.02, 0.35, 0.25),
+      lineHeight: 12,
+    });
+
+    y -= 55;
+  }
+
+  // Footer line & text
+  page.drawLine({
+    start: { x: 40, y: 50 },
+    end: { x: 572, y: 50 },
+    thickness: 1,
+    color: rgb(0.85, 0.85, 0.85),
+  });
+
+  page.drawText("Plataforma Educativa - Material valido para Puntos Digitales y Agente de WhatsApp", {
+    x: 40,
+    y: 34,
+    size: 9,
+    font: fontHelvetica,
+    color: rgb(0.5, 0.5, 0.5),
+  });
+
+  const pdfBytes = await pdfDoc.save();
+  return Buffer.from(pdfBytes);
 }
 
 async function main() {
@@ -98,24 +142,14 @@ async function main() {
     fs.mkdirSync(guiasDir, { recursive: true });
   }
 
-  const pdf1 = createValidPdfContent("Buenas Practicas en Agroindustria", [
-    "Leccion 1: Preparacion y analisis del terreno antes de sembrar.",
-    "Respuesta clave: El primer paso obligatorio antes de sembrar es PREPARAR Y ANALIZAR EL TERRENO.",
-    " ",
-    "Leccion 2: Manejo integrado y control temprano de plagas.",
-    "Respuesta clave: Para el control temprano de plagas se recomienda IDENTIFICARLAS A TIEMPO",
-    "y aplicar metodos de control natural en lugar de quimicos agresivos.",
-    " ",
-    "Leccion 3: Cosecha, almacenamiento y conservacion de calidad.",
-    "Respuesta clave: Conservar los productos en lugares secos y ventilados para evitar la humedad."
-  ]);
+  const pdfBuffer = await generatePdfBuffer("Guia de Buenas Practicas en Agroindustria");
 
-  fs.writeFileSync(path.join(guiasDir, "guia-buenas-practicas-agroindustria.pdf"), pdf1);
-  fs.writeFileSync(path.join(guiasDir, "leccion-1-preparacion-terreno.pdf"), pdf1);
-  fs.writeFileSync(path.join(guiasDir, "leccion-2-manejo-plagas.pdf"), pdf1);
-  fs.writeFileSync(path.join(guiasDir, "leccion-3-cosecha-almacenamiento.pdf"), pdf1);
+  fs.writeFileSync(path.join(guiasDir, "guia-buenas-practicas-agroindustria.pdf"), pdfBuffer);
+  fs.writeFileSync(path.join(guiasDir, "leccion-1-preparacion-terreno.pdf"), pdfBuffer);
+  fs.writeFileSync(path.join(guiasDir, "leccion-2-manejo-plagas.pdf"), pdfBuffer);
+  fs.writeFileSync(path.join(guiasDir, "leccion-3-cosecha-almacenamiento.pdf"), pdfBuffer);
 
-  console.log("Archivos PDF generados con éxito en public/guias/");
+  console.log("PDFs 100% estándar creados exitosamente en public/guias/");
 }
 
 main().catch(console.error);

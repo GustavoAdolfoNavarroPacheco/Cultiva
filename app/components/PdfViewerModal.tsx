@@ -94,13 +94,31 @@ export function PdfViewerModal({
               </div>
             </div>
 
-            {/* Embedded PDF Viewer Iframe */}
+            {/* Embedded PDF Viewer with HTML5 Object + Iframe Fallback */}
             <div className="flex-1 bg-slate-100 relative overflow-hidden">
-              <iframe
-                src={pdfUrl}
+              <object
+                data={`${pdfUrl}#toolbar=1`}
+                type="application/pdf"
                 className="w-full h-full border-0"
-                title={title}
-              />
+              >
+                <iframe
+                  src={`${pdfUrl}#toolbar=1`}
+                  className="w-full h-full border-0"
+                  title={title}
+                >
+                  <div className="flex flex-col items-center justify-center h-full p-8 text-center bg-slate-50">
+                    <PdfIcon className="w-16 h-16 text-emerald-700 mb-4" />
+                    <p className="text-xl font-bold text-slate-900 mb-2">{title}</p>
+                    <p className="text-slate-600 font-medium mb-6 max-w-md">
+                      Tu navegador no soporta la vista previa directa. Puedes descargar el archivo PDF con el botón a continuación.
+                    </p>
+                    <a href={pdfUrl} download className="btn-farmer-primary text-base">
+                      <DownloadIcon className="w-5 h-5" />
+                      <span>Descargar Guía PDF</span>
+                    </a>
+                  </div>
+                </iframe>
+              </object>
             </div>
           </motion.div>
         </div>
