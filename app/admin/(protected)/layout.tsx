@@ -13,7 +13,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   return (
     <div className="min-h-screen bg-slate-50/50">
       {/* Persistent Left Sidebar */}
-      <AdminSidebar user={user} />
+      <AdminSidebar />
 
       {/* Main Content Area beside fixed sidebar */}
       <div className="md:pl-64 min-h-screen flex flex-col">

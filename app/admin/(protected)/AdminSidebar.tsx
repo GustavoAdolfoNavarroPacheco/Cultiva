@@ -2,15 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "motion/react";
-import { logoutAction } from "@/lib/auth/actions";
 import {
   SproutIcon,
   DashboardIcon,
   BookIcon,
   SignalIcon,
   UsersIcon,
-  LogoutIcon,
   ChatIcon,
   ArrowRightIcon,
 } from "@/app/components/icons";
@@ -27,11 +24,7 @@ const demoLinks = [
   { href: "/whatsapp", label: "Simular WhatsApp", icon: ChatIcon },
 ];
 
-export function AdminSidebar({
-  user,
-}: {
-  user: { name: string; email?: string; role: string };
-}) {
+export function AdminSidebar() {
   const pathname = usePathname();
 
   return (
@@ -77,7 +70,7 @@ export function AdminSidebar({
       </nav>
 
       {/* Demo Links */}
-      <div className="pt-5 border-t border-slate-800 mt-6">
+      <div className="pt-5 border-t border-slate-800 mt-auto">
         <p className="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">
           Vistas Públicas
         </p>
@@ -99,29 +92,6 @@ export function AdminSidebar({
             );
           })}
         </div>
-      </div>
-
-      {/* User Footer */}
-      <div className="pt-5 border-t border-slate-800 mt-6">
-        <div className="flex items-center gap-3 px-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-800 font-bold text-white text-sm shrink-0">
-            {user.name.charAt(0)}
-          </div>
-          <div className="overflow-hidden">
-            <p className="text-xs font-bold text-white truncate">{user.name}</p>
-            <p className="text-[11px] text-slate-400 truncate">{user.email}</p>
-          </div>
-        </div>
-
-        <form action={logoutAction} className="mt-3">
-          <button
-            type="submit"
-            className="w-full flex items-center justify-center gap-2 rounded-xl border border-slate-700 bg-slate-800/80 px-3 py-2 text-xs font-bold text-slate-300 transition-colors hover:bg-rose-900/40 hover:border-rose-700 hover:text-rose-200"
-          >
-            <LogoutIcon className="w-4 h-4" />
-            <span>Cerrar Sesión</span>
-          </button>
-        </form>
       </div>
     </aside>
   );
