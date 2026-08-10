@@ -5,6 +5,7 @@ import { db } from "@/lib/db";
 import { courses, lessons, puntosDigitales } from "@/lib/db/schema";
 import { PublicHeader } from "@/app/components/PublicHeader";
 import { ArrowLeftIcon, MapPinIcon, TagIcon, BookIcon, ArrowRightIcon } from "@/app/components/icons";
+import { getCurrentUser } from "@/lib/auth/current-user";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +14,10 @@ export default async function PuntoDetailPage({ params }: { params: Promise<{ id
   const puntoId = Number(id);
   if (Number.isNaN(puntoId)) notFound();
 
-  const [punto] = await db.select().from(puntosDigitales).where(eq(puntosDigitales.id, puntoId)).limit(1);
+  const [punto, user] = await Promise.all([
+    db.select().from(puntosDigitales).where(eq(puntosDigitales.id, puntoId)).limit(1).then((r) => r[0]),
+    getCurrentUser(),
+  ]);
   if (!punto) notFound();
 
   const publishedCourses = await db
@@ -31,7 +35,7 @@ export default async function PuntoDetailPage({ params }: { params: Promise<{ id
 
   return (
     <div className="flex min-h-screen flex-col bg-slate-50/50">
-      <PublicHeader />
+      <PublicHeader role={user?.role} />
 
       <main className="flex-1 px-4 py-8 sm:px-6 sm:py-12">
         <div className="mx-auto max-w-5xl space-y-8">

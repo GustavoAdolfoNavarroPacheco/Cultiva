@@ -5,8 +5,9 @@ import { usePathname } from "next/navigation";
 import { SproutIcon, SignalIcon, ChatIcon, LockIcon, LogoutIcon } from "./icons";
 import { logoutAction } from "@/lib/auth/actions";
 
-export function PublicHeader() {
+export function PublicHeader({ role }: { role?: string }) {
   const pathname = usePathname();
+  const isStaff = role === "admin" || role === "editor";
 
   const isPuntos = pathname.startsWith("/puntos");
   const isWhatsapp = pathname.startsWith("/whatsapp");
@@ -57,14 +58,16 @@ export function PublicHeader() {
             <span>Agente WhatsApp</span>
           </Link>
 
-          <Link
-            href="/admin"
-            className="flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-colors ml-1 min-h-[44px]"
-            title="Panel de Administración"
-          >
-            <LockIcon className="w-3.5 h-3.5" />
-            <span className="hidden md:inline">Admin</span>
-          </Link>
+          {isStaff && (
+            <Link
+              href="/admin"
+              className="flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-colors ml-1 min-h-[44px]"
+              title="Panel de Administración"
+            >
+              <LockIcon className="w-3.5 h-3.5" />
+              <span className="hidden md:inline">Admin</span>
+            </Link>
+          )}
 
           <form action={logoutAction}>
             <button

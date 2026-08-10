@@ -5,6 +5,7 @@ import { db } from "@/lib/db";
 import { courses, lessons, puntosDigitales } from "@/lib/db/schema";
 import { logDownloadAction } from "@/lib/actions/downloads";
 import { PublicHeader } from "@/app/components/PublicHeader";
+import { getCurrentUser } from "@/lib/auth/current-user";
 import {
   ArrowLeftIcon,
   MapPinIcon,
@@ -64,15 +65,14 @@ export default async function PuntoCoursePage({
   const [course] = await db.select().from(courses).where(eq(courses.id, courseId)).limit(1);
   if (!punto || !course) notFound();
 
-  const courseLessons = await db
-    .select()
-    .from(lessons)
-    .where(eq(lessons.courseId, courseId))
-    .orderBy(asc(lessons.order));
+  const [courseLessons, user] = await Promise.all([
+    db.select().from(lessons).where(eq(lessons.courseId, courseId)).orderBy(asc(lessons.order)),
+    getCurrentUser(),
+  ]);
 
   return (
     <div className="flex min-h-screen flex-col bg-slate-50/50">
-      <PublicHeader />
+      <PublicHeader role={user?.role} />
 
       <main className="flex-1 px-4 py-8 sm:px-6 sm:py-12">
         <div className="mx-auto max-w-5xl space-y-8">
