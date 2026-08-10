@@ -15,15 +15,20 @@ export function LoginForm() {
       initial={{ opacity: 0, y: 24, scale: 0.97 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className="glass-strong w-full max-w-sm rounded-[var(--radius-lg)] p-8"
+      className="glass-strong w-full max-w-md rounded-3xl p-8 sm:p-10 shadow-2xl border-2 border-white/80"
     >
-      <h1 className="font-display text-2xl font-bold text-ink">Inicia sesión</h1>
-      <p className="mt-1 text-[14px] text-ink-soft">Entra a Agro.ai para continuar.</p>
-
-      <div className="mt-7 space-y-4">
+      <div className="flex items-center gap-3">
+        <span className="text-3xl">🔒</span>
         <div>
-          <label htmlFor="email" className="text-[12px] font-medium uppercase tracking-[0.08em] text-ink-soft">
-            Correo
+          <h1 className="font-display text-2xl font-black text-emerald-950 sm:text-3xl">Acceso Administrativo</h1>
+          <p className="mt-1 text-base font-medium text-emerald-800/80">Entra a Agro.ai para gestionar contenidos.</p>
+        </div>
+      </div>
+
+      <div className="mt-8 space-y-5">
+        <div>
+          <label htmlFor="email" className="block text-sm font-bold text-emerald-950 mb-2">
+            Correo Electrónico
           </label>
           <input
             id="email"
@@ -32,15 +37,15 @@ export function LoginForm() {
             required
             autoComplete="email"
             autoFocus
-            className="mt-2 w-full rounded-[var(--radius-sm)] border border-white/70 bg-white/60 px-4 py-3 text-ink placeholder:text-ink-faint outline-none transition-all focus:border-green-500 focus:bg-white/90 focus:ring-4 focus:ring-green-500/15"
-            placeholder="tucorreo@ejemplo.com"
+            className="w-full min-h-[52px] rounded-2xl border-2 border-emerald-950/20 bg-white px-4 text-lg font-medium text-emerald-950 placeholder:text-emerald-900/40 outline-none transition-all focus:border-green-600 focus:ring-4 focus:ring-green-500/20 shadow-inner"
+            placeholder="admin@agro.ai"
           />
         </div>
 
         <div>
           <label
             htmlFor="password"
-            className="text-[12px] font-medium uppercase tracking-[0.08em] text-ink-soft"
+            className="block text-sm font-bold text-emerald-950 mb-2"
           >
             Contraseña
           </label>
@@ -50,32 +55,31 @@ export function LoginForm() {
             type="password"
             required
             autoComplete="current-password"
-            className="mt-2 w-full rounded-[var(--radius-sm)] border border-white/70 bg-white/60 px-4 py-3 text-ink placeholder:text-ink-faint outline-none transition-all focus:border-green-500 focus:bg-white/90 focus:ring-4 focus:ring-green-500/15"
+            className="w-full min-h-[52px] rounded-2xl border-2 border-emerald-950/20 bg-white px-4 text-lg font-medium text-emerald-950 placeholder:text-emerald-900/40 outline-none transition-all focus:border-green-600 focus:ring-4 focus:ring-green-500/20 shadow-inner"
             placeholder="••••••••"
           />
         </div>
       </div>
 
       {state.error && (
-        <motion.p
+        <motion.div
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: "auto" }}
           role="alert"
-          className="mt-4 overflow-hidden rounded-[var(--radius-sm)] bg-red-50 px-3.5 py-2.5 text-[13px] text-red-700"
+          className="mt-5 overflow-hidden rounded-2xl bg-rose-50 border border-rose-200 p-4 text-sm font-bold text-rose-800 flex items-center gap-2"
         >
-          {state.error}
-        </motion.p>
+          <span>⚠️</span>
+          <span>{state.error}</span>
+        </motion.div>
       )}
 
-      <motion.button
+      <button
         type="submit"
         disabled={pending}
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.97 }}
-        className="btn-glow mt-7 w-full rounded-full bg-gradient-to-r from-green-500 to-green-600 px-6 py-3.5 text-[14px] font-semibold text-white shadow-lg shadow-green-600/25 disabled:opacity-60"
+        className="btn-farmer-primary mt-8 w-full text-lg shadow-lg"
       >
-        {pending ? "Entrando…" : "Entrar"}
-      </motion.button>
+        <span>{pending ? "Verificando datos…" : "Iniciar Sesión ➔"}</span>
+      </button>
     </motion.form>
   );
 }

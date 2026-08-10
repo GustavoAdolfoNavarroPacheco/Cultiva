@@ -65,14 +65,17 @@ async function getRecentChats() {
     .limit(8);
 }
 
-function StatCard({ label, value, delay }: { label: string; value: number; delay: number }) {
+function StatCard({ label, value, icon, delay }: { label: string; value: number; icon: string; delay: number }) {
   return (
     <div
-      className="glass animate-sprout-in rounded-[var(--radius-md)] px-5 py-4 transition-transform hover:-translate-y-1"
+      className="card-farmer animate-sprout-in p-6 flex items-center justify-between"
       style={{ animationDelay: `${delay}ms` }}
     >
-      <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-ink-faint">{label}</p>
-      <p className="mt-1 font-display text-3xl font-extrabold text-green-700">{value}</p>
+      <div>
+        <p className="text-xs font-bold uppercase tracking-wider text-emerald-800/70">{label}</p>
+        <p className="mt-1 font-display text-4xl font-black text-emerald-950">{value}</p>
+      </div>
+      <span className="text-3xl p-3 bg-emerald-100/80 rounded-2xl">{icon}</span>
     </div>
   );
 }
@@ -89,36 +92,49 @@ export default async function AdminDashboardPage() {
   ]);
 
   return (
-    <div>
-      <h1 className="font-display text-3xl font-extrabold text-ink">Panel</h1>
-      <p className="mt-1 text-ink-soft">Resumen de actividad en los tres pilares de Agro.ai.</p>
-
-      <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-        <StatCard label="Cursos" value={stats.courses} delay={0} />
-        <StatCard label="Lecciones" value={stats.lessons} delay={60} />
-        <StatCard label="Puntos digitales" value={stats.puntos} delay={120} />
-        <StatCard label="Descargas" value={stats.downloads} delay={180} />
-        <StatCard label="Chats WhatsApp" value={stats.chats} delay={240} />
-        <StatCard label="Chats completados" value={stats.chatsCompleted} delay={300} />
+    <div className="space-y-8">
+      <div>
+        <h1 className="font-display text-3xl sm:text-4xl font-black text-emerald-950">
+          Panel General de Control
+        </h1>
+        <p className="mt-1 text-base text-emerald-800/80 font-medium">
+          Resumen en tiempo real de los tres pilares de capacitación de Agro.ai.
+        </p>
       </div>
 
-      <div className="mt-8 grid gap-6 lg:grid-cols-2">
-        <div className="glass animate-sprout-in rounded-[var(--radius-lg)] p-6" style={{ animationDelay: "160ms" }}>
-          <h2 className="font-display text-lg font-bold text-ink">Descargas recientes</h2>
-          <p className="mt-1 text-[13px] text-ink-faint">Actividad en Puntos Digitales</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <StatCard label="Cursos Creados" value={stats.courses} icon="📚" delay={0} />
+        <StatCard label="Lecciones Totales" value={stats.lessons} icon="📖" delay={60} />
+        <StatCard label="Puntos Digitales" value={stats.puntos} icon="📡" delay={120} />
+        <StatCard label="Descargas Registradas" value={stats.downloads} icon="📥" delay={180} />
+        <StatCard label="Sesiones WhatsApp" value={stats.chats} icon="💬" delay={240} />
+        <StatCard label="Cursos Completados" value={stats.chatsCompleted} icon="✅" delay={300} />
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-2">
+        <div className="card-farmer p-6 sm:p-8">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-2xl">📥</span>
+            <h2 className="font-display text-xl font-bold text-emerald-950">Descargas Recientes</h2>
+          </div>
+          <p className="text-sm text-emerald-800/70 font-medium">Actividad en Puntos Digitales offline</p>
 
           {recentDownloads.length === 0 ? (
-            <p className="mt-4 text-[14px] text-ink-faint">Todavía no hay descargas registradas.</p>
+            <p className="mt-6 text-base font-medium text-emerald-900/60">Todavía no hay descargas registradas.</p>
           ) : (
-            <ul className="mt-4 space-y-3">
+            <ul className="mt-5 space-y-3.5">
               {recentDownloads.map((row) => (
-                <li key={row.id} className="border-t border-white/60 pt-3 text-[13px]">
-                  <p className="text-ink">
-                    <span className="font-medium">{row.puntoName ?? "Punto eliminado"}</span> descargó{" "}
-                    <span className="uppercase text-ink-faint">{row.fileType}</span> de{" "}
-                    {row.lessonTitle ?? "lección eliminada"}
+                <li key={row.id} className="border-t border-emerald-900/10 pt-3.5 text-sm font-medium">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-bold text-emerald-950">{row.puntoName ?? "Punto no disponible"}</span>
+                    <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider text-emerald-900">
+                      {row.fileType}
+                    </span>
+                  </div>
+                  <p className="text-emerald-800/90 mt-0.5">
+                    Descargó: <span className="font-semibold">{row.lessonTitle ?? "Lección"}</span>
                   </p>
-                  <p className="mt-0.5 text-[11px] text-ink-faint">
+                  <p className="text-xs text-emerald-700/60 mt-0.5">
                     {row.courseTitle} · {formatDate(row.createdAt)}
                   </p>
                 </li>
@@ -127,23 +143,32 @@ export default async function AdminDashboardPage() {
           )}
         </div>
 
-        <div className="glass animate-sprout-in rounded-[var(--radius-lg)] p-6" style={{ animationDelay: "220ms" }}>
-          <h2 className="font-display text-lg font-bold text-ink">Sesiones de WhatsApp</h2>
-          <p className="mt-1 text-[13px] text-ink-faint">Progreso del agente guiado</p>
+        <div className="card-farmer p-6 sm:p-8">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-2xl">💬</span>
+            <h2 className="font-display text-xl font-bold text-emerald-950">Sesiones de WhatsApp</h2>
+          </div>
+          <p className="text-sm text-emerald-800/70 font-medium">Progreso del asistente interactivo</p>
 
           {recentChats.length === 0 ? (
-            <p className="mt-4 text-[14px] text-ink-faint">Todavía no hay sesiones de chat.</p>
+            <p className="mt-6 text-base font-medium text-emerald-900/60">Todavía no hay sesiones de chat.</p>
           ) : (
-            <ul className="mt-4 space-y-3">
+            <ul className="mt-5 space-y-3.5">
               {recentChats.map((row) => (
-                <li key={row.id} className="border-t border-white/60 pt-3 text-[13px]">
-                  <p className="text-ink">
-                    {row.courseTitle} —{" "}
-                    <span className={row.completed ? "font-medium text-green-700" : "text-ink-faint"}>
-                      {row.completed ? "completado" : `paso ${row.currentStepOrder}`}
+                <li key={row.id} className="border-t border-emerald-900/10 pt-3.5 text-sm font-medium">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-bold text-emerald-950">{row.courseTitle}</span>
+                    <span
+                      className={`rounded-full px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider ${
+                        row.completed
+                          ? "bg-green-100 text-green-900 border border-green-300"
+                          : "bg-amber-100 text-amber-900 border border-amber-300"
+                      }`}
+                    >
+                      {row.completed ? "Completado ✓" : `Paso ${row.currentStepOrder}`}
                     </span>
-                  </p>
-                  <p className="mt-0.5 text-[11px] text-ink-faint">{formatDate(row.updatedAt)}</p>
+                  </div>
+                  <p className="text-xs text-emerald-700/60 mt-1">Última interacción: {formatDate(row.updatedAt)}</p>
                 </li>
               ))}
             </ul>

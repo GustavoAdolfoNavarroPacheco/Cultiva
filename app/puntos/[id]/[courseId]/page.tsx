@@ -4,6 +4,7 @@ import { asc, eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { courses, lessons, puntosDigitales } from "@/lib/db/schema";
 import { logDownloadAction } from "@/lib/actions/downloads";
+import { PublicHeader } from "@/app/components/PublicHeader";
 
 export const dynamic = "force-dynamic";
 
@@ -20,8 +21,10 @@ function DownloadButton({
   fileType: "video" | "pdf";
   url: string;
 }) {
+  const isVideo = fileType === "video";
+
   return (
-    <form action={logDownloadAction}>
+    <form action={logDownloadAction} className="w-full sm:w-auto">
       <input type="hidden" name="puntoId" value={puntoId} />
       <input type="hidden" name="courseId" value={courseId} />
       <input type="hidden" name="lessonId" value={lessonId} />
@@ -29,13 +32,9 @@ function DownloadButton({
       <input type="hidden" name="url" value={url} />
       <button
         type="submit"
-        className={`btn-glow rounded-full px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.06em] ${
-          fileType === "video"
-            ? "bg-gradient-to-r from-green-500 to-green-600 text-white shadow-md shadow-green-600/25"
-            : "glass text-green-700"
-        }`}
+        className={isVideo ? "btn-farmer-primary w-full text-base" : "btn-farmer-secondary w-full text-base"}
       >
-        Descargar {fileType === "video" ? "video" : "PDF"}
+        <span>{isVideo ? "🎬 DESCARGAR VIDEO" : "📄 DESCARGAR GUÍA (PDF)"}</span>
       </button>
     </form>
   );
@@ -62,61 +61,109 @@ export default async function PuntoCoursePage({
     .orderBy(asc(lessons.order));
 
   return (
-    <div className="min-h-screen px-6 py-16">
-      <div className="mx-auto max-w-2xl">
-        <Link
-          href={`/puntos/${puntoId}`}
-          className="text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-faint hover:text-green-700"
-        >
-          ← {punto.name}
-        </Link>
+    <div className="flex min-h-screen flex-col bg-emerald-50/40">
+      <PublicHeader />
 
-        <h1 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink">
-          {course.title}
-        </h1>
-        {course.description && <p className="mt-3 text-ink-soft">{course.description}</p>}
+      <main className="flex-1 px-4 py-8 sm:px-6 sm:py-12">
+        <div className="mx-auto max-w-4xl">
+          {/* Back button */}
+          <Link
+            href={`/puntos/${puntoId}`}
+            className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-base font-bold text-emerald-900 border border-emerald-200 hover:bg-emerald-100 transition-colors shadow-sm mb-6 min-h-[48px]"
+          >
+            <span>⬅</span>
+            <span>Volver a {punto.name}</span>
+          </Link>
 
-        <ul className="mt-10 space-y-4">
-          {courseLessons.map((lesson, index) => (
-            <li
-              key={lesson.id}
-              className="glass animate-sprout-in rounded-[var(--radius-lg)] p-5"
-              style={{ animationDelay: `${index * 80}ms` }}
-            >
-              <p className="text-[11px] font-medium text-ink-faint">Lección {lesson.order}</p>
-              <p className="mt-1 font-display text-lg font-bold text-ink">{lesson.title}</p>
-              {lesson.summary && <p className="mt-1 text-[14px] text-ink-soft">{lesson.summary}</p>}
+          {/* Course Banner Header */}
+          <div className="rounded-3xl bg-gradient-to-r from-green-900 to-green-700 p-6 sm:p-10 text-white shadow-xl shadow-green-900/20 mb-8">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="rounded-full bg-white/20 px-3 py-1 text-xs font-bold uppercase tracking-wider text-green-100 backdrop-blur-md">
+                📍 {punto.name}
+              </span>
+              <span className="rounded-full bg-amber-400 text-green-950 px-3 py-1 text-xs font-black uppercase tracking-wider">
+                {courseLessons.length} Lecciones
+              </span>
+            </div>
+            <h1 className="font-display text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl leading-tight">
+              {course.title}
+            </h1>
+            {course.description && (
+              <p className="mt-3 text-lg text-emerald-100 font-medium leading-relaxed max-w-2xl">
+                {course.description}
+              </p>
+            )}
+          </div>
 
-              <div className="mt-4 flex flex-wrap gap-3">
-                {lesson.videoUrl && (
-                  <DownloadButton
-                    puntoId={puntoId}
-                    courseId={courseId}
-                    lessonId={lesson.id}
-                    fileType="video"
-                    url={lesson.videoUrl}
-                  />
+          {/* Lessons List */}
+          <div className="space-y-6">
+            <h2 className="text-2xl font-black text-emerald-950 flex items-center gap-2">
+              <span>📚</span> Lecciones para Descarga
+            </h2>
+
+            {courseLessons.map((lesson, index) => (
+              <div
+                key={lesson.id}
+                className="card-farmer animate-sprout-in p-6 sm:p-8"
+                style={{ animationDelay: `${index * 80}ms` }}
+              >
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-green-700 font-display text-base font-black text-white shadow-md">
+                    {lesson.order}
+                  </span>
+                  <span className="text-sm font-bold uppercase tracking-wider text-green-800">
+                    Lección {lesson.order}
+                  </span>
+                </div>
+
+                <h3 className="font-display text-2xl font-bold text-emerald-950 sm:text-3xl mt-1">
+                  {lesson.title}
+                </h3>
+
+                {lesson.summary && (
+                  <p className="mt-2 text-base text-emerald-900/80 font-medium leading-relaxed">
+                    {lesson.summary}
+                  </p>
                 )}
-                {lesson.pdfUrl && (
-                  <DownloadButton
-                    puntoId={puntoId}
-                    courseId={courseId}
-                    lessonId={lesson.id}
-                    fileType="pdf"
-                    url={lesson.pdfUrl}
-                  />
-                )}
-                {!lesson.videoUrl && !lesson.pdfUrl && (
-                  <p className="text-[13px] text-ink-faint">Sin archivos disponibles todavía.</p>
-                )}
+
+                {/* Download Actions Container */}
+                <div className="mt-6 pt-4 border-t border-emerald-900/10 flex flex-wrap gap-3">
+                  {lesson.videoUrl && (
+                    <DownloadButton
+                      puntoId={puntoId}
+                      courseId={courseId}
+                      lessonId={lesson.id}
+                      fileType="video"
+                      url={lesson.videoUrl}
+                    />
+                  )}
+                  {lesson.pdfUrl && (
+                    <DownloadButton
+                      puntoId={puntoId}
+                      courseId={courseId}
+                      lessonId={lesson.id}
+                      fileType="pdf"
+                      url={lesson.pdfUrl}
+                    />
+                  )}
+                  {!lesson.videoUrl && !lesson.pdfUrl && (
+                    <p className="text-base text-emerald-900/60 font-medium italic">
+                      Archivos de esta lección aún no están subidos.
+                    </p>
+                  )}
+                </div>
               </div>
-            </li>
-          ))}
-          {courseLessons.length === 0 && (
-            <p className="text-ink-faint">Este curso todavía no tiene lecciones.</p>
-          )}
-        </ul>
-      </div>
+            ))}
+
+            {courseLessons.length === 0 && (
+              <div className="text-center py-12 bg-white rounded-3xl border border-emerald-900/10 p-8">
+                <span className="text-4xl">📄</span>
+                <p className="mt-3 text-lg font-bold text-emerald-950">Este curso todavía no tiene lecciones.</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </main>
     </div>
   );
 }

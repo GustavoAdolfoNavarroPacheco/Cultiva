@@ -2,6 +2,7 @@ import Link from "next/link";
 import { and, eq, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { courses, whatsappSteps } from "@/lib/db/schema";
+import { PublicHeader } from "@/app/components/PublicHeader";
 
 export const metadata = { title: "Agente de WhatsApp — Agro.ai" };
 export const dynamic = "force-dynamic";
@@ -23,52 +24,84 @@ export default async function WhatsappCoursesPage() {
   const coursesWithSteps = publishedCourses.filter((course) => course.stepCount > 0);
 
   return (
-    <div className="min-h-screen px-6 py-16">
-      <div className="mx-auto max-w-2xl">
-        <Link
-          href="/admin"
-          className="text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-faint hover:text-green-700"
-        >
-          ← Panel
-        </Link>
+    <div className="flex min-h-screen flex-col bg-emerald-50/40">
+      <PublicHeader />
 
-        <p className="mt-4 text-[12px] font-semibold uppercase tracking-[0.18em] text-green-600">
-          Agente de WhatsApp
-        </p>
-        <h1 className="mt-2 font-display text-4xl font-extrabold tracking-tight text-ink">
-          Elige un curso para empezar
-        </h1>
-        <p className="mt-3 text-ink-soft">
-          Esta es una simulación del flujo guiado por chat — preguntas y respuestas fijas, como en la
-          fase demo del agente.
-        </p>
+      <main className="flex-1 px-4 py-8 sm:px-6 sm:py-12">
+        <div className="mx-auto max-w-4xl">
+          {/* Hero Banner */}
+          <div className="rounded-3xl bg-gradient-to-r from-emerald-800 via-green-700 to-emerald-900 p-6 sm:p-10 text-white shadow-xl shadow-emerald-900/20 relative overflow-hidden">
+            <div className="absolute right-0 top-0 -mt-6 -mr-6 text-8xl opacity-10 pointer-events-none select-none">
+              💬
+            </div>
+            <div className="relative z-10">
+              <span className="inline-flex items-center gap-2 rounded-full bg-white/20 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-green-100 backdrop-blur-md border border-white/20">
+                <span>🟢</span> Asistente Virtual Interactivo
+              </span>
+              <h1 className="mt-4 font-display text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl leading-tight">
+                Aprende desde tu WhatsApp
+              </h1>
+              <p className="mt-3 max-w-2xl text-lg text-emerald-100 font-medium leading-relaxed">
+                Selecciona un curso a continuación para simular una conversación interactiva con nuestro asistente de inteligencia agropecuaria.
+              </p>
+            </div>
+          </div>
 
-        <ul className="mt-10 space-y-4">
-          {coursesWithSteps.map((course, index) => (
-            <li key={course.id} className="animate-sprout-in" style={{ animationDelay: `${index * 80}ms` }}>
-              <Link
-                href={`/whatsapp/${course.id}`}
-                className="glass btn-glow block rounded-[var(--radius-lg)] p-5"
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <p className="font-display text-lg font-bold text-ink">{course.title}</p>
-                  <span className="whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.06em] text-ink-faint">
-                    {course.stepCount} pasos
-                  </span>
+          {/* Courses List */}
+          <div className="mt-10">
+            <h2 className="text-2xl font-black text-emerald-950 flex items-center gap-2 mb-6">
+              <span>📚</span> Cursos Disponibles para WhatsApp ({coursesWithSteps.length})
+            </h2>
+
+            <div className="space-y-5">
+              {coursesWithSteps.map((course, index) => (
+                <div
+                  key={course.id}
+                  className="card-farmer animate-sprout-in p-6 sm:p-8"
+                  style={{ animationDelay: `${index * 80}ms` }}
+                >
+                  <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+                    <span className="rounded-full bg-emerald-100 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-emerald-900 border border-emerald-200">
+                      🏷️ {course.category ?? "Agroindustria"}
+                    </span>
+                    <span className="rounded-full bg-green-100 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-green-900 border border-green-300">
+                      💬 {course.stepCount} Pasos de Chat
+                    </span>
+                  </div>
+
+                  <h3 className="font-display text-2xl font-bold text-emerald-950 sm:text-3xl leading-snug">
+                    {course.title}
+                  </h3>
+
+                  {course.description && (
+                    <p className="mt-2 text-base text-emerald-900/80 font-medium leading-relaxed">
+                      {course.description}
+                    </p>
+                  )}
+
+                  <div className="mt-6 pt-4 border-t border-emerald-900/10 flex justify-end">
+                    <Link
+                      href={`/whatsapp/${course.id}`}
+                      className="btn-farmer-primary text-base min-h-[52px]"
+                    >
+                      <span>Iniciar Clase por WhatsApp 💬</span>
+                    </Link>
+                  </div>
                 </div>
-                {course.description && (
-                  <p className="mt-1 text-[13px] text-ink-soft">{course.description}</p>
-                )}
-              </Link>
-            </li>
-          ))}
-          {coursesWithSteps.length === 0 && (
-            <p className="text-ink-faint">
-              Todavía no hay cursos con un flujo de WhatsApp configurado.
-            </p>
-          )}
-        </ul>
-      </div>
+              ))}
+
+              {coursesWithSteps.length === 0 && (
+                <div className="text-center py-12 bg-white rounded-3xl border border-emerald-900/10 p-8">
+                  <span className="text-4xl">📭</span>
+                  <p className="mt-3 text-lg font-bold text-emerald-950">
+                    Todavía no hay cursos con un flujo de WhatsApp configurado.
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
   );
 }

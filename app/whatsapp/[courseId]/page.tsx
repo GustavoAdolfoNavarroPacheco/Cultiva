@@ -4,6 +4,7 @@ import { asc, eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { courses, lessons, whatsappSteps } from "@/lib/db/schema";
 import { ChatSimulator } from "./ChatSimulator";
+import { PublicHeader } from "@/app/components/PublicHeader";
 
 export const dynamic = "force-dynamic";
 
@@ -33,25 +34,36 @@ export default async function WhatsappCoursePage({
   const lessonsById = Object.fromEntries(courseLessons.map((lesson) => [lesson.id, lesson]));
 
   return (
-    <div className="min-h-screen px-6 py-16">
-      <div className="mx-auto max-w-xl">
-        <Link
-          href="/whatsapp"
-          className="text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-faint hover:text-green-700"
-        >
-          ← Otros cursos
-        </Link>
-        <h1 className="mt-3 font-display text-3xl font-extrabold tracking-tight text-ink">
-          {course.title}
-        </h1>
-        <p className="mt-2 text-[14px] text-ink-soft">
-          Simulación del agente de WhatsApp — fase demo con preguntas y respuestas fijas.
-        </p>
+    <div className="flex min-h-screen flex-col bg-emerald-50/40">
+      <PublicHeader />
 
-        <div className="mt-8">
-          <ChatSimulator courseId={courseId} steps={steps} lessonsById={lessonsById} />
+      <main className="flex-1 px-4 py-8 sm:px-6 sm:py-12">
+        <div className="mx-auto max-w-2xl">
+          {/* Back button */}
+          <Link
+            href="/whatsapp"
+            className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-base font-bold text-emerald-900 border border-emerald-200 hover:bg-emerald-100 transition-colors shadow-sm mb-6 min-h-[48px]"
+          >
+            <span>⬅</span>
+            <span>Volver a Cursos de WhatsApp</span>
+          </Link>
+
+          {/* Header */}
+          <div className="mb-6">
+            <h1 className="font-display text-3xl font-black text-emerald-950 sm:text-4xl">
+              {course.title}
+            </h1>
+            <p className="mt-2 text-base text-emerald-900/80 font-medium">
+              Simulador interactivo del Agente Agro.ai. Responde las preguntas para completar el curso.
+            </p>
+          </div>
+
+          {/* Simulator Component */}
+          <div>
+            <ChatSimulator courseId={courseId} steps={steps} lessonsById={lessonsById} />
+          </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
