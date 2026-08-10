@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { AdminSidebar } from "./AdminSidebar";
+import { AdminTopBar } from "./AdminTopBar";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const user = await getCurrentUser();
@@ -16,7 +17,10 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
       {/* Main Content Area beside fixed sidebar */}
       <div className="md:pl-64 min-h-screen flex flex-col">
-        <main className="flex-1 px-4 py-8 sm:px-8 sm:py-10 max-w-7xl w-full mx-auto">
+        {/* Top Header Bar with Profile & Logout at top right */}
+        <AdminTopBar user={user} />
+
+        <main className="flex-1 px-4 py-6 sm:px-8 sm:py-8 max-w-7xl w-full mx-auto">
           {children}
         </main>
       </div>

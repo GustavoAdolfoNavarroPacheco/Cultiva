@@ -5,6 +5,7 @@ import { deleteUser } from "@/lib/actions/users";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { ConfirmDeleteForm } from "@/app/components/admin/ConfirmDeleteForm";
 import { UserCreateForm } from "./UserCreateForm";
+import { UsersIcon } from "@/app/components/icons";
 
 export default async function UsersPage() {
   const [userList, currentUser] = await Promise.all([
@@ -13,56 +14,71 @@ export default async function UsersPage() {
   ]);
 
   return (
-    <div>
-      <h1 className="font-display text-3xl font-extrabold text-ink">Usuarios</h1>
-      <p className="mt-1 text-ink-soft">Cuentas con acceso al panel administrativo.</p>
+    <div className="space-y-8">
+      {/* Header matched strictly to Panel Principal font hierarchy */}
+      <div>
+        <h1 className="font-display text-3xl sm:text-4xl font-black text-slate-900">
+          Usuarios Administrativos
+        </h1>
+        <p className="mt-1 text-base text-slate-600 font-medium">
+          Cuentas autorizadas con acceso a la gestión de contenidos de Agro.ai.
+        </p>
+      </div>
 
-      <div className="mt-8 animate-sprout-in">
+      {/* Creation Form */}
+      <div className="animate-sprout-in">
         <UserCreateForm />
       </div>
 
-      <div
-        className="glass animate-sprout-in mt-8 overflow-x-auto rounded-[var(--radius-lg)]"
-        style={{ animationDelay: "120ms" }}
-      >
-        <table className="w-full min-w-[480px] text-left text-[14px]">
-          <thead>
-            <tr className="border-b border-white/60 text-ink-faint">
-              <th className="px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.08em]">Nombre</th>
-              <th className="px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.08em]">Correo</th>
-              <th className="px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.08em]">Rol</th>
-              <th className="px-5 py-3" />
-            </tr>
-          </thead>
-          <tbody>
-            {userList.map((user) => (
-              <tr key={user.id} className="border-b border-white/50 transition-colors last:border-0 hover:bg-white/40">
-                <td className="px-5 py-3 font-medium text-ink">{user.name}</td>
-                <td className="px-5 py-3 text-ink-soft">{user.email}</td>
-                <td className="px-5 py-3">
-                  <span className="rounded-full bg-green-100 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.06em] text-green-700">
-                    {user.role}
-                  </span>
-                </td>
-                <td className="px-5 py-3 text-right">
-                  {currentUser && Number(currentUser.sub) !== user.id && (
-                    <ConfirmDeleteForm
-                      action={deleteUser.bind(null, user.id)}
-                      confirmText={`¿Eliminar a ${user.name}?`}
-                    >
-                      <button
-                        type="submit"
-                        className="text-[11px] font-semibold uppercase tracking-[0.06em] text-ink-faint hover:text-red-600"
-                      >
-                        Eliminar
-                      </button>
-                    </ConfirmDeleteForm>
-                  )}
-                </td>
+      {/* Table of Users with clear row dividers */}
+      <div className="card-farmer animate-sprout-in overflow-hidden" style={{ animationDelay: "120ms" }}>
+        <div className="p-6 border-b border-slate-200 bg-slate-50/60 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <UsersIcon className="w-5 h-5 text-emerald-700" />
+            <h2 className="font-display text-xl font-bold text-slate-900">Usuarios Registrados ({userList.length})</h2>
+          </div>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[560px] text-left border-collapse">
+            <thead>
+              <tr className="border-b border-slate-200 bg-slate-100/50 text-slate-500">
+                <th className="px-6 py-3.5 text-xs font-bold uppercase tracking-wider">Nombre</th>
+                <th className="px-6 py-3.5 text-xs font-bold uppercase tracking-wider">Correo Electrónico</th>
+                <th className="px-6 py-3.5 text-xs font-bold uppercase tracking-wider">Rol</th>
+                <th className="px-6 py-3.5 text-right text-xs font-bold uppercase tracking-wider">Acciones</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-slate-200">
+              {userList.map((user) => (
+                <tr key={user.id} className="transition-colors hover:bg-slate-50/80">
+                  <td className="px-6 py-4.5 font-bold text-slate-900 text-base">{user.name}</td>
+                  <td className="px-6 py-4.5 text-slate-600 font-medium">{user.email}</td>
+                  <td className="px-6 py-4.5">
+                    <span className="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold uppercase tracking-wider text-emerald-900 border border-emerald-300">
+                      {user.role}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4.5 text-right">
+                    {currentUser && Number(currentUser.sub) !== user.id && (
+                      <ConfirmDeleteForm
+                        action={deleteUser.bind(null, user.id)}
+                        confirmText={`¿Eliminar la cuenta de ${user.name}?`}
+                      >
+                        <button
+                          type="submit"
+                          className="text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-rose-600 cursor-pointer transition-colors"
+                        >
+                          Eliminar
+                        </button>
+                      </ConfirmDeleteForm>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

@@ -50,6 +50,23 @@ body {
   line-height: 1.6;
 }
 
+/* Strict Cursor Pointer Enforcement for all interactive elements */
+button,
+a,
+input[type="submit"],
+input[type="button"],
+input[type="reset"],
+input[type="checkbox"],
+input[type="radio"],
+select,
+summary,
+[role="button"],
+[role="link"],
+[role="menuitem"],
+[role="tab"] {
+  cursor: pointer !important;
+}
+
 ::selection {
   background: #d1fae5;
   color: #064e3b;
@@ -82,17 +99,17 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.6rem;
-  min-height: 50px;
-  padding: 0.8rem 1.6rem;
-  font-size: 0.975rem;
+  min-height: 48px;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
   font-weight: 700;
   letter-spacing: 0.01em;
   color: #ffffff;
   background: #047857;
-  border-radius: 0.875rem;
+  border-radius: 0.75rem;
   box-shadow: 0 4px 14px rgba(4, 120, 87, 0.25);
   transition: all 0.18s ease;
-  cursor: pointer;
+  cursor: pointer !important;
 }
 
 .btn-farmer-primary:hover {
@@ -110,17 +127,17 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.6rem;
-  min-height: 50px;
-  padding: 0.8rem 1.6rem;
-  font-size: 0.975rem;
+  min-height: 48px;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: #0f172a;
   background: #ffffff;
   border: 1.5px solid #cbd5e1;
-  border-radius: 0.875rem;
+  border-radius: 0.75rem;
   box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
   transition: all 0.18s ease;
-  cursor: pointer;
+  cursor: pointer !important;
 }
 
 .btn-farmer-secondary:hover {

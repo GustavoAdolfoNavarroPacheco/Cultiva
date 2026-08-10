@@ -8,6 +8,7 @@ import { CourseEditForm } from "../CourseForms";
 import { LessonsManager } from "./LessonsManager";
 import { WhatsappStepsManager } from "./WhatsappStepsManager";
 import { ConfirmDeleteForm } from "@/app/components/admin/ConfirmDeleteForm";
+import { ArrowLeftIcon } from "@/app/components/icons";
 
 export default async function CourseDetailPage({
   params,
@@ -31,34 +32,38 @@ export default async function CourseDetailPage({
   ]);
 
   return (
-    <div>
+    <div className="space-y-6">
       <Link
         href="/admin/cursos"
-        className="text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-faint hover:text-green-700"
+        className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-bold text-slate-700 border border-slate-200 hover:bg-slate-50 transition-colors shadow-2xs cursor-pointer"
       >
-        ← Cursos
+        <ArrowLeftIcon className="w-4 h-4" />
+        <span>Volver a Cursos</span>
       </Link>
 
-      <div className="mt-3 flex flex-wrap items-start justify-between gap-4">
-        <h1 className="font-display text-3xl font-extrabold text-ink">{course.title}</h1>
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h1 className="font-display text-3xl sm:text-4xl font-black text-slate-900">{course.title}</h1>
+          <p className="mt-1 text-base text-slate-600 font-medium">Gestión de lecciones y flujo del agente de WhatsApp</p>
+        </div>
         <ConfirmDeleteForm
           action={deleteCourse.bind(null, course.id)}
           confirmText={`¿Eliminar el curso "${course.title}" y todo su contenido? Esta acción no se puede deshacer.`}
         >
           <button
             type="submit"
-            className="rounded-full border border-red-200 bg-red-50/70 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-red-600 transition-colors hover:bg-red-100"
+            className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-rose-700 transition-colors hover:bg-rose-100 cursor-pointer shadow-2xs"
           >
-            Eliminar curso
+            Eliminar Curso
           </button>
         </ConfirmDeleteForm>
       </div>
 
-      <div className="glass animate-sprout-in mt-6 rounded-[var(--radius-lg)] p-6">
+      <div className="card-farmer animate-sprout-in p-6 sm:p-8">
         <CourseEditForm course={course} />
       </div>
 
-      <div className="mt-8 grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-6 lg:grid-cols-2 pt-2">
         <LessonsManager courseId={course.id} lessons={courseLessons} />
         <WhatsappStepsManager
           courseId={course.id}

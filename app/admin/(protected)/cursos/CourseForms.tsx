@@ -2,37 +2,41 @@
 
 import { useActionState } from "react";
 import { createCourse, updateCourse, type CourseFormState } from "@/lib/actions/courses";
+import { BookIcon, ArrowRightIcon } from "@/app/components/icons";
 
 const initialState: CourseFormState = {};
 
 const fieldClass =
-  "mt-2 w-full rounded-[var(--radius-sm)] border border-white/70 bg-white/60 px-4 py-3 text-ink placeholder:text-ink-faint outline-none transition-all focus:border-green-500 focus:bg-white/90 focus:ring-4 focus:ring-green-500/15";
-const labelClass = "text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-soft";
-const errorClass = "rounded-[var(--radius-sm)] bg-red-50 px-3.5 py-2.5 text-[13px] text-red-700";
+  "mt-1.5 w-full rounded-xl border-2 border-slate-200 bg-white px-4 py-3 text-base font-medium text-slate-900 placeholder:text-slate-400 outline-none transition-all focus:border-emerald-700 focus:bg-white focus:ring-4 focus:ring-emerald-700/10 shadow-2xs";
+const labelClass = "block text-xs font-bold uppercase tracking-wider text-slate-700";
+const errorClass = "rounded-xl bg-rose-50 border border-rose-200 px-4 py-3 text-sm font-bold text-rose-800";
 const primaryBtn =
-  "btn-glow rounded-full bg-gradient-to-r from-green-500 to-green-600 px-5 py-2.5 text-[13px] font-semibold text-white shadow-lg shadow-green-600/25 disabled:opacity-60";
+  "btn-farmer-primary rounded-xl text-base font-bold cursor-pointer disabled:opacity-60 min-h-[48px] px-6";
 
 export function CourseCreateForm() {
   const [state, formAction, pending] = useActionState(createCourse, initialState);
 
   return (
-    <form action={formAction} className="glass grid gap-4 rounded-[var(--radius-lg)] p-6 sm:grid-cols-2">
-      <div className="sm:col-span-2">
-        <h2 className="font-display text-lg font-bold text-ink">Nuevo curso</h2>
+    <form action={formAction} className="card-farmer grid gap-5 p-6 sm:p-8 sm:grid-cols-2">
+      <div className="sm:col-span-2 flex items-center gap-2.5 mb-1 border-b border-slate-100 pb-4">
+        <div className="p-2 bg-emerald-50 text-emerald-800 rounded-xl">
+          <BookIcon className="w-5 h-5" />
+        </div>
+        <h2 className="font-display text-xl font-bold text-slate-900">Nuevo curso</h2>
       </div>
 
       <div>
         <label htmlFor="title" className={labelClass}>
-          Título
+          Nombre del Curso *
         </label>
-        <input id="title" name="title" required className={fieldClass} placeholder="Nombre del curso" />
+        <input id="title" name="title" required className={fieldClass} placeholder="Ej. Buenas Prácticas en Agroindustria" />
       </div>
 
       <div>
         <label htmlFor="category" className={labelClass}>
           Categoría
         </label>
-        <input id="category" name="category" className={fieldClass} placeholder="Agroindustria" />
+        <input id="category" name="category" className={fieldClass} placeholder="Ej. Agroindustria, Ganadería, Riego" />
       </div>
 
       <div className="sm:col-span-2">
@@ -42,22 +46,30 @@ export function CourseCreateForm() {
         <textarea
           id="description"
           name="description"
-          rows={2}
+          rows={3}
           className={fieldClass}
-          placeholder="De qué trata el curso"
+          placeholder="Describe brevemente de qué trata este curso..."
         />
       </div>
 
-      <label className="flex items-center gap-2 text-[13px] text-ink-soft">
-        <input type="checkbox" name="published" className="h-4 w-4 accent-green-600" />
-        Publicado
-      </label>
+      <div className="sm:col-span-2 flex items-center gap-3 pt-1">
+        <input
+          type="checkbox"
+          id="published"
+          name="published"
+          className="h-5 w-5 rounded-md border-2 border-slate-300 text-emerald-700 focus:ring-emerald-700 cursor-pointer"
+        />
+        <label htmlFor="published" className="text-sm font-bold text-slate-800 cursor-pointer">
+          Publicar curso inmediatamente
+        </label>
+      </div>
 
       {state.error && <p className={`sm:col-span-2 ${errorClass}`}>{state.error}</p>}
 
-      <div className="sm:col-span-2">
+      <div className="sm:col-span-2 pt-2">
         <button type="submit" disabled={pending} className={primaryBtn}>
-          {pending ? "Creando…" : "Crear curso"}
+          <span>{pending ? "Creando…" : "Crear Curso"}</span>
+          <ArrowRightIcon className="w-5 h-5" />
         </button>
       </div>
     </form>
@@ -79,13 +91,13 @@ export function CourseEditForm({
   const [state, formAction, pending] = useActionState(boundUpdate, initialState);
 
   return (
-    <form action={formAction} className="grid gap-4 sm:grid-cols-2">
+    <form action={formAction} className="grid gap-5 sm:grid-cols-2">
       <div>
-        <label htmlFor="title" className={labelClass}>
-          Título
+        <label htmlFor="edit-title" className={labelClass}>
+          Nombre del Curso *
         </label>
         <input
-          id="title"
+          id="edit-title"
           name="title"
           required
           defaultValue={course.title}
@@ -94,11 +106,11 @@ export function CourseEditForm({
       </div>
 
       <div>
-        <label htmlFor="category" className={labelClass}>
+        <label htmlFor="edit-category" className={labelClass}>
           Categoría
         </label>
         <input
-          id="category"
+          id="edit-category"
           name="category"
           defaultValue={course.category ?? ""}
           className={fieldClass}
@@ -106,33 +118,37 @@ export function CourseEditForm({
       </div>
 
       <div className="sm:col-span-2">
-        <label htmlFor="description" className={labelClass}>
+        <label htmlFor="edit-description" className={labelClass}>
           Descripción
         </label>
         <textarea
-          id="description"
+          id="edit-description"
           name="description"
-          rows={2}
+          rows={3}
           defaultValue={course.description ?? ""}
           className={fieldClass}
         />
       </div>
 
-      <label className="flex items-center gap-2 text-[13px] text-ink-soft">
+      <div className="sm:col-span-2 flex items-center gap-3 pt-1">
         <input
           type="checkbox"
+          id="edit-published"
           name="published"
           defaultChecked={course.published}
-          className="h-4 w-4 accent-green-600"
+          className="h-5 w-5 rounded-md border-2 border-slate-300 text-emerald-700 focus:ring-emerald-700 cursor-pointer"
         />
-        Publicado
-      </label>
+        <label htmlFor="edit-published" className="text-sm font-bold text-slate-800 cursor-pointer">
+          Publicado
+        </label>
+      </div>
 
       {state.error && <p className={`sm:col-span-2 ${errorClass}`}>{state.error}</p>}
 
-      <div className="sm:col-span-2">
+      <div className="sm:col-span-2 pt-2">
         <button type="submit" disabled={pending} className={primaryBtn}>
-          {pending ? "Guardando…" : "Guardar cambios"}
+          <span>{pending ? "Guardando…" : "Guardar Cambios"}</span>
+          <ArrowRightIcon className="w-5 h-5" />
         </button>
       </div>
     </form>

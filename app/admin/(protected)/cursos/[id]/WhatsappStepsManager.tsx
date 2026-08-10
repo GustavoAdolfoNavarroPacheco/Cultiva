@@ -7,6 +7,7 @@ import {
   updateWhatsappStep,
 } from "@/lib/actions/whatsapp-steps";
 import { ConfirmDeleteForm } from "@/app/components/admin/ConfirmDeleteForm";
+import { ChatIcon, ArrowRightIcon } from "@/app/components/icons";
 
 type Step = {
   id: number;
@@ -22,10 +23,10 @@ type Step = {
 type Lesson = { id: number; title: string };
 
 const fieldClass =
-  "mt-1.5 w-full rounded-[var(--radius-sm)] border border-white/70 bg-white/60 px-3.5 py-2.5 text-[14px] text-ink outline-none transition-all focus:border-green-500 focus:bg-white/90 focus:ring-4 focus:ring-green-500/15";
-const labelClass = "text-[10px] font-semibold uppercase tracking-[0.1em] text-ink-soft";
+  "mt-1.5 w-full rounded-xl border-2 border-slate-200 bg-white px-3.5 py-2.5 text-sm font-medium text-slate-900 placeholder:text-slate-400 outline-none transition-all focus:border-emerald-700 focus:bg-white focus:ring-4 focus:ring-emerald-700/10 shadow-2xs";
+const labelClass = "block text-xs font-bold uppercase tracking-wider text-slate-700";
 const primaryBtnSm =
-  "btn-glow rounded-full bg-gradient-to-r from-green-500 to-green-600 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.06em] text-white shadow-md shadow-green-600/20";
+  "btn-farmer-primary rounded-xl text-sm font-bold cursor-pointer disabled:opacity-60 min-h-[42px] px-5";
 
 const kindLabels: Record<string, string> = {
   welcome: "Bienvenida",
@@ -48,7 +49,7 @@ function StepFields({
   return (
     <>
       <div>
-        <label className={labelClass}>Tipo de paso</label>
+        <label className={labelClass}>Tipo de Paso *</label>
         <select
           name="kind"
           value={kind}
@@ -64,7 +65,7 @@ function StepFields({
 
       {needsLesson && (
         <div>
-          <label className={labelClass}>Lección asociada</label>
+          <label className={labelClass}>Lección Asociada</label>
           <select
             name="lessonId"
             defaultValue={defaultValues?.lessonId ?? ""}
@@ -81,14 +82,14 @@ function StepFields({
       )}
 
       <div className="sm:col-span-2">
-        <label className={labelClass}>Mensaje del agente</label>
+        <label className={labelClass}>Mensaje del Agente *</label>
         <textarea
           name="messageText"
           required
-          rows={2}
+          rows={3}
           defaultValue={defaultValues?.messageText ?? ""}
           className={fieldClass}
-          placeholder="Lo que el agente envía en el chat"
+          placeholder="Escribe el mensaje exacto que enviará el bot en WhatsApp..."
         />
       </div>
 
@@ -100,10 +101,11 @@ function StepFields({
               name="question"
               defaultValue={defaultValues?.question ?? ""}
               className={fieldClass}
+              placeholder="Ej. ¿Cuál es el primer paso antes de sembrar?"
             />
           </div>
           <div className="sm:col-span-2">
-            <label className={labelClass}>Opciones (una por línea)</label>
+            <label className={labelClass}>Opciones de Respuesta (Una por línea)</label>
             <textarea
               name="options"
               rows={3}
@@ -113,7 +115,7 @@ function StepFields({
             />
           </div>
           <div>
-            <label className={labelClass}>Índice de la opción correcta (0, 1, 2…)</label>
+            <label className={labelClass}>Índice Opción Correcta (0, 1, 2…)</label>
             <input
               name="correctOptionIndex"
               type="number"
@@ -145,17 +147,17 @@ function StepEditForm({
         await updateWhatsappStep(step.id, courseId, formData);
         onDone();
       }}
-      className="grid gap-3 sm:grid-cols-2"
+      className="grid gap-3 sm:grid-cols-2 bg-slate-50 p-4 rounded-xl border border-slate-300"
     >
       <StepFields lessons={lessons} defaultValues={step} />
-      <div className="sm:col-span-2 flex items-center gap-4">
+      <div className="sm:col-span-2 flex items-center gap-3 pt-2">
         <button type="submit" className={primaryBtnSm}>
-          Guardar
+          Guardar Paso
         </button>
         <button
           type="button"
           onClick={onDone}
-          className="text-[11px] font-semibold uppercase tracking-[0.06em] text-ink-faint hover:text-ink"
+          className="text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-slate-900 cursor-pointer"
         >
           Cancelar
         </button>
@@ -177,42 +179,41 @@ function StepRow({
   const lessonTitle = lessons.find((lesson) => lesson.id === step.lessonId)?.title;
 
   if (editing) {
-    return (
-      <li className="rounded-[var(--radius-md)] border border-white/60 bg-white/40 p-4">
-        <StepEditForm step={step} courseId={courseId} lessons={lessons} onDone={() => setEditing(false)} />
-      </li>
-    );
+    return <StepEditForm step={step} courseId={courseId} lessons={lessons} onDone={() => setEditing(false)} />;
   }
 
   return (
-    <li className="flex flex-wrap items-start justify-between gap-3 rounded-[var(--radius-md)] border border-white/60 bg-white/40 p-4 transition-colors hover:bg-white/60">
+    <li className="flex flex-wrap items-start justify-between gap-3 rounded-2xl border border-slate-200 bg-white p-5 transition-colors hover:bg-slate-50/80 shadow-2xs">
       <div>
-        <div className="flex items-center gap-2">
-          <span className="rounded-full bg-green-100 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.06em] text-green-700">
-            {step.order} · {kindLabels[step.kind] ?? step.kind}
+        <div className="flex items-center gap-2 mb-1">
+          <span className="rounded-lg bg-emerald-100 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider text-emerald-900 border border-emerald-300">
+            Paso {step.order} · {kindLabels[step.kind] ?? step.kind}
           </span>
-          {lessonTitle && <span className="text-[12px] text-ink-faint">{lessonTitle}</span>}
+          {lessonTitle && <span className="text-xs font-semibold text-slate-500">Lección: {lessonTitle}</span>}
         </div>
-        <p className="mt-1.5 text-[14px] text-ink">{step.messageText}</p>
+        <p className="mt-1.5 text-sm font-semibold text-slate-900">{step.messageText}</p>
         {step.question && (
-          <div className="mt-2 text-[13px] text-ink-soft">
-            <p className="font-medium">{step.question}</p>
-            <ul className="mt-1 list-inside list-disc">
+          <div className="mt-2.5 text-sm text-slate-700 bg-slate-50 p-3 rounded-xl border border-slate-200">
+            <p className="font-bold text-slate-900">❓ {step.question}</p>
+            <ul className="mt-1.5 space-y-1 pl-2">
               {step.options?.map((option, index) => (
-                <li key={option} className={index === step.correctOptionIndex ? "font-medium text-green-700" : ""}>
-                  {option}
-                  {index === step.correctOptionIndex ? " (correcta)" : ""}
+                <li
+                  key={option}
+                  className={`text-xs font-semibold ${index === step.correctOptionIndex ? "text-emerald-800 font-bold" : "text-slate-600"}`}
+                >
+                  • {option}
+                  {index === step.correctOptionIndex ? " (correcta ✓)" : ""}
                 </li>
               ))}
             </ul>
           </div>
         )}
       </div>
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 shrink-0">
         <button
           type="button"
           onClick={() => setEditing(true)}
-          className="text-[11px] font-semibold uppercase tracking-[0.06em] text-green-700 hover:text-green-800"
+          className="text-xs font-bold uppercase tracking-wider text-emerald-800 hover:text-emerald-950 cursor-pointer"
         >
           Editar
         </button>
@@ -222,7 +223,7 @@ function StepRow({
         >
           <button
             type="submit"
-            className="text-[11px] font-semibold uppercase tracking-[0.06em] text-ink-faint hover:text-red-600"
+            className="text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-rose-600 cursor-pointer transition-colors"
           >
             Eliminar
           </button>
@@ -242,29 +243,35 @@ export function WhatsappStepsManager({
   lessons: Lesson[];
 }) {
   return (
-    <div className="glass animate-sprout-in rounded-[var(--radius-lg)] p-6" style={{ animationDelay: "80ms" }}>
-      <h2 className="font-display text-lg font-bold text-ink">Flujo del agente de WhatsApp</h2>
-      <p className="mt-1 text-[13px] text-ink-faint">
-        Secuencia fija de mensajes y preguntas que el simulador de WhatsApp recorre en orden.
-      </p>
+    <div className="card-farmer p-6 sm:p-8">
+      <div className="flex items-center gap-2.5 mb-1 border-b border-slate-100 pb-4">
+        <div className="p-2 bg-emerald-50 text-emerald-800 rounded-xl">
+          <ChatIcon className="w-5 h-5" />
+        </div>
+        <div>
+          <h2 className="font-display text-xl font-bold text-slate-900">Flujo de WhatsApp ({steps.length})</h2>
+          <p className="text-xs font-medium text-slate-500">Secuencia de mensajes y preguntas interactivas.</p>
+        </div>
+      </div>
 
       <ul className="mt-5 space-y-3">
         {steps.map((step) => (
           <StepRow key={step.id} step={step} courseId={courseId} lessons={lessons} />
         ))}
         {steps.length === 0 && (
-          <p className="text-[14px] text-ink-faint">Todavía no hay pasos configurados.</p>
+          <p className="text-sm font-medium text-slate-400 text-center py-6">Todavía no hay pasos en este flujo.</p>
         )}
       </ul>
 
       <form
         action={createWhatsappStep.bind(null, courseId)}
-        className="mt-6 grid gap-3 border-t border-white/60 pt-5 sm:grid-cols-2"
+        className="mt-6 grid gap-4 border-t border-slate-200 pt-6 sm:grid-cols-2"
       >
         <StepFields lessons={lessons} />
-        <div className="sm:col-span-2">
+        <div className="sm:col-span-2 pt-2">
           <button type="submit" className={primaryBtnSm}>
-            Añadir paso
+            <span>Añadir Paso al Flujo</span>
+            <ArrowRightIcon className="w-4 h-4" />
           </button>
         </div>
       </form>

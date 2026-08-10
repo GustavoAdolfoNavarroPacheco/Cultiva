@@ -5,59 +5,92 @@ import { puntosDigitales } from "@/lib/db/schema";
 import { deletePunto } from "@/lib/actions/puntos";
 import { ConfirmDeleteForm } from "@/app/components/admin/ConfirmDeleteForm";
 import { PuntoCreateForm } from "./PuntoCreateForm";
+import { SignalIcon, MapPinIcon, UserIcon, ArrowRightIcon } from "@/app/components/icons";
 
 export default async function PuntosPage() {
   const puntos = await db.select().from(puntosDigitales).orderBy(desc(puntosDigitales.createdAt));
 
   return (
-    <div>
-      <h1 className="font-display text-3xl font-extrabold text-ink">Puntos Digitales</h1>
-      <p className="mt-1 text-ink-soft">
-        Lugares físicos donde los estudiantes descargan contenido a su teléfono sin necesidad de internet.
-      </p>
+    <div className="space-y-8">
+      {/* Header matched strictly to Panel Principal font hierarchy */}
+      <div>
+        <h1 className="font-display text-3xl sm:text-4xl font-black text-slate-900">
+          Puntos Digitales
+        </h1>
+        <p className="mt-1 text-base text-slate-600 font-medium">
+          Lugares físicos donde los estudiantes descargan contenido a su teléfono sin necesidad de internet.
+        </p>
+      </div>
 
-      <div className="mt-8 animate-sprout-in">
+      {/* Creation Form */}
+      <div className="animate-sprout-in">
         <PuntoCreateForm />
       </div>
 
-      <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {puntos.map((punto, index) => (
-          <li
-            key={punto.id}
-            className="glass animate-sprout-in rounded-[var(--radius-lg)] p-5"
-            style={{ animationDelay: `${100 + index * 60}ms` }}
-          >
-            <p className="font-display text-lg font-bold text-ink">{punto.name}</p>
-            <p className="mt-1 text-[13px] text-ink-soft">{punto.zona}</p>
-            {punto.responsable && (
-              <p className="mt-0.5 text-[12px] text-ink-faint">{punto.responsable}</p>
-            )}
-            <div className="mt-4 flex items-center justify-between border-t border-white/60 pt-3">
-              <Link
-                href={`/puntos/${punto.id}`}
-                target="_blank"
-                className="text-[11px] font-semibold uppercase tracking-[0.06em] text-green-700 hover:underline"
-              >
-                Ver vista pública →
-              </Link>
-              <ConfirmDeleteForm
-                action={deletePunto.bind(null, punto.id)}
-                confirmText={`¿Eliminar el punto "${punto.name}"?`}
-              >
-                <button
-                  type="submit"
-                  className="text-[11px] font-semibold uppercase tracking-[0.06em] text-ink-faint hover:text-red-600"
+      {/* Grid of Puntos */}
+      <div>
+        <div className="flex items-center gap-2.5 mb-6">
+          <SignalIcon className="w-5 h-5 text-emerald-700" />
+          <h2 className="font-display text-xl font-bold text-slate-900">Puntos Registrados ({puntos.length})</h2>
+        </div>
+
+        <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {puntos.map((punto, index) => (
+            <li
+              key={punto.id}
+              className="card-farmer animate-sprout-in flex flex-col justify-between p-6"
+              style={{ animationDelay: `${100 + index * 60}ms` }}
+            >
+              <div>
+                <span className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-50 px-3 py-1 text-xs font-bold uppercase tracking-wider text-emerald-800 border border-emerald-200 mb-3">
+                  <MapPinIcon className="w-3.5 h-3.5" /> {punto.zona}
+                </span>
+
+                <h3 className="font-display text-2xl font-bold text-slate-900 leading-snug">
+                  {punto.name}
+                </h3>
+
+                {punto.responsable && (
+                  <p className="mt-2 text-sm text-slate-600 font-medium flex items-center gap-2">
+                    <UserIcon className="w-4 h-4 text-slate-400 shrink-0" />
+                    Encargado: <span className="font-semibold text-slate-800">{punto.responsable}</span>
+                  </p>
+                )}
+              </div>
+
+              <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-2">
+                <Link
+                  href={`/puntos/${punto.id}`}
+                  target="_blank"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-800 hover:text-emerald-950 hover:underline cursor-pointer"
                 >
-                  Eliminar
-                </button>
-              </ConfirmDeleteForm>
+                  <span>Ver vista pública</span>
+                  <ArrowRightIcon className="w-3.5 h-3.5" />
+                </Link>
+
+                <ConfirmDeleteForm
+                  action={deletePunto.bind(null, punto.id)}
+                  confirmText={`¿Eliminar el punto "${punto.name}"?`}
+                >
+                  <button
+                    type="submit"
+                    className="text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-rose-600 cursor-pointer transition-colors"
+                  >
+                    Eliminar
+                  </button>
+                </ConfirmDeleteForm>
+              </div>
+            </li>
+          ))}
+
+          {puntos.length === 0 && (
+            <div className="col-span-3 text-center py-12 bg-white rounded-3xl border border-slate-200 p-8">
+              <SignalIcon className="w-10 h-10 text-slate-300 mx-auto" />
+              <p className="mt-3 text-lg font-bold text-slate-900">Todavía no hay puntos digitales registrados.</p>
             </div>
-          </li>
-        ))}
-        {puntos.length === 0 && (
-          <p className="text-[14px] text-ink-faint">Todavía no hay puntos digitales registrados.</p>
-        )}
-      </ul>
+          )}
+        </ul>
+      </div>
     </div>
   );
 }
