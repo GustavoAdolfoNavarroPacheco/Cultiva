@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { LockIcon, PhoneIcon, UserPlusIcon } from "./icons";
 import { LoginForm } from "./LoginForm";
 import { StudentLoginForm } from "./StudentLoginForm";
@@ -36,13 +36,18 @@ export function AuthPanel() {
 
   return (
     <motion.div
+      layout
       initial={{ opacity: 0, y: 24, scale: 0.97 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className="w-full max-w-md rounded-3xl bg-white p-8 sm:p-10 shadow-xl border border-slate-200"
+      transition={{
+        layout: { duration: 0.38, ease: [0.16, 1, 0.3, 1] },
+        duration: 0.5,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+      className="w-full max-w-md rounded-3xl bg-white p-8 sm:p-10 shadow-xl border border-slate-200 overflow-hidden"
     >
       {/* Access type switcher with smooth sliding layoutId animation */}
-      <div className="relative flex items-center rounded-2xl bg-slate-100 p-1">
+      <div className="relative flex items-center rounded-2xl bg-slate-100 p-1 mb-6">
         <button
           type="button"
           onClick={() => setMode("admin")}
@@ -78,47 +83,58 @@ export function AuthPanel() {
         </button>
       </div>
 
-      <div className="flex items-center gap-3.5 mt-6 mb-2">
-        <div className="p-3 bg-emerald-50 text-emerald-800 rounded-2xl shrink-0">
-          <HeadingIcon className="w-6 h-6" />
-        </div>
-        <div>
-          <h1 className="font-display text-xl font-black text-slate-900 sm:text-2xl">{heading.title}</h1>
-          <p className="mt-0.5 text-sm font-medium text-slate-500">{heading.subtitle}</p>
-        </div>
-      </div>
+      {/* Smooth height expansion/shrinkage content container with AnimatePresence */}
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={mode}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.2, ease: "easeInOut" }}
+        >
+          <div className="flex items-center gap-3.5 mb-6">
+            <div className="p-3 bg-emerald-50 text-emerald-800 rounded-2xl shrink-0">
+              <HeadingIcon className="w-6 h-6" />
+            </div>
+            <div>
+              <h1 className="font-display text-xl font-black text-slate-900 sm:text-2xl">{heading.title}</h1>
+              <p className="mt-0.5 text-sm font-medium text-slate-500">{heading.subtitle}</p>
+            </div>
+          </div>
 
-      <div>
-        {mode === "admin" && <LoginForm />}
-        {mode === "student-login" && <StudentLoginForm />}
-        {mode === "student-register" && <StudentRegisterForm />}
-      </div>
+          <div>
+            {mode === "admin" && <LoginForm />}
+            {mode === "student-login" && <StudentLoginForm />}
+            {mode === "student-register" && <StudentRegisterForm />}
+          </div>
 
-      {mode === "student-login" && (
-        <p className="mt-6 text-center text-sm font-medium text-slate-500">
-          ¿No tienes cuenta?{" "}
-          <button
-            type="button"
-            onClick={() => setMode("student-register")}
-            className="font-bold text-emerald-700 hover:text-emerald-800 hover:underline cursor-pointer"
-          >
-            Regístrate
-          </button>
-        </p>
-      )}
+          {mode === "student-login" && (
+            <p className="mt-6 text-center text-sm font-medium text-slate-500">
+              ¿No tienes cuenta?{" "}
+              <button
+                type="button"
+                onClick={() => setMode("student-register")}
+                className="font-bold text-emerald-700 hover:text-emerald-800 hover:underline cursor-pointer"
+              >
+                Regístrate
+              </button>
+            </p>
+          )}
 
-      {mode === "student-register" && (
-        <p className="mt-6 text-center text-sm font-medium text-slate-500">
-          ¿Ya tienes cuenta?{" "}
-          <button
-            type="button"
-            onClick={() => setMode("student-login")}
-            className="font-bold text-emerald-700 hover:text-emerald-800 hover:underline cursor-pointer"
-          >
-            Inicia sesión
-          </button>
-        </p>
-      )}
+          {mode === "student-register" && (
+            <p className="mt-6 text-center text-sm font-medium text-slate-500">
+              ¿Ya tienes cuenta?{" "}
+              <button
+                type="button"
+                onClick={() => setMode("student-login")}
+                className="font-bold text-emerald-700 hover:text-emerald-800 hover:underline cursor-pointer"
+              >
+                Inicia sesión
+              </button>
+            </p>
+          )}
+        </motion.div>
+      </AnimatePresence>
     </motion.div>
   );
 }
