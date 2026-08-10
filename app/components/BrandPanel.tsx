@@ -18,8 +18,8 @@ export function BrandPanel() {
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       className="flex flex-col justify-center px-2 lg:px-4"
     >
-      <div className="flex items-center gap-3.5">
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-emerald-800 text-white shadow-md">
+      <Link href="/info" className="flex items-center gap-3.5 group cursor-pointer w-fit" title="Ver información del proyecto Agro.ai">
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-emerald-800 text-white shadow-md transition-transform group-hover:scale-105">
           <SproutIcon className="w-7 h-7 text-white" />
         </div>
         <div className="flex flex-col">
@@ -30,7 +30,7 @@ export function BrandPanel() {
             Plataforma de Capacitación Agropecuaria
           </p>
         </div>
-      </div>
+      </Link>
 
       <h2 className="mt-6 text-xl font-bold leading-tight text-slate-900 sm:text-2xl">
         Conocimiento para el campo, accesible para todos.
@@ -49,7 +49,7 @@ export function BrandPanel() {
             </>
           );
           const className =
-            "flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-sm font-bold text-slate-700 shadow-xs";
+            "flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-sm font-bold text-slate-700 shadow-2xs";
 
           return (
             <motion.div
@@ -59,7 +59,7 @@ export function BrandPanel() {
               transition={{ delay: 0.2 + index * 0.08, duration: 0.4 }}
             >
               {pillar.href ? (
-                <Link href={pillar.href} className={`${className} transition-colors hover:border-emerald-700 hover:text-emerald-800 hover:bg-emerald-50`}>
+                <Link href={pillar.href} className={`${className} transition-colors hover:border-emerald-700 hover:text-emerald-800 hover:bg-emerald-50 cursor-pointer`}>
                   {content}
                 </Link>
               ) : (

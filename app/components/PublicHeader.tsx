@@ -16,8 +16,8 @@ export function PublicHeader({ role }: { role?: string }) {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-emerald-900/10 bg-white/90 backdrop-blur-xl shadow-2xs">
       <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 py-3 sm:px-6 sm:py-3.5">
-        {/* Brand logo & tagline */}
-        <Link href="/puntos" className="flex items-center gap-3 group">
+        {/* Brand logo & tagline - Redirects to /info */}
+        <Link href="/info" className="flex items-center gap-3 group cursor-pointer" title="Ver información del proyecto Agro.ai">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-800 text-white shadow-sm transition-transform group-hover:scale-105">
             <SproutIcon className="w-5 h-5 text-white" />
           </div>
