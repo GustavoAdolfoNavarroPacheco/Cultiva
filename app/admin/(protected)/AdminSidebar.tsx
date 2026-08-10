@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion } from "motion/react";
 import {
   SproutIcon,
   DashboardIcon,
@@ -44,7 +45,7 @@ export function AdminSidebar() {
         </div>
       </div>
 
-      {/* Primary Navigation */}
+      {/* Primary Navigation with smooth sliding layoutId animation */}
       <nav className="space-y-1.5 flex-1">
         <p className="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">
           Navegación
@@ -56,14 +57,19 @@ export function AdminSidebar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`relative flex items-center gap-3 rounded-xl px-3.5 py-3 text-sm font-bold transition-all min-h-[46px] ${
-                active
-                  ? "bg-emerald-700 text-white shadow-sm"
-                  : "text-slate-300 hover:bg-slate-800 hover:text-white"
+              className={`relative flex items-center gap-3 rounded-xl px-3.5 py-3 text-sm font-bold transition-colors min-h-[46px] select-none cursor-pointer ${
+                active ? "text-white font-extrabold" : "text-slate-300 hover:bg-slate-800/60 hover:text-white"
               }`}
             >
-              <IconComponent className="w-5 h-5 shrink-0" />
-              <span>{link.label}</span>
+              {active && (
+                <motion.span
+                  layoutId="active-sidebar-nav-indicator"
+                  transition={{ type: "spring", stiffness: 450, damping: 32 }}
+                  className="absolute inset-0 rounded-xl bg-emerald-700 shadow-md border border-emerald-600/50"
+                />
+              )}
+              <IconComponent className="relative z-10 w-5 h-5 shrink-0" />
+              <span className="relative z-10">{link.label}</span>
             </Link>
           );
         })}
@@ -81,7 +87,7 @@ export function AdminSidebar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="flex items-center justify-between gap-2 rounded-xl bg-slate-800/60 border border-slate-700/50 px-3.5 py-2.5 text-xs font-bold text-slate-300 transition-all hover:bg-slate-800 hover:text-white"
+                className="flex items-center justify-between gap-2 rounded-xl bg-slate-800/60 border border-slate-700/50 px-3.5 py-2.5 text-xs font-bold text-slate-300 transition-all hover:bg-slate-800 hover:text-white cursor-pointer"
               >
                 <div className="flex items-center gap-2.5">
                   <IconComponent className="w-4 h-4 text-emerald-400" />
