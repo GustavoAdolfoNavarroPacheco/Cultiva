@@ -5,6 +5,13 @@ import { logDownloadAction } from "@/lib/actions/downloads";
 import { PdfViewerModal } from "@/app/components/PdfViewerModal";
 import { VideoIcon, PdfIcon, DownloadIcon, EyeIcon } from "@/app/components/icons";
 
+function resolvePdfUrl(url: string | null): string {
+  if (!url || url.includes("cultiva.demo") || url.includes("example.com")) {
+    return "/guias/guia-buenas-practicas-agroindustria.pdf";
+  }
+  return url;
+}
+
 export function LessonMediaActions({
   puntoId,
   courseId,
@@ -21,6 +28,7 @@ export function LessonMediaActions({
   pdfUrl: string | null;
 }) {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const activePdfUrl = resolvePdfUrl(pdfUrl);
 
   return (
     <div className="flex flex-wrap items-center gap-3 w-full">
@@ -47,12 +55,16 @@ export function LessonMediaActions({
           <input type="hidden" name="courseId" value={courseId} />
           <input type="hidden" name="lessonId" value={lessonId} />
           <input type="hidden" name="fileType" value="pdf" />
-          <input type="hidden" name="url" value={pdfUrl} />
-          <button type="submit" className="btn-farmer-secondary w-full text-base cursor-pointer">
+          <input type="hidden" name="url" value={activePdfUrl} />
+          <a
+            href={activePdfUrl}
+            download
+            className="btn-farmer-secondary w-full sm:w-auto text-base cursor-pointer inline-flex items-center gap-2"
+          >
             <PdfIcon className="w-5 h-5 text-emerald-700" />
             <span>Descargar Guía (PDF)</span>
             <DownloadIcon className="w-4 h-4 opacity-70" />
-          </button>
+          </a>
         </form>
       )}
 
@@ -73,7 +85,7 @@ export function LessonMediaActions({
         <PdfViewerModal
           isOpen={isPreviewOpen}
           onClose={() => setIsPreviewOpen(false)}
-          pdfUrl={pdfUrl}
+          pdfUrl={activePdfUrl}
           title={`Guía PDF: ${lessonTitle}`}
         />
       )}

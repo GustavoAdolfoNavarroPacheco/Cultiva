@@ -41,9 +41,18 @@ function storageKey(courseId: number) {
   return `plataforma_educativa_chat_token_${courseId}`;
 }
 
+function resolvePdfUrl(url: string | null): string {
+  if (!url || url.includes("cultiva.demo") || url.includes("example.com")) {
+    return "/guias/guia-buenas-practicas-agroindustria.pdf";
+  }
+  return url;
+}
+
 function LessonBubbleExtra({ lesson }: { lesson?: Lesson }) {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   if (!lesson) return null;
+
+  const activePdfUrl = resolvePdfUrl(lesson.pdfUrl);
 
   return (
     <div className="mt-3 flex flex-wrap gap-2.5 pt-2.5 border-t border-slate-200">
@@ -62,7 +71,7 @@ function LessonBubbleExtra({ lesson }: { lesson?: Lesson }) {
       {/* PDF Direct Download */}
       {lesson.pdfUrl && (
         <a
-          href={lesson.pdfUrl}
+          href={activePdfUrl}
           download
           className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-slate-50 px-4 py-2 text-xs font-bold text-slate-800 hover:bg-slate-100 transition-colors min-h-[40px] cursor-pointer"
         >
@@ -89,7 +98,7 @@ function LessonBubbleExtra({ lesson }: { lesson?: Lesson }) {
         <PdfViewerModal
           isOpen={isPreviewOpen}
           onClose={() => setIsPreviewOpen(false)}
-          pdfUrl={lesson.pdfUrl}
+          pdfUrl={activePdfUrl}
           title={`Guía PDF: ${lesson.title}`}
         />
       )}
