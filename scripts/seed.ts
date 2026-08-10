@@ -54,7 +54,7 @@ async function seedCourse() {
         title: "Preparación del terreno",
         summary: "Cómo preparar el suelo antes de la siembra.",
         videoUrl: "https://example.com/videos/leccion-1.mp4",
-        pdfUrl: "https://example.com/guias/leccion-1.pdf",
+        pdfUrl: "/guias/guia-buenas-practicas-agroindustria.pdf",
       },
       {
         courseId: course.id,
@@ -62,7 +62,7 @@ async function seedCourse() {
         title: "Manejo de plagas",
         summary: "Identificación temprana y control natural de plagas.",
         videoUrl: "https://example.com/videos/leccion-2.mp4",
-        pdfUrl: "https://example.com/guias/leccion-2.pdf",
+        pdfUrl: "/guias/guia-buenas-practicas-agroindustria.pdf",
       },
       {
         courseId: course.id,
@@ -70,7 +70,7 @@ async function seedCourse() {
         title: "Cosecha y almacenamiento",
         summary: "Buenas prácticas para conservar la calidad del producto.",
         videoUrl: "https://example.com/videos/leccion-3.mp4",
-        pdfUrl: "https://example.com/guias/leccion-3.pdf",
+        pdfUrl: "/guias/guia-buenas-practicas-agroindustria.pdf",
       },
     ])
     .returning();

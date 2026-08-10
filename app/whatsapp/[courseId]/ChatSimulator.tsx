@@ -4,10 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { advanceChatSession, startOrResumeChatSession, submitAnswer } from "@/lib/actions/chat";
 import type { ChatAnswer } from "@/lib/db/schema";
+import { PdfViewerModal } from "@/app/components/PdfViewerModal";
 import {
   SproutIcon,
   VideoIcon,
   PdfIcon,
+  DownloadIcon,
+  EyeIcon,
   HelpCircleIcon,
   CheckIcon,
   CloseIcon,
@@ -39,7 +42,9 @@ function storageKey(courseId: number) {
 }
 
 function LessonBubbleExtra({ lesson }: { lesson?: Lesson }) {
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   if (!lesson) return null;
+
   return (
     <div className="mt-3 flex flex-wrap gap-2.5 pt-2.5 border-t border-slate-200">
       {lesson.videoUrl && (
@@ -47,22 +52,46 @@ function LessonBubbleExtra({ lesson }: { lesson?: Lesson }) {
           href={lesson.videoUrl}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center gap-2 rounded-xl bg-emerald-800 px-4 py-2 text-xs font-bold text-white shadow-xs hover:bg-emerald-900 transition-colors min-h-[40px]"
+          className="inline-flex items-center gap-2 rounded-xl bg-emerald-800 px-4 py-2 text-xs font-bold text-white shadow-xs hover:bg-emerald-900 transition-colors min-h-[40px] cursor-pointer"
         >
           <VideoIcon className="w-4 h-4" />
           <span>Ver Video de la Lección</span>
         </a>
       )}
+
+      {/* PDF Direct Download */}
       {lesson.pdfUrl && (
         <a
           href={lesson.pdfUrl}
-          target="_blank"
-          rel="noreferrer"
-          className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-slate-50 px-4 py-2 text-xs font-bold text-slate-800 hover:bg-slate-100 transition-colors min-h-[40px]"
+          download
+          className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-slate-50 px-4 py-2 text-xs font-bold text-slate-800 hover:bg-slate-100 transition-colors min-h-[40px] cursor-pointer"
         >
           <PdfIcon className="w-4 h-4 text-emerald-700" />
-          <span>Abrir Guía (PDF)</span>
+          <span>Descargar PDF</span>
+          <DownloadIcon className="w-3.5 h-3.5 opacity-70" />
         </a>
+      )}
+
+      {/* PDF Modal Preview Button */}
+      {lesson.pdfUrl && (
+        <button
+          type="button"
+          onClick={() => setIsPreviewOpen(true)}
+          className="inline-flex items-center gap-2 rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-2 text-xs font-bold text-emerald-900 hover:bg-emerald-100 transition-colors min-h-[40px] cursor-pointer"
+        >
+          <EyeIcon className="w-4 h-4 text-emerald-700" />
+          <span>Ver PDF (Previsualizar)</span>
+        </button>
+      )}
+
+      {/* PDF Viewer Modal */}
+      {lesson.pdfUrl && (
+        <PdfViewerModal
+          isOpen={isPreviewOpen}
+          onClose={() => setIsPreviewOpen(false)}
+          pdfUrl={lesson.pdfUrl}
+          title={`Guía PDF: ${lesson.title}`}
+        />
       )}
     </div>
   );

@@ -3,53 +3,16 @@ import { notFound } from "next/navigation";
 import { asc, eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { courses, lessons, puntosDigitales } from "@/lib/db/schema";
-import { logDownloadAction } from "@/lib/actions/downloads";
 import { PublicHeader } from "@/app/components/PublicHeader";
 import { getCurrentUser } from "@/lib/auth/current-user";
+import { LessonMediaActions } from "./LessonMediaActions";
 import {
   ArrowLeftIcon,
   MapPinIcon,
   BookIcon,
-  VideoIcon,
-  PdfIcon,
-  DownloadIcon,
 } from "@/app/components/icons";
 
 export const dynamic = "force-dynamic";
-
-function DownloadButton({
-  puntoId,
-  courseId,
-  lessonId,
-  fileType,
-  url,
-}: {
-  puntoId: number;
-  courseId: number;
-  lessonId: number;
-  fileType: "video" | "pdf";
-  url: string;
-}) {
-  const isVideo = fileType === "video";
-
-  return (
-    <form action={logDownloadAction} className="w-full sm:w-auto">
-      <input type="hidden" name="puntoId" value={puntoId} />
-      <input type="hidden" name="courseId" value={courseId} />
-      <input type="hidden" name="lessonId" value={lessonId} />
-      <input type="hidden" name="fileType" value={fileType} />
-      <input type="hidden" name="url" value={url} />
-      <button
-        type="submit"
-        className={isVideo ? "btn-farmer-primary w-full text-base" : "btn-farmer-secondary w-full text-base"}
-      >
-        {isVideo ? <VideoIcon className="w-5 h-5" /> : <PdfIcon className="w-5 h-5" />}
-        <span>{isVideo ? "Descargar Video (MP4)" : "Descargar Guía (PDF)"}</span>
-        <DownloadIcon className="w-4 h-4 opacity-70" />
-      </button>
-    </form>
-  );
-}
 
 export default async function PuntoCoursePage({
   params,
@@ -79,7 +42,7 @@ export default async function PuntoCoursePage({
           {/* Back button */}
           <Link
             href={`/puntos/${puntoId}`}
-            className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-bold text-slate-700 border border-slate-200 hover:bg-slate-50 transition-colors shadow-xs"
+            className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-bold text-slate-700 border border-slate-200 hover:bg-slate-50 transition-colors shadow-xs cursor-pointer"
           >
             <ArrowLeftIcon className="w-4 h-4" />
             <span>Volver a {punto.name}</span>
@@ -110,15 +73,14 @@ export default async function PuntoCoursePage({
             <div className="flex items-center gap-2.5">
               <BookIcon className="w-6 h-6 text-emerald-700" />
               <h2 className="text-2xl font-black text-slate-900">
-                Lecciones para Descarga
+                Lecciones para Descarga y Previsualización
               </h2>
             </div>
 
-            {courseLessons.map((lesson, index) => (
+            {courseLessons.map((lesson) => (
               <div
                 key={lesson.id}
-                className="card-farmer animate-sprout-in p-7 sm:p-9"
-                style={{ animationDelay: `${index * 80}ms` }}
+                className="card-farmer p-7 sm:p-9"
               >
                 <div className="flex items-center gap-3 mb-2">
                   <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-800 font-display text-sm font-bold text-white shadow-xs">
@@ -139,26 +101,16 @@ export default async function PuntoCoursePage({
                   </p>
                 )}
 
-                {/* Download Actions Container */}
-                <div className="mt-7 pt-5 border-t border-slate-100 flex flex-wrap gap-3">
-                  {lesson.videoUrl && (
-                    <DownloadButton
-                      puntoId={puntoId}
-                      courseId={courseId}
-                      lessonId={lesson.id}
-                      fileType="video"
-                      url={lesson.videoUrl}
-                    />
-                  )}
-                  {lesson.pdfUrl && (
-                    <DownloadButton
-                      puntoId={puntoId}
-                      courseId={courseId}
-                      lessonId={lesson.id}
-                      fileType="pdf"
-                      url={lesson.pdfUrl}
-                    />
-                  )}
+                {/* Download and Preview Actions Container */}
+                <div className="mt-7 pt-5 border-t border-slate-100">
+                  <LessonMediaActions
+                    puntoId={puntoId}
+                    courseId={courseId}
+                    lessonId={lesson.id}
+                    lessonTitle={lesson.title}
+                    videoUrl={lesson.videoUrl}
+                    pdfUrl={lesson.pdfUrl}
+                  />
                   {!lesson.videoUrl && !lesson.pdfUrl && (
                     <p className="text-sm text-slate-400 font-medium italic">
                       Archivos de esta lección aún no están subidos.
