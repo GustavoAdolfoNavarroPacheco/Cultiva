@@ -5,6 +5,8 @@ import { db } from "@/lib/db";
 import { courses, lessons, puntosDigitales } from "@/lib/db/schema";
 import { logDownloadAction } from "@/lib/actions/downloads";
 
+export const dynamic = "force-dynamic";
+
 function DownloadButton({
   puntoId,
   courseId,

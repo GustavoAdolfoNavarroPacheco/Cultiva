@@ -4,6 +4,8 @@ import { and, eq, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { courses, lessons, puntosDigitales } from "@/lib/db/schema";
 
+export const dynamic = "force-dynamic";
+
 export default async function PuntoDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const puntoId = Number(id);

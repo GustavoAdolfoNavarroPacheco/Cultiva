@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { puntosDigitales } from "@/lib/db/schema";
 
 export const metadata = { title: "Puntos Digitales — Cultiva" };
+export const dynamic = "force-dynamic";
 
 export default async function PuntosPublicPage() {
   const puntos = await db.select().from(puntosDigitales).orderBy(asc(puntosDigitales.name));

@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { courses, whatsappSteps } from "@/lib/db/schema";
 
 export const metadata = { title: "Agente de WhatsApp — Cultiva" };
+export const dynamic = "force-dynamic";
 
 export default async function WhatsappCoursesPage() {
   const publishedCourses = await db

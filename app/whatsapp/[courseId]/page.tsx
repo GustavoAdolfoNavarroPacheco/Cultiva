@@ -5,6 +5,8 @@ import { db } from "@/lib/db";
 import { courses, lessons, whatsappSteps } from "@/lib/db/schema";
 import { ChatSimulator } from "./ChatSimulator";
 
+export const dynamic = "force-dynamic";
+
 export default async function WhatsappCoursePage({
   params,
 }: {
