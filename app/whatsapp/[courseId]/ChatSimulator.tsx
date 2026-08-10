@@ -2,8 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
-import { RotateCcw } from "lucide-react";
-import { advanceChatSession, resetChatSession, startOrResumeChatSession, submitAnswer } from "@/lib/actions/chat";
+import { advanceChatSession, startOrResumeChatSession, submitAnswer } from "@/lib/actions/chat";
 import type { ChatAnswer } from "@/lib/db/schema";
 
 type Step = {
@@ -25,8 +24,6 @@ type Session = {
   answers: ChatAnswer[];
   completed: boolean;
 };
-
-const TYPING_DELAY_MS = 700;
 
 function storageKey(courseId: number) {
   return `cultiva_chat_token_${courseId}`;
@@ -73,26 +70,6 @@ function BotBubble({ children }: { children: React.ReactNode }) {
   );
 }
 
-function TypingBubble() {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 10, scale: 0.97 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0 }}
-      className="glass flex w-fit gap-1 rounded-2xl rounded-tl-sm px-4 py-3.5"
-    >
-      {[0, 1, 2].map((i) => (
-        <motion.span
-          key={i}
-          className="h-1.5 w-1.5 rounded-full bg-ink-faint"
-          animate={{ opacity: [0.3, 1, 0.3] }}
-          transition={{ duration: 1, repeat: Infinity, delay: i * 0.15 }}
-        />
-      ))}
-    </motion.div>
-  );
-}
-
 export function ChatSimulator({
   courseId,
   steps,
@@ -104,7 +81,6 @@ export function ChatSimulator({
 }) {
   const [session, setSession] = useState<Session | null>(null);
   const [pending, setPending] = useState(false);
-  const [typing, setTyping] = useState(false);
   const bootstrapped = useRef(false);
 
   useEffect(() => {
@@ -133,57 +109,28 @@ export function ChatSimulator({
 
   const visibleSteps = steps.filter((step) => step.order <= session.currentStepOrder);
   const lastStep = visibleSteps[visibleSteps.length - 1];
-  const progress = Math.min(100, Math.round((session.currentStepOrder / steps.length) * 100));
-
-  function toSession(updated: {
-    token: string;
-    currentStepOrder: number;
-    answers: ChatAnswer[];
-    completed: boolean;
-  }): Session {
-    return {
-      token: updated.token,
-      currentStepOrder: updated.currentStepOrder,
-      answers: updated.answers,
-      completed: updated.completed,
-    };
-  }
 
   async function handleAdvance() {
     setPending(true);
     const updated = await advanceChatSession(session!.token);
-    setTyping(true);
-    setTimeout(() => {
-      setSession(toSession(updated));
-      setTyping(false);
-      setPending(false);
-    }, TYPING_DELAY_MS);
+    setSession({
+      token: updated.token,
+      currentStepOrder: updated.currentStepOrder,
+      answers: updated.answers,
+      completed: updated.completed,
+    });
+    setPending(false);
   }
 
   async function handleAnswer(stepId: number, optionIndex: number) {
     setPending(true);
     const { session: updated } = await submitAnswer(session!.token, stepId, optionIndex);
-
-    setSession((current) => (current ? { ...current, answers: updated.answers } : current));
-
-    if (updated.currentStepOrder !== session!.currentStepOrder || updated.completed) {
-      setTyping(true);
-      setTimeout(() => {
-        setSession(toSession(updated));
-        setTyping(false);
-        setPending(false);
-      }, TYPING_DELAY_MS);
-    } else {
-      setPending(false);
-    }
-  }
-
-  async function handleRestart() {
-    setPending(true);
-    const fresh = await resetChatSession(courseId, session!.token);
-    window.localStorage.setItem(storageKey(courseId), fresh.token);
-    setSession(toSession(fresh));
-    setTyping(false);
+    setSession({
+      token: updated.token,
+      currentStepOrder: updated.currentStepOrder,
+      answers: updated.answers,
+      completed: updated.completed,
+    });
     setPending(false);
   }
 
@@ -196,30 +143,12 @@ export function ChatSimulator({
         <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white font-display text-sm font-bold text-green-700">
           C
         </div>
-        <div className="flex-1">
+        <div>
           <p className="text-[14px] font-semibold text-white">Agente Cultiva</p>
           <p className="text-[10px] font-medium uppercase tracking-[0.1em] text-white/75">
             {session.completed ? "curso completado" : "en línea"}
           </p>
         </div>
-        <button
-          type="button"
-          onClick={handleRestart}
-          disabled={pending}
-          aria-label="Reiniciar conversación"
-          className="flex h-8 w-8 items-center justify-center rounded-full text-white/85 transition-colors hover:bg-white/20 disabled:opacity-50"
-        >
-          <RotateCcw size={16} />
-        </button>
-      </div>
-
-      <div className="h-1 w-full bg-white/40">
-        <motion.div
-          className="h-full bg-green-600"
-          initial={false}
-          animate={{ width: `${progress}%` }}
-          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        />
       </div>
 
       <div className="space-y-4 px-5 py-6">
@@ -273,9 +202,7 @@ export function ChatSimulator({
           );
         })}
 
-        {typing && <TypingBubble />}
-
-        {!typing && !session.completed && lastStep && lastStep.kind !== "question" && (
+        {!session.completed && lastStep && lastStep.kind !== "question" && (
           <motion.button
             type="button"
             onClick={handleAdvance}
@@ -288,22 +215,13 @@ export function ChatSimulator({
           </motion.button>
         )}
 
-        {!typing && session.completed && (
+        {session.completed && (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="flex flex-wrap items-center justify-between gap-3 rounded-[var(--radius-md)] bg-green-100 px-4 py-3 text-[13px] font-medium text-green-700"
+            className="rounded-[var(--radius-md)] bg-green-100 px-4 py-3 text-[13px] font-medium text-green-700"
           >
-            <span>
-              Curso completado. Respondiste correctamente {correctCount} de {questionCount} preguntas.
-            </span>
-            <button
-              type="button"
-              onClick={handleRestart}
-              className="cursor-pointer rounded-full bg-green-600 px-3 py-1.5 text-[12px] font-semibold text-white"
-            >
-              Reiniciar
-            </button>
+            Curso completado. Respondiste correctamente {correctCount} de {questionCount} preguntas.
           </motion.div>
         )}
       </div>

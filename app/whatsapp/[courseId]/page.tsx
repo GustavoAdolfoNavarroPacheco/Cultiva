@@ -33,20 +33,24 @@ export default async function WhatsappCoursePage({
   const lessonsById = Object.fromEntries(courseLessons.map((lesson) => [lesson.id, lesson]));
 
   return (
-    <div className="mx-auto max-w-xl">
-      <Link
-        href="/whatsapp"
-        className="text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-faint hover:text-green-700"
-      >
-        ← Otros cursos
-      </Link>
-      <h1 className="mt-3 font-display text-3xl font-extrabold tracking-tight text-ink">{course.title}</h1>
-      <p className="mt-2 text-[14px] text-ink-soft">
-        Simulación del agente de WhatsApp — fase demo con preguntas y respuestas fijas.
-      </p>
+    <div className="min-h-screen px-6 py-16">
+      <div className="mx-auto max-w-xl">
+        <Link
+          href="/whatsapp"
+          className="text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-faint hover:text-green-700"
+        >
+          ← Otros cursos
+        </Link>
+        <h1 className="mt-3 font-display text-3xl font-extrabold tracking-tight text-ink">
+          {course.title}
+        </h1>
+        <p className="mt-2 text-[14px] text-ink-soft">
+          Simulación del agente de WhatsApp — fase demo con preguntas y respuestas fijas.
+        </p>
 
-      <div className="mt-8">
-        <ChatSimulator courseId={courseId} steps={steps} lessonsById={lessonsById} />
+        <div className="mt-8">
+          <ChatSimulator courseId={courseId} steps={steps} lessonsById={lessonsById} />
+        </div>
       </div>
     </div>
   );
