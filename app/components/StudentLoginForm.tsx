@@ -1,14 +1,23 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { studentLoginAction, type StudentAuthState } from "@/lib/auth/student-actions";
 import { AlertTriangleIcon, ArrowRightIcon } from "./icons";
 
 const initialState: StudentAuthState = {};
 
-export function StudentLoginForm() {
+export function StudentLoginForm({ autofillTrigger = 0 }: { autofillTrigger?: number }) {
   const [state, formAction, pending] = useActionState(studentLoginAction, initialState);
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    if (autofillTrigger > 0) {
+      setPhone("3001234567");
+      setPassword("estudiante123");
+    }
+  }, [autofillTrigger]);
 
   return (
     <form action={formAction}>
@@ -25,6 +34,8 @@ export function StudentLoginForm() {
             autoComplete="tel"
             autoFocus
             inputMode="tel"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
             className="w-full min-h-[52px] rounded-2xl border-2 border-slate-200 bg-slate-50/50 px-4 text-base font-medium text-slate-900 placeholder:text-slate-400 outline-none transition-all focus:border-emerald-700 focus:bg-white focus:ring-4 focus:ring-emerald-700/10"
             placeholder="3001234567"
           />
@@ -40,6 +51,8 @@ export function StudentLoginForm() {
             type="password"
             required
             autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             className="w-full min-h-[52px] rounded-2xl border-2 border-slate-200 bg-slate-50/50 px-4 text-base font-medium text-slate-900 placeholder:text-slate-400 outline-none transition-all focus:border-emerald-700 focus:bg-white focus:ring-4 focus:ring-emerald-700/10"
             placeholder="••••••••"
           />
@@ -58,7 +71,7 @@ export function StudentLoginForm() {
         </motion.div>
       )}
 
-      <button type="submit" disabled={pending} className="btn-farmer-primary mt-8 w-full text-base">
+      <button type="submit" disabled={pending} className="btn-farmer-primary mt-8 w-full text-base cursor-pointer">
         <span>{pending ? "Verificando datos…" : "Iniciar Sesión"}</span>
         <ArrowRightIcon className="w-5 h-5" />
       </button>

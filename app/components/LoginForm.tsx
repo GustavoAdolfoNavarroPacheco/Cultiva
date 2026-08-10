@@ -1,14 +1,23 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { loginAction, type LoginState } from "@/lib/auth/actions";
 import { AlertTriangleIcon, ArrowRightIcon } from "./icons";
 
 const initialState: LoginState = {};
 
-export function LoginForm() {
+export function LoginForm({ autofillTrigger = 0 }: { autofillTrigger?: number }) {
   const [state, formAction, pending] = useActionState(loginAction, initialState);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    if (autofillTrigger > 0) {
+      setEmail("admin@plataformaeducativa.com");
+      setPassword("admin123");
+    }
+  }, [autofillTrigger]);
 
   return (
     <form action={formAction}>
@@ -24,6 +33,8 @@ export function LoginForm() {
             required
             autoComplete="email"
             autoFocus
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="w-full min-h-[52px] rounded-2xl border-2 border-slate-200 bg-slate-50/50 px-4 text-base font-medium text-slate-900 placeholder:text-slate-400 outline-none transition-all focus:border-emerald-700 focus:bg-white focus:ring-4 focus:ring-emerald-700/10"
             placeholder="admin@plataformaeducativa.com"
           />
@@ -39,6 +50,8 @@ export function LoginForm() {
             type="password"
             required
             autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             className="w-full min-h-[52px] rounded-2xl border-2 border-slate-200 bg-slate-50/50 px-4 text-base font-medium text-slate-900 placeholder:text-slate-400 outline-none transition-all focus:border-emerald-700 focus:bg-white focus:ring-4 focus:ring-emerald-700/10"
             placeholder="••••••••"
           />
@@ -57,7 +70,7 @@ export function LoginForm() {
         </motion.div>
       )}
 
-      <button type="submit" disabled={pending} className="btn-farmer-primary mt-8 w-full text-base">
+      <button type="submit" disabled={pending} className="btn-farmer-primary mt-8 w-full text-base cursor-pointer">
         <span>{pending ? "Verificando datos…" : "Iniciar Sesión"}</span>
         <ArrowRightIcon className="w-5 h-5" />
       </button>

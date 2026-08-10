@@ -29,10 +29,21 @@ const headings: Record<Mode, { icon: typeof LockIcon; title: string; subtitle: s
 
 export function AuthPanel() {
   const [mode, setMode] = useState<Mode>("admin");
+  const [adminAutofillTrigger, setAdminAutofillTrigger] = useState(0);
+  const [studentAutofillTrigger, setStudentAutofillTrigger] = useState(0);
+
   const heading = headings[mode];
   const HeadingIcon = heading.icon;
 
   const isAdminSelected = mode === "admin";
+
+  const handleIconClick = () => {
+    if (mode === "admin") {
+      setAdminAutofillTrigger((prev) => prev + 1);
+    } else if (mode === "student-login") {
+      setStudentAutofillTrigger((prev) => prev + 1);
+    }
+  };
 
   return (
     <motion.div
@@ -93,9 +104,16 @@ export function AuthPanel() {
           transition={{ duration: 0.2, ease: "easeInOut" }}
         >
           <div className="flex items-center gap-3.5 mb-6">
-            <div className="p-3 bg-emerald-50 text-emerald-800 rounded-2xl shrink-0">
+            <motion.button
+              type="button"
+              whileHover={{ scale: 1.08 }}
+              whileTap={{ scale: 0.92 }}
+              onClick={handleIconClick}
+              className="p-3 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 hover:text-emerald-950 rounded-2xl shrink-0 cursor-pointer transition-all shadow-2xs border border-emerald-200/60"
+              title="Haz clic en este ícono para autorrellenar credenciales demo"
+            >
               <HeadingIcon className="w-6 h-6" />
-            </div>
+            </motion.button>
             <div>
               <h1 className="font-display text-xl font-black text-slate-900 sm:text-2xl">{heading.title}</h1>
               <p className="mt-0.5 text-sm font-medium text-slate-500">{heading.subtitle}</p>
@@ -103,8 +121,8 @@ export function AuthPanel() {
           </div>
 
           <div>
-            {mode === "admin" && <LoginForm />}
-            {mode === "student-login" && <StudentLoginForm />}
+            {mode === "admin" && <LoginForm autofillTrigger={adminAutofillTrigger} />}
+            {mode === "student-login" && <StudentLoginForm autofillTrigger={studentAutofillTrigger} />}
             {mode === "student-register" && <StudentRegisterForm />}
           </div>
 
