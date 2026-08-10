@@ -5,6 +5,7 @@ import { motion } from "motion/react";
 import { advanceChatSession, startOrResumeChatSession, submitAnswer } from "@/lib/actions/chat";
 import type { ChatAnswer } from "@/lib/db/schema";
 import { PdfViewerModal } from "@/app/components/PdfViewerModal";
+import { VideoViewerModal } from "@/app/components/VideoViewerModal";
 import {
   SproutIcon,
   VideoIcon,
@@ -48,24 +49,47 @@ function resolvePdfUrl(url: string | null): string {
   return url;
 }
 
+function resolveVideoUrl(url: string | null): string {
+  if (!url || url.includes("cultiva.demo") || url.includes("example.com")) {
+    return "/videos/video-leccion-oficial.mp4";
+  }
+  return url;
+}
+
 function LessonBubbleExtra({ lesson }: { lesson?: Lesson }) {
-  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [isPdfPreviewOpen, setIsPdfPreviewOpen] = useState(false);
+  const [isVideoPreviewOpen, setIsVideoPreviewOpen] = useState(false);
+
   if (!lesson) return null;
 
   const activePdfUrl = resolvePdfUrl(lesson.pdfUrl);
+  const activeVideoUrl = resolveVideoUrl(lesson.videoUrl);
 
   return (
     <div className="mt-3 flex flex-wrap gap-2.5 pt-2.5 border-t border-slate-200">
+      {/* Video Direct Download */}
       {lesson.videoUrl && (
         <a
-          href={lesson.videoUrl}
-          target="_blank"
-          rel="noreferrer"
+          href={activeVideoUrl}
+          download
           className="inline-flex items-center gap-2 rounded-xl bg-emerald-800 px-4 py-2 text-xs font-bold text-white shadow-xs hover:bg-emerald-900 transition-colors min-h-[40px] cursor-pointer"
         >
           <VideoIcon className="w-4 h-4" />
-          <span>Ver Video de la Lección</span>
+          <span>Descargar Video (MP4)</span>
+          <DownloadIcon className="w-3.5 h-3.5 opacity-70" />
         </a>
+      )}
+
+      {/* Video Modal Preview Button */}
+      {lesson.videoUrl && (
+        <button
+          type="button"
+          onClick={() => setIsVideoPreviewOpen(true)}
+          className="inline-flex items-center gap-2 rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-2 text-xs font-bold text-emerald-900 hover:bg-emerald-100 transition-colors min-h-[40px] cursor-pointer"
+        >
+          <EyeIcon className="w-4 h-4 text-emerald-700" />
+          <span>Ver Video (Previsualizar)</span>
+        </button>
       )}
 
       {/* PDF Direct Download */}
@@ -85,10 +109,10 @@ function LessonBubbleExtra({ lesson }: { lesson?: Lesson }) {
       {lesson.pdfUrl && (
         <button
           type="button"
-          onClick={() => setIsPreviewOpen(true)}
-          className="inline-flex items-center gap-2 rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-2 text-xs font-bold text-emerald-900 hover:bg-emerald-100 transition-colors min-h-[40px] cursor-pointer"
+          onClick={() => setIsPdfPreviewOpen(true)}
+          className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-colors min-h-[40px] cursor-pointer"
         >
-          <EyeIcon className="w-4 h-4 text-emerald-700" />
+          <EyeIcon className="w-4 h-4 text-slate-600" />
           <span>Ver PDF (Previsualizar)</span>
         </button>
       )}
@@ -96,10 +120,20 @@ function LessonBubbleExtra({ lesson }: { lesson?: Lesson }) {
       {/* PDF Viewer Modal */}
       {lesson.pdfUrl && (
         <PdfViewerModal
-          isOpen={isPreviewOpen}
-          onClose={() => setIsPreviewOpen(false)}
+          isOpen={isPdfPreviewOpen}
+          onClose={() => setIsPdfPreviewOpen(false)}
           pdfUrl={activePdfUrl}
           title={`Guía PDF: ${lesson.title}`}
+        />
+      )}
+
+      {/* Video Viewer Modal */}
+      {lesson.videoUrl && (
+        <VideoViewerModal
+          isOpen={isVideoPreviewOpen}
+          onClose={() => setIsVideoPreviewOpen(false)}
+          videoUrl={activeVideoUrl}
+          title={`Video Lección: ${lesson.title}`}
         />
       )}
     </div>
