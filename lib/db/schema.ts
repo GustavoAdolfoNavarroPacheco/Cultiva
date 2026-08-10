@@ -17,6 +17,14 @@ export const users = pgTable("users", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
+export const students = pgTable("students", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  phone: text("phone").notNull().unique(),
+  passwordHash: text("password_hash").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
 export const courses = pgTable("courses", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
@@ -77,6 +85,7 @@ export const downloadLogs = pgTable("download_logs", {
   lessonId: integer("lesson_id")
     .notNull()
     .references(() => lessons.id, { onDelete: "cascade" }),
+  studentId: integer("student_id").references(() => students.id, { onDelete: "set null" }),
   fileType: text("file_type").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
@@ -92,6 +101,7 @@ export const chatSessions = pgTable("chat_sessions", {
   courseId: integer("course_id")
     .notNull()
     .references(() => courses.id, { onDelete: "cascade" }),
+  studentId: integer("student_id").references(() => students.id, { onDelete: "cascade" }),
   token: text("token").notNull().unique(),
   currentStepOrder: integer("current_step_order").notNull().default(0),
   answers: jsonb("answers").$type<ChatAnswer[]>().notNull().default([]),

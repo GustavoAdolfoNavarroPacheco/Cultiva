@@ -1,13 +1,13 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { BrandPanel } from "@/app/components/BrandPanel";
-import { LoginForm } from "@/app/components/LoginForm";
+import { AuthPanel } from "@/app/components/AuthPanel";
 import { PublicHeader } from "@/app/components/PublicHeader";
 
 export default async function LoginPage() {
   const user = await getCurrentUser();
   if (user) {
-    redirect("/admin");
+    redirect(user.role === "student" ? "/puntos" : "/admin");
   }
 
   return (
@@ -17,7 +17,7 @@ export default async function LoginPage() {
         <div className="grid w-full max-w-5xl items-center gap-8 lg:grid-cols-2 lg:gap-14">
           <BrandPanel />
           <div className="flex justify-center lg:justify-end">
-            <LoginForm />
+            <AuthPanel />
           </div>
         </div>
       </main>

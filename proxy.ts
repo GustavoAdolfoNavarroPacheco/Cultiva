@@ -13,6 +13,10 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
+  if (pathname.startsWith("/admin") && session.role === "student") {
+    return NextResponse.redirect(new URL("/puntos", request.url));
+  }
+
   return NextResponse.next();
 }
 

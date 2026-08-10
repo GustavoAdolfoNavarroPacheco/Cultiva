@@ -6,6 +6,7 @@ import { courses, lessons, whatsappSteps } from "@/lib/db/schema";
 import { ChatSimulator } from "./ChatSimulator";
 import { PublicHeader } from "@/app/components/PublicHeader";
 import { ArrowLeftIcon } from "@/app/components/icons";
+import { getCurrentUser } from "@/lib/auth/current-user";
 
 export const dynamic = "force-dynamic";
 
@@ -34,6 +35,9 @@ export default async function WhatsappCoursePage({
 
   const lessonsById = Object.fromEntries(courseLessons.map((lesson) => [lesson.id, lesson]));
 
+  const user = await getCurrentUser();
+  const studentId = user?.role === "student" ? Number(user.sub) : null;
+
   return (
     <div className="flex min-h-screen flex-col bg-slate-50/50">
       <PublicHeader />
@@ -61,7 +65,7 @@ export default async function WhatsappCoursePage({
 
           {/* Simulator Component */}
           <div>
-            <ChatSimulator courseId={courseId} steps={steps} lessonsById={lessonsById} />
+            <ChatSimulator courseId={courseId} steps={steps} lessonsById={lessonsById} studentId={studentId} />
           </div>
         </div>
       </main>

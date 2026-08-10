@@ -2,39 +2,40 @@
 
 import { useActionState } from "react";
 import { motion } from "motion/react";
-import { loginAction, type LoginState } from "@/lib/auth/actions";
+import { studentLoginAction, type StudentAuthState } from "@/lib/auth/student-actions";
 import { AlertTriangleIcon, ArrowRightIcon } from "./icons";
 
-const initialState: LoginState = {};
+const initialState: StudentAuthState = {};
 
-export function LoginForm() {
-  const [state, formAction, pending] = useActionState(loginAction, initialState);
+export function StudentLoginForm() {
+  const [state, formAction, pending] = useActionState(studentLoginAction, initialState);
 
   return (
     <form action={formAction}>
       <div className="space-y-5">
         <div>
-          <label htmlFor="email" className="block text-sm font-bold text-slate-900 mb-2">
-            Correo Electrónico
+          <label htmlFor="student-phone" className="block text-sm font-bold text-slate-900 mb-2">
+            Número de Teléfono
           </label>
           <input
-            id="email"
-            name="email"
-            type="email"
+            id="student-phone"
+            name="phone"
+            type="tel"
             required
-            autoComplete="email"
+            autoComplete="tel"
             autoFocus
+            inputMode="tel"
             className="w-full min-h-[52px] rounded-2xl border-2 border-slate-200 bg-slate-50/50 px-4 text-base font-medium text-slate-900 placeholder:text-slate-400 outline-none transition-all focus:border-emerald-700 focus:bg-white focus:ring-4 focus:ring-emerald-700/10"
-            placeholder="admin@agro.ai"
+            placeholder="3001234567"
           />
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-sm font-bold text-slate-900 mb-2">
+          <label htmlFor="student-password" className="block text-sm font-bold text-slate-900 mb-2">
             Contraseña
           </label>
           <input
-            id="password"
+            id="student-password"
             name="password"
             type="password"
             required

@@ -30,7 +30,7 @@ const demoLinks = [
 export function AdminSidebar({
   user,
 }: {
-  user: { name: string; email: string; role: string };
+  user: { name: string; email?: string; role: string };
 }) {
   const pathname = usePathname();
 

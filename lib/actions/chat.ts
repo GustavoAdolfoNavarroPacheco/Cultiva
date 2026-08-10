@@ -13,7 +13,28 @@ async function getMaxOrder(courseId: number) {
   return steps.reduce((max, step) => Math.max(max, step.order), 0);
 }
 
-export async function startOrResumeChatSession(courseId: number, existingToken?: string | null) {
+export async function startOrResumeChatSession(
+  courseId: number,
+  options?: { studentId?: number | null; existingToken?: string | null },
+) {
+  const studentId = options?.studentId ?? null;
+  const existingToken = options?.existingToken ?? null;
+
+  if (studentId) {
+    const [existing] = await db
+      .select()
+      .from(chatSessions)
+      .where(and(eq(chatSessions.studentId, studentId), eq(chatSessions.courseId, courseId)))
+      .limit(1);
+    if (existing) return existing;
+
+    const [session] = await db
+      .insert(chatSessions)
+      .values({ courseId, studentId, token: randomUUID(), currentStepOrder: 1 })
+      .returning();
+    return session;
+  }
+
   if (existingToken) {
     const [existing] = await db
       .select()
@@ -23,10 +44,9 @@ export async function startOrResumeChatSession(courseId: number, existingToken?:
     if (existing) return existing;
   }
 
-  const token = randomUUID();
   const [session] = await db
     .insert(chatSessions)
-    .values({ courseId, token, currentStepOrder: 1 })
+    .values({ courseId, token: randomUUID(), currentStepOrder: 1 })
     .returning();
 
   return session;
@@ -51,6 +71,15 @@ export async function advanceChatSession(token: string) {
     .returning();
 
   return updated;
+}
+
+export async function resetChatSession(courseId: number, token: string) {
+  const [existing] = await db.select().from(chatSessions).where(eq(chatSessions.token, token)).limit(1);
+  const studentId = existing?.studentId ?? null;
+
+  await db.delete(chatSessions).where(eq(chatSessions.token, token));
+
+  return startOrResumeChatSession(courseId, { studentId });
 }
 
 export async function submitAnswer(token: string, stepId: number, optionIndex: number) {

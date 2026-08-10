@@ -85,10 +85,12 @@ export function ChatSimulator({
   courseId,
   steps,
   lessonsById,
+  studentId,
 }: {
   courseId: number;
   steps: Step[];
   lessonsById: Record<number, Lesson>;
+  studentId: number | null;
 }) {
   const [session, setSession] = useState<Session | null>(null);
   const [pending, setPending] = useState(false);
@@ -98,9 +100,11 @@ export function ChatSimulator({
     if (bootstrapped.current) return;
     bootstrapped.current = true;
 
-    const existingToken = window.localStorage.getItem(storageKey(courseId));
-    startOrResumeChatSession(courseId, existingToken).then((result) => {
-      window.localStorage.setItem(storageKey(courseId), result.token);
+    const existingToken = studentId ? null : window.localStorage.getItem(storageKey(courseId));
+    startOrResumeChatSession(courseId, { studentId, existingToken }).then((result) => {
+      if (!studentId) {
+        window.localStorage.setItem(storageKey(courseId), result.token);
+      }
       setSession({
         token: result.token,
         currentStepOrder: result.currentStepOrder,
@@ -108,7 +112,7 @@ export function ChatSimulator({
         completed: result.completed,
       });
     });
-  }, [courseId]);
+  }, [courseId, studentId]);
 
   if (!session) {
     return (

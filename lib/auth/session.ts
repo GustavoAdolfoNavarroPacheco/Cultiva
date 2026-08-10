@@ -5,9 +5,10 @@ const SESSION_DURATION_SECONDS = 60 * 60 * 24 * 7; // 7 días
 
 export type SessionPayload = {
   sub: string;
-  email: string;
   name: string;
   role: string;
+  email?: string;
+  phone?: string;
 };
 
 function secretKey() {

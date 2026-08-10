@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { SproutIcon, SignalIcon, ChatIcon, LockIcon } from "./icons";
+import { SproutIcon, SignalIcon, ChatIcon, LockIcon, LogoutIcon } from "./icons";
+import { logoutAction } from "@/lib/auth/actions";
 
 export function PublicHeader() {
   const pathname = usePathname();
@@ -64,6 +65,17 @@ export function PublicHeader() {
             <LockIcon className="w-3.5 h-3.5" />
             <span className="hidden md:inline">Admin</span>
           </Link>
+
+          <form action={logoutAction}>
+            <button
+              type="submit"
+              title="Cerrar sesión"
+              className="flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-xs font-bold text-slate-700 hover:bg-rose-50 hover:border-rose-300 hover:text-rose-700 transition-colors min-h-[44px] min-w-[44px]"
+            >
+              <LogoutIcon className="w-3.5 h-3.5" />
+              <span className="hidden md:inline">Salir</span>
+            </button>
+          </form>
         </nav>
       </div>
     </header>
