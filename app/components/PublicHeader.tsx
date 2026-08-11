@@ -48,7 +48,7 @@ export function PublicHeader({ role }: { role?: string }) {
                 />
               )}
               <SignalIcon className="relative z-10 w-4 h-4" />
-              <span className="relative z-10">Puntos Digitales</span>
+              <span className="relative z-10">Sistema Offline</span>
             </Link>
 
             <Link

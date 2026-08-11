@@ -47,7 +47,7 @@ export default async function PuntoDetailPage({ params }: { params: Promise<{ id
               className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-bold text-slate-700 border border-slate-200 hover:bg-slate-50 transition-colors shadow-2xs cursor-pointer"
             >
               <ArrowLeftIcon className="w-4 h-4" />
-              <span>Volver a Puntos Digitales</span>
+              <span>Volver a Sistema Offline</span>
             </Link>
 
             {/* Punto Info Card */}
@@ -64,7 +64,7 @@ export default async function PuntoDetailPage({ params }: { params: Promise<{ id
                 {punto.name}
               </h1>
               <p className="mt-2 text-base text-slate-600 font-medium">
-                Elige el curso que deseas capacitarte para descargar sus lecciones en video o formato PDF.
+                Elige el curso que deseas capacitarte para descargar sus lecciones en video o formato PDF directamente a tu dispositivo.
               </p>
             </div>
 

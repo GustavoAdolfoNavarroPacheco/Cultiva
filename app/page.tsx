@@ -16,7 +16,7 @@ import {
 export const metadata = {
   title: "Plataforma Educativa — Capacitación Agropecuaria",
   description:
-    "Solución integral de educación agropecuaria: Módulo Administrativo, Puntos Digitales Offline y Agente de WhatsApp.",
+    "Solución integral de educación agropecuaria: Módulo Administrativo, Sistema Offline y Agente de WhatsApp.",
 };
 
 export default async function HomePage() {
@@ -53,7 +53,7 @@ export default async function HomePage() {
                   Los 3 Pilares del Proyecto
                 </h2>
                 <p className="mt-2 text-base font-medium text-slate-600">
-                  Estructura integral para la gestión, distribución offline y enseñanza interactiva.
+                  Estructura integral para la gestión administrativa, distribución offline y enseñanza interactiva.
                 </p>
               </div>
 
@@ -71,16 +71,16 @@ export default async function HomePage() {
                       Módulo Administrativo Web
                     </h3>
                     <p className="text-slate-600 font-medium text-sm leading-relaxed mb-4">
-                      Panel de control centralizado donde los administradores estructuran y gestionan el contenido educativo.
+                      Panel central donde los administradores cargan y gestionan los cursos, videos, documentos en PDF y material de estudio.
                     </p>
                     <ul className="space-y-2.5 text-xs font-semibold text-slate-700">
                       <li className="flex items-center gap-2">
                         <CheckIcon className="w-4 h-4 text-emerald-700 shrink-0" />
-                        <span>Carga de cursos y categorías</span>
+                        <span>Carga y gestión de cursos y categorías</span>
                       </li>
                       <li className="flex items-center gap-2">
                         <CheckIcon className="w-4 h-4 text-emerald-700 shrink-0" />
-                        <span>Gestión de videos y documentos PDF</span>
+                        <span>Administración de videos y documentos PDF</span>
                       </li>
                       <li className="flex items-center gap-2">
                         <CheckIcon className="w-4 h-4 text-emerald-700 shrink-0" />
@@ -110,23 +110,23 @@ export default async function HomePage() {
                       Pilar 2
                     </span>
                     <h3 className="font-display text-2xl font-bold text-slate-900 mt-3 mb-2">
-                      Sistema Offline (Puntos Digitales)
+                      Sistema Offline
                     </h3>
                     <p className="text-slate-600 font-medium text-sm leading-relaxed mb-4">
-                      Diseñado para estudiantes en zonas rurales con conectividad limitada o nula a internet.
+                      Portal de educación con contenido habilitado para consulta y estudio sin conexión a internet, enfocado en brindar formación a la medida del Sector Agropecuario. Se busca que el material esté disponible para que al acceder a un punto digital se puedan descargar las lecciones y estudiar en cualquier lugar.
                     </p>
                     <ul className="space-y-2.5 text-xs font-semibold text-slate-700">
                       <li className="flex items-center gap-2">
                         <CheckIcon className="w-4 h-4 text-emerald-700 shrink-0" />
-                        <span>Ubicación en recintos y puntos físicos comunales</span>
+                        <span>Contenido habilitado para usar sin conexión</span>
                       </li>
                       <li className="flex items-center gap-2">
                         <CheckIcon className="w-4 h-4 text-emerald-700 shrink-0" />
-                        <span>Descarga directa de lecciones y videos al celular</span>
+                        <span>Formación a la medida del Sector Agropecuario</span>
                       </li>
                       <li className="flex items-center gap-2">
                         <CheckIcon className="w-4 h-4 text-emerald-700 shrink-0" />
-                        <span>Estudio posterior sin necesidad de conexión</span>
+                        <span>Descarga rápida de material al acceder a un punto</span>
                       </li>
                     </ul>
                   </div>
@@ -136,7 +136,7 @@ export default async function HomePage() {
                       href="/puntos"
                       className="inline-flex items-center gap-2 text-sm font-bold text-emerald-800 hover:text-emerald-950 hover:underline cursor-pointer"
                     >
-                      <span>Explorar Puntos Digitales</span>
+                      <span>Explorar Sistema Offline</span>
                       <ArrowRightIcon className="w-4 h-4" />
                     </Link>
                   </div>
@@ -155,7 +155,7 @@ export default async function HomePage() {
                       Agente Interactivo de WhatsApp
                     </h3>
                     <p className="text-slate-600 font-medium text-sm leading-relaxed mb-4">
-                      Para estudiantes con acceso a internet que prefieren aprendizaje guiado lección por lección.
+                      Para estudiantes con acceso a internet que prefieren aprendizaje guiado lección por lección mediante un chatbot conversacional.
                     </p>
                     <ul className="space-y-2.5 text-xs font-semibold text-slate-700">
                       <li className="flex items-center gap-2">
@@ -164,11 +164,11 @@ export default async function HomePage() {
                       </li>
                       <li className="flex items-center gap-2">
                         <PdfIcon className="w-4 h-4 text-emerald-700 shrink-0" />
-                        <span>Guías breves en formato PDF</span>
+                        <span>Guías breves en formato PDF con previsualización</span>
                       </li>
                       <li className="flex items-center gap-2">
                         <CheckIcon className="w-4 h-4 text-emerald-700 shrink-0" />
-                        <span>Demo interactivo con preguntas y respuestas</span>
+                        <span>Flujo pedagógico con preguntas y respuestas</span>
                       </li>
                     </ul>
                   </div>
@@ -219,7 +219,7 @@ export default async function HomePage() {
               </div>
               <div className="flex items-center gap-3 flex-wrap">
                 <Link href="/puntos" className="btn-farmer-primary text-sm">
-                  Puntos Digitales
+                  Sistema Offline
                 </Link>
                 <Link href="/whatsapp" className="btn-farmer-secondary text-sm">
                   Agente WhatsApp

@@ -15,10 +15,10 @@ export default async function PuntosPage() {
       {/* Header matched strictly to Panel Principal font hierarchy */}
       <div>
         <h1 className="font-display text-3xl sm:text-4xl font-black text-slate-900">
-          Puntos Digitales
+          Sistema Offline
         </h1>
         <p className="mt-1 text-base text-slate-600 font-medium">
-          Lugares físicos donde los estudiantes descargan contenido a su teléfono sin necesidad de internet.
+          Gestión de puntos físicos de acceso donde los estudiantes descargan contenido técnico sin necesidad de internet.
         </p>
       </div>
 
@@ -86,7 +86,7 @@ export default async function PuntosPage() {
           {puntos.length === 0 && (
             <div className="col-span-3 text-center py-12 bg-white rounded-3xl border border-slate-200 p-8">
               <SignalIcon className="w-10 h-10 text-slate-300 mx-auto" />
-              <p className="mt-3 text-lg font-bold text-slate-900">Todavía no hay puntos digitales registrados.</p>
+              <p className="mt-3 text-lg font-bold text-slate-900">Todavía no hay puntos registrados en el Sistema Offline.</p>
             </div>
           )}
         </ul>

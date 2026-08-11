@@ -16,12 +16,12 @@ import {
 const navLinks = [
   { href: "/admin", label: "Panel Principal", icon: DashboardIcon, exact: true },
   { href: "/admin/cursos", label: "Gestión Cursos", icon: BookIcon },
-  { href: "/admin/puntos", label: "Puntos Digitales", icon: SignalIcon },
+  { href: "/admin/puntos", label: "Sistema Offline", icon: SignalIcon },
   { href: "/admin/usuarios", label: "Usuarios Admin", icon: UsersIcon },
 ];
 
 const demoLinks = [
-  { href: "/puntos", label: "Puntos Digitales", icon: SignalIcon },
+  { href: "/puntos", label: "Sistema Offline", icon: SignalIcon },
   { href: "/whatsapp", label: "Simular WhatsApp", icon: ChatIcon },
 ];
 

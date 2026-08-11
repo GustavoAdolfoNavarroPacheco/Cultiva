@@ -7,7 +7,7 @@ import { PageTransition } from "@/app/components/PageTransition";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { SignalIcon, MapPinIcon, BuildingIcon, UserIcon, ArrowRightIcon } from "@/app/components/icons";
 
-export const metadata = { title: "Puntos Digitales — Plataforma Educativa" };
+export const metadata = { title: "Sistema Offline — Plataforma Educativa" };
 export const dynamic = "force-dynamic";
 
 export default async function PuntosPublicPage() {
@@ -27,24 +27,24 @@ export default async function PuntosPublicPage() {
             <div className="rounded-3xl bg-slate-900 p-8 sm:p-12 text-white shadow-xl relative overflow-hidden border border-slate-800">
               <div className="relative z-10 max-w-3xl">
                 <span className="inline-flex items-center gap-2 rounded-full bg-emerald-950 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-emerald-300 border border-emerald-800/80 mb-4">
-                  <SignalIcon className="w-4 h-4 text-emerald-400" /> Descargas Offline Sin Internet
+                  <SignalIcon className="w-4 h-4 text-emerald-400" /> Sistema Offline Sin Conexión
                 </span>
                 <h1 className="font-display text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl leading-tight text-white">
                   ¿Dónde te encuentras hoy?
                 </h1>
                 <p className="mt-3 text-lg text-slate-300 font-medium leading-relaxed">
-                  Selecciona tu comunidad o punto digital cercano para descargar las guías y videos de capacitación directamente a tu teléfono celular.
+                  Selecciona tu comunidad o punto digital cercano para descargar las guías y videos de capacitación técnica adaptada al Sector Agropecuario directamente a tu teléfono.
                 </p>
               </div>
             </div>
 
-            {/* List of Puntos Digitales */}
+            {/* List of Puntos Digitales / Acceso Offline */}
             <div>
               <div className="flex items-center justify-between gap-4 mb-6">
                 <div className="flex items-center gap-2.5">
                   <MapPinIcon className="w-6 h-6 text-emerald-700" />
                   <h2 className="text-2xl font-black text-slate-900">
-                    Puntos Digitales Disponibles ({puntos.length})
+                    Puntos de Acceso Offline Disponibles ({puntos.length})
                   </h2>
                 </div>
               </div>
@@ -90,7 +90,7 @@ export default async function PuntosPublicPage() {
                 {puntos.length === 0 && (
                   <div className="col-span-2 text-center py-12 bg-white rounded-3xl border border-slate-200 p-8">
                     <SignalIcon className="w-10 h-10 text-slate-300 mx-auto" />
-                    <p className="mt-3 text-lg font-bold text-slate-900">Todavía no hay puntos digitales registrados.</p>
+                    <p className="mt-3 text-lg font-bold text-slate-900">Todavía no hay puntos de acceso registrados.</p>
                   </div>
                 )}
               </div>
