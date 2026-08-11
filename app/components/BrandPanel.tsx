@@ -5,7 +5,7 @@ import { motion } from "motion/react";
 import { SproutIcon, SignalIcon, ChatIcon, DashboardIcon } from "./icons";
 
 const pillars = [
-  { icon: SignalIcon, title: "Sistema Offline", href: "/puntos" },
+  { icon: SignalIcon, title: "Modo Offline", href: "/puntos" },
   { icon: ChatIcon, title: "Agente WhatsApp", href: "/whatsapp" },
   { icon: DashboardIcon, title: "Gestión Administrativa", href: null },
 ];

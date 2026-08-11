@@ -36,9 +36,8 @@ export function PublicHeader({ role }: { role?: string }) {
           <nav className="relative flex items-center gap-1 p-1 rounded-2xl bg-slate-100/90 border border-slate-200/80">
             <Link
               href="/puntos"
-              className={`relative flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-bold transition-colors min-h-[42px] select-none cursor-pointer ${
-                isPuntos ? "text-white font-extrabold" : "text-slate-600 hover:text-slate-900"
-              }`}
+              className={`relative flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-bold transition-colors min-h-[42px] select-none cursor-pointer ${isPuntos ? "text-white font-extrabold" : "text-slate-600 hover:text-slate-900"
+                }`}
             >
               {isPuntos && (
                 <motion.span
@@ -48,14 +47,13 @@ export function PublicHeader({ role }: { role?: string }) {
                 />
               )}
               <SignalIcon className="relative z-10 w-4 h-4" />
-              <span className="relative z-10">Sistema Offline</span>
+              <span className="relative z-10">Modo Offline</span>
             </Link>
 
             <Link
               href="/whatsapp"
-              className={`relative flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-bold transition-colors min-h-[42px] select-none cursor-pointer ${
-                isWhatsapp ? "text-white font-extrabold" : "text-slate-600 hover:text-slate-900"
-              }`}
+              className={`relative flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-bold transition-colors min-h-[42px] select-none cursor-pointer ${isWhatsapp ? "text-white font-extrabold" : "text-slate-600 hover:text-slate-900"
+                }`}
             >
               {isWhatsapp && (
                 <motion.span

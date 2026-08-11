@@ -120,7 +120,7 @@ export default async function AdminDashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         <StatCard label="Cursos Creados" value={stats.courses} icon={BookIcon} />
         <StatCard label="Lecciones Totales" value={stats.lessons} icon={LessonIcon} />
-        <StatCard label="Sistema Offline" value={stats.puntos} icon={SignalIcon} />
+        <StatCard label="Modo Offline" value={stats.puntos} icon={SignalIcon} />
         <StatCard label="Descargas Registradas" value={stats.downloads} icon={DownloadIcon} />
         <StatCard label="Sesiones WhatsApp" value={stats.chats} icon={ChatIcon} />
         <StatCard label="Cursos Completados" value={stats.chatsCompleted} icon={CheckIcon} />
@@ -132,7 +132,7 @@ export default async function AdminDashboardPage() {
             <DownloadIcon className="w-5 h-5 text-emerald-700" />
             <h2 className="font-display text-xl font-bold text-slate-900">Descargas Recientes</h2>
           </div>
-          <p className="text-sm text-slate-500 font-medium">Actividad en el Sistema Offline</p>
+          <p className="text-sm text-slate-500 font-medium">Actividad en el Modo Offline</p>
 
           {recentDownloads.length === 0 ? (
             <p className="mt-6 text-base font-medium text-slate-400">Todavía no hay descargas registradas.</p>
@@ -174,11 +174,10 @@ export default async function AdminDashboardPage() {
                   <div className="flex items-center justify-between gap-2">
                     <span className="font-bold text-slate-900">{row.courseTitle}</span>
                     <span
-                      className={`rounded-full px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider ${
-                        row.completed
+                      className={`rounded-full px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider ${row.completed
                           ? "bg-emerald-100 text-emerald-900 border border-emerald-300"
                           : "bg-slate-100 text-slate-700 border border-slate-300"
-                      }`}
+                        }`}
                     >
                       {row.completed ? "Completado" : `Paso ${row.currentStepOrder}`}
                     </span>

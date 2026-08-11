@@ -16,12 +16,12 @@ import {
 const navLinks = [
   { href: "/admin", label: "Panel Principal", icon: DashboardIcon, exact: true },
   { href: "/admin/cursos", label: "Gestión Cursos", icon: BookIcon },
-  { href: "/admin/puntos", label: "Sistema Offline", icon: SignalIcon },
+  { href: "/admin/puntos", label: "Modo Offline", icon: SignalIcon },
   { href: "/admin/usuarios", label: "Usuarios Admin", icon: UsersIcon },
 ];
 
 const demoLinks = [
-  { href: "/puntos", label: "Sistema Offline", icon: SignalIcon },
+  { href: "/puntos", label: "Modo Offline", icon: SignalIcon },
   { href: "/whatsapp", label: "Simular WhatsApp", icon: ChatIcon },
 ];
 
@@ -57,9 +57,8 @@ export function AdminSidebar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`relative flex items-center gap-3 rounded-xl px-3.5 py-3 text-sm font-bold transition-colors min-h-[46px] select-none cursor-pointer ${
-                active ? "text-white font-extrabold" : "text-slate-300 hover:bg-slate-800/60 hover:text-white"
-              }`}
+              className={`relative flex items-center gap-3 rounded-xl px-3.5 py-3 text-sm font-bold transition-colors min-h-[46px] select-none cursor-pointer ${active ? "text-white font-extrabold" : "text-slate-300 hover:bg-slate-800/60 hover:text-white"
+                }`}
             >
               {active && (
                 <motion.span

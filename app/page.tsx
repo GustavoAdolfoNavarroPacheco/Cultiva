@@ -16,7 +16,7 @@ import {
 export const metadata = {
   title: "Plataforma Educativa — Capacitación Agropecuaria",
   description:
-    "Solución integral de educación agropecuaria: Módulo Administrativo, Sistema Offline y Agente de WhatsApp.",
+    "Solución integral de educación agropecuaria: Módulo Administrativo, Modo Offline y Agente de WhatsApp.",
 };
 
 export default async function HomePage() {
@@ -117,7 +117,7 @@ export default async function HomePage() {
                       Pilar 2
                     </span>
                     <h3 className="font-display text-2xl font-bold text-slate-900 mt-3 mb-2 group-hover:text-emerald-900 transition-colors">
-                      Sistema Offline
+                      Modo Offline
                     </h3>
                     <p className="text-slate-600 font-medium text-sm leading-relaxed mb-4">
                       Portal de educación con contenido habilitado para consulta y estudio sin conexión a internet, enfocado en brindar formación a la medida del Sector Agropecuario. Se busca que el material esté disponible para que al acceder a un punto digital se puedan descargar las lecciones y estudiar en cualquier lugar.
@@ -140,7 +140,7 @@ export default async function HomePage() {
 
                   <div className="mt-8 pt-5 border-t border-slate-100 flex items-center justify-between">
                     <span className="text-sm font-bold text-emerald-800 group-hover:text-emerald-950 group-hover:underline">
-                      {user ? "Explorar Sistema Offline" : "Iniciar Sesión para Acceder"}
+                      {user ? "Explorar Modo Offline" : "Iniciar Sesión para Acceder"}
                     </span>
                     <ArrowRightIcon className="w-4 h-4 text-emerald-700 transition-transform group-hover:translate-x-1" />
                   </div>
@@ -226,7 +226,7 @@ export default async function HomePage() {
                   href={pilar2Href}
                   className="btn-farmer-primary text-sm"
                 >
-                  Sistema Offline
+                  Modo Offline
                 </Link>
                 <Link
                   href={pilar3Href}

@@ -7,7 +7,7 @@ import { PageTransition } from "@/app/components/PageTransition";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { SignalIcon, MapPinIcon, BuildingIcon, UserIcon, ArrowRightIcon } from "@/app/components/icons";
 
-export const metadata = { title: "Sistema Offline — Plataforma Educativa" };
+export const metadata = { title: "Modo Offline — Plataforma Educativa" };
 export const dynamic = "force-dynamic";
 
 export default async function PuntosPublicPage() {
@@ -27,7 +27,7 @@ export default async function PuntosPublicPage() {
             <div className="rounded-3xl bg-slate-900 p-8 sm:p-12 text-white shadow-xl relative overflow-hidden border border-slate-800">
               <div className="relative z-10 max-w-3xl">
                 <span className="inline-flex items-center gap-2 rounded-full bg-emerald-950 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-emerald-300 border border-emerald-800/80 mb-4">
-                  <SignalIcon className="w-4 h-4 text-emerald-400" /> Sistema Offline Sin Conexión
+                  <SignalIcon className="w-4 h-4 text-emerald-400" /> Modo Offline Sin Conexión
                 </span>
                 <h1 className="font-display text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl leading-tight text-white">
                   ¿Dónde te encuentras hoy?
