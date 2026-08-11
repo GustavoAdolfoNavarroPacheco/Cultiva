@@ -4,30 +4,34 @@ import { db } from "@/lib/db";
 import { courses, whatsappSteps } from "@/lib/db/schema";
 import { PublicHeader } from "@/app/components/PublicHeader";
 import { PageTransition } from "@/app/components/PageTransition";
+import { getCurrentUser } from "@/lib/auth/current-user";
 import { ChatIcon, BookIcon, TagIcon, ArrowRightIcon } from "@/app/components/icons";
 
 export const metadata = { title: "Agente de WhatsApp — Plataforma Educativa" };
 export const dynamic = "force-dynamic";
 
 export default async function WhatsappCoursesPage() {
-  const publishedCourses = await db
-    .select({
-      id: courses.id,
-      title: courses.title,
-      category: courses.category,
-      description: courses.description,
-      stepCount: sql<number>`count(${whatsappSteps.id})`,
-    })
-    .from(courses)
-    .leftJoin(whatsappSteps, eq(whatsappSteps.courseId, courses.id))
-    .where(and(eq(courses.published, true)))
-    .groupBy(courses.id);
+  const [publishedCourses, user] = await Promise.all([
+    db
+      .select({
+        id: courses.id,
+        title: courses.title,
+        category: courses.category,
+        description: courses.description,
+        stepCount: sql<number>`count(${whatsappSteps.id})`,
+      })
+      .from(courses)
+      .leftJoin(whatsappSteps, eq(whatsappSteps.courseId, courses.id))
+      .where(and(eq(courses.published, true)))
+      .groupBy(courses.id),
+    getCurrentUser(),
+  ]);
 
   const coursesWithSteps = publishedCourses.filter((course) => course.stepCount > 0);
 
   return (
     <div className="flex min-h-screen flex-col bg-slate-50/50">
-      <PublicHeader />
+      <PublicHeader role={user?.role} />
 
       <PageTransition>
         <main className="flex-1 px-4 py-8 sm:px-6 sm:py-12">

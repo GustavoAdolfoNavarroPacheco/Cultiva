@@ -4,17 +4,21 @@ import { db } from "@/lib/db";
 import { puntosDigitales } from "@/lib/db/schema";
 import { PublicHeader } from "@/app/components/PublicHeader";
 import { PageTransition } from "@/app/components/PageTransition";
+import { getCurrentUser } from "@/lib/auth/current-user";
 import { SignalIcon, MapPinIcon, BuildingIcon, UserIcon, ArrowRightIcon } from "@/app/components/icons";
 
 export const metadata = { title: "Puntos Digitales — Plataforma Educativa" };
 export const dynamic = "force-dynamic";
 
 export default async function PuntosPublicPage() {
-  const puntos = await db.select().from(puntosDigitales).orderBy(asc(puntosDigitales.name));
+  const [puntos, user] = await Promise.all([
+    db.select().from(puntosDigitales).orderBy(asc(puntosDigitales.name)),
+    getCurrentUser(),
+  ]);
 
   return (
     <div className="flex min-h-screen flex-col bg-slate-50/50">
-      <PublicHeader />
+      <PublicHeader role={user?.role} />
 
       <PageTransition>
         <main className="flex-1 px-4 py-8 sm:px-6 sm:py-12">

@@ -5,6 +5,7 @@ import { db } from "@/lib/db";
 import { courses, lessons, puntosDigitales } from "@/lib/db/schema";
 import { PublicHeader } from "@/app/components/PublicHeader";
 import { PageTransition } from "@/app/components/PageTransition";
+import { getCurrentUser } from "@/lib/auth/current-user";
 import { ArrowLeftIcon, MapPinIcon, TagIcon, BookIcon, ArrowRightIcon } from "@/app/components/icons";
 
 export const dynamic = "force-dynamic";
@@ -17,22 +18,25 @@ export default async function PuntoDetailPage({ params }: { params: Promise<{ id
   const [punto] = await db.select().from(puntosDigitales).where(eq(puntosDigitales.id, puntoId)).limit(1);
   if (!punto) notFound();
 
-  const publishedCourses = await db
-    .select({
-      id: courses.id,
-      title: courses.title,
-      category: courses.category,
-      description: courses.description,
-      lessonCount: sql<number>`count(${lessons.id})`,
-    })
-    .from(courses)
-    .leftJoin(lessons, eq(lessons.courseId, courses.id))
-    .where(and(eq(courses.published, true)))
-    .groupBy(courses.id);
+  const [publishedCourses, user] = await Promise.all([
+    db
+      .select({
+        id: courses.id,
+        title: courses.title,
+        category: courses.category,
+        description: courses.description,
+        lessonCount: sql<number>`count(${lessons.id})`,
+      })
+      .from(courses)
+      .leftJoin(lessons, eq(lessons.courseId, courses.id))
+      .where(and(eq(courses.published, true)))
+      .groupBy(courses.id),
+    getCurrentUser(),
+  ]);
 
   return (
     <div className="flex min-h-screen flex-col bg-slate-50/50">
-      <PublicHeader />
+      <PublicHeader role={user?.role} />
 
       <PageTransition>
         <main className="flex-1 px-4 py-8 sm:px-6 sm:py-12">
