@@ -22,6 +22,10 @@ export const metadata = {
 export default async function HomePage() {
   const user = await getCurrentUser();
 
+  const pilar1Href = user ? (user.role === "admin" ? "/admin" : "/puntos") : "/login";
+  const pilar2Href = user ? "/puntos" : "/login";
+  const pilar3Href = user ? "/whatsapp" : "/login";
+
   return (
     <div className="flex min-h-screen flex-col bg-slate-50/50">
       <PublicHeader role={user?.role} />
@@ -59,15 +63,18 @@ export default async function HomePage() {
 
               <div className="grid gap-8 lg:grid-cols-3">
                 {/* Pilar 1 */}
-                <div className="card-farmer flex flex-col justify-between p-8">
+                <Link
+                  href={pilar1Href}
+                  className="card-farmer flex flex-col justify-between p-8 group cursor-pointer transition-all hover:border-emerald-600 hover:shadow-lg"
+                >
                   <div>
-                    <div className="p-3.5 bg-emerald-50 text-emerald-800 rounded-2xl w-fit mb-5 border border-emerald-200">
+                    <div className="p-3.5 bg-emerald-50 text-emerald-800 rounded-2xl w-fit mb-5 border border-emerald-200 transition-transform group-hover:scale-105">
                       <DashboardIcon className="w-7 h-7" />
                     </div>
                     <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100/60 px-3 py-1 rounded-lg">
                       Pilar 1
                     </span>
-                    <h3 className="font-display text-2xl font-bold text-slate-900 mt-3 mb-2">
+                    <h3 className="font-display text-2xl font-bold text-slate-900 mt-3 mb-2 group-hover:text-emerald-900 transition-colors">
                       Módulo Administrativo Web
                     </h3>
                     <p className="text-slate-600 font-medium text-sm leading-relaxed mb-4">
@@ -89,27 +96,27 @@ export default async function HomePage() {
                     </ul>
                   </div>
 
-                  <div className="mt-8 pt-5 border-t border-slate-100">
-                    <Link
-                      href={user ? (user.role === "admin" ? "/admin" : "/puntos") : "/login"}
-                      className="inline-flex items-center gap-2 text-sm font-bold text-emerald-800 hover:text-emerald-950 hover:underline cursor-pointer"
-                    >
-                      <span>{user ? "Ir al Módulo Admin" : "Iniciar Sesión como Admin"}</span>
-                      <ArrowRightIcon className="w-4 h-4" />
-                    </Link>
+                  <div className="mt-8 pt-5 border-t border-slate-100 flex items-center justify-between">
+                    <span className="text-sm font-bold text-emerald-800 group-hover:text-emerald-950 group-hover:underline">
+                      {user ? (user.role === "admin" ? "Ir al Módulo Admin" : "Ver Cursos Offline") : "Iniciar Sesión como Admin"}
+                    </span>
+                    <ArrowRightIcon className="w-4 h-4 text-emerald-700 transition-transform group-hover:translate-x-1" />
                   </div>
-                </div>
+                </Link>
 
                 {/* Pilar 2 */}
-                <div className="card-farmer flex flex-col justify-between p-8">
+                <Link
+                  href={pilar2Href}
+                  className="card-farmer flex flex-col justify-between p-8 group cursor-pointer transition-all hover:border-emerald-600 hover:shadow-lg"
+                >
                   <div>
-                    <div className="p-3.5 bg-emerald-50 text-emerald-800 rounded-2xl w-fit mb-5 border border-emerald-200">
+                    <div className="p-3.5 bg-emerald-50 text-emerald-800 rounded-2xl w-fit mb-5 border border-emerald-200 transition-transform group-hover:scale-105">
                       <SignalIcon className="w-7 h-7" />
                     </div>
                     <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100/60 px-3 py-1 rounded-lg">
                       Pilar 2
                     </span>
-                    <h3 className="font-display text-2xl font-bold text-slate-900 mt-3 mb-2">
+                    <h3 className="font-display text-2xl font-bold text-slate-900 mt-3 mb-2 group-hover:text-emerald-900 transition-colors">
                       Sistema Offline
                     </h3>
                     <p className="text-slate-600 font-medium text-sm leading-relaxed mb-4">
@@ -131,27 +138,27 @@ export default async function HomePage() {
                     </ul>
                   </div>
 
-                  <div className="mt-8 pt-5 border-t border-slate-100">
-                    <Link
-                      href="/puntos"
-                      className="inline-flex items-center gap-2 text-sm font-bold text-emerald-800 hover:text-emerald-950 hover:underline cursor-pointer"
-                    >
-                      <span>Explorar Sistema Offline</span>
-                      <ArrowRightIcon className="w-4 h-4" />
-                    </Link>
+                  <div className="mt-8 pt-5 border-t border-slate-100 flex items-center justify-between">
+                    <span className="text-sm font-bold text-emerald-800 group-hover:text-emerald-950 group-hover:underline">
+                      {user ? "Explorar Sistema Offline" : "Iniciar Sesión para Acceder"}
+                    </span>
+                    <ArrowRightIcon className="w-4 h-4 text-emerald-700 transition-transform group-hover:translate-x-1" />
                   </div>
-                </div>
+                </Link>
 
                 {/* Pilar 3 */}
-                <div className="card-farmer flex flex-col justify-between p-8">
+                <Link
+                  href={pilar3Href}
+                  className="card-farmer flex flex-col justify-between p-8 group cursor-pointer transition-all hover:border-emerald-600 hover:shadow-lg"
+                >
                   <div>
-                    <div className="p-3.5 bg-emerald-50 text-emerald-800 rounded-2xl w-fit mb-5 border border-emerald-200">
+                    <div className="p-3.5 bg-emerald-50 text-emerald-800 rounded-2xl w-fit mb-5 border border-emerald-200 transition-transform group-hover:scale-105">
                       <ChatIcon className="w-7 h-7" />
                     </div>
                     <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100/60 px-3 py-1 rounded-lg">
                       Pilar 3
                     </span>
-                    <h3 className="font-display text-2xl font-bold text-slate-900 mt-3 mb-2">
+                    <h3 className="font-display text-2xl font-bold text-slate-900 mt-3 mb-2 group-hover:text-emerald-900 transition-colors">
                       Agente Interactivo de WhatsApp
                     </h3>
                     <p className="text-slate-600 font-medium text-sm leading-relaxed mb-4">
@@ -173,16 +180,13 @@ export default async function HomePage() {
                     </ul>
                   </div>
 
-                  <div className="mt-8 pt-5 border-t border-slate-100">
-                    <Link
-                      href="/whatsapp"
-                      className="inline-flex items-center gap-2 text-sm font-bold text-emerald-800 hover:text-emerald-950 hover:underline cursor-pointer"
-                    >
-                      <span>Simular Agente de WhatsApp</span>
-                      <ArrowRightIcon className="w-4 h-4" />
-                    </Link>
+                  <div className="mt-8 pt-5 border-t border-slate-100 flex items-center justify-between">
+                    <span className="text-sm font-bold text-emerald-800 group-hover:text-emerald-950 group-hover:underline">
+                      {user ? "Simular Agente de WhatsApp" : "Iniciar Sesión para Acceder"}
+                    </span>
+                    <ArrowRightIcon className="w-4 h-4 text-emerald-700 transition-transform group-hover:translate-x-1" />
                   </div>
-                </div>
+                </Link>
               </div>
             </div>
 
@@ -211,17 +215,23 @@ export default async function HomePage() {
               </div>
             </div>
 
-            {/* Quick Navigation Footer */}
+            {/* Quick Navigation Footer - ¿Listo para comenzar? */}
             <div className="flex flex-wrap items-center justify-between gap-4 p-8 rounded-3xl bg-slate-900 text-white">
               <div>
                 <p className="text-xl font-bold">¿Listo para comenzar?</p>
                 <p className="text-sm text-slate-300 font-medium mt-0.5">Explora los contenidos de la Plataforma Educativa.</p>
               </div>
               <div className="flex items-center gap-3 flex-wrap">
-                <Link href="/puntos" className="btn-farmer-primary text-sm">
+                <Link
+                  href={pilar2Href}
+                  className="btn-farmer-primary text-sm"
+                >
                   Sistema Offline
                 </Link>
-                <Link href="/whatsapp" className="btn-farmer-secondary text-sm">
+                <Link
+                  href={pilar3Href}
+                  className="btn-farmer-secondary text-sm"
+                >
                   Agente WhatsApp
                 </Link>
               </div>
