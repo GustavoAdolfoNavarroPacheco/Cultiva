@@ -74,10 +74,12 @@ export function CampuslandsInfoView({ userRole }: CampuslandsInfoViewProps) {
                   </button>
 
                   <a
-                    href="#servicios"
+                    href="https://admin-demo.campuslands.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="btn-farmer-secondary text-base cursor-pointer"
                   >
-                    Explorar Servicios
+                    Ver Demo
                   </a>
                 </div>
               </div>
