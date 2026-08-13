@@ -229,7 +229,7 @@ export function ChatsView() {
       <div className="flex-1 flex min-h-0 divide-x divide-slate-200">
         
         {/* COLUMNA 1: LISTA DE CHATS */}
-        <div className="w-80 md:w-96 flex flex-col bg-slate-50/50 shrink-0">
+        <div className="w-72 md:w-80 flex flex-col bg-slate-50/50 shrink-0">
           {/* Buscador */}
           <div className="p-4 border-b border-slate-200 bg-white">
             <div className="relative">
@@ -399,7 +399,7 @@ export function ChatsView() {
 
                     {/* Globo del Mensaje */}
                     <div
-                      className={`max-w-lg rounded-2xl px-4 py-3 text-xs leading-relaxed shadow-xs ${
+                      className={`max-w-2xl rounded-2xl px-4 py-3 text-xs leading-relaxed shadow-xs ${
                         isStudent
                           ? "bg-white text-slate-800 border border-slate-200 rounded-tl-xs"
                           : isAi || isAdmin
@@ -510,7 +510,7 @@ export function ChatsView() {
 
         {/* COLUMNA 3: DATOS DEL ESTUDIANTE */}
         {selectedConv && (
-          <div className="w-72 lg:w-80 p-6 flex flex-col bg-white shrink-0 hidden xl:flex overflow-y-auto space-y-6">
+          <div className="w-64 lg:w-72 p-6 flex flex-col bg-white shrink-0 hidden xl:flex overflow-y-auto space-y-6">
             <div>
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500">
