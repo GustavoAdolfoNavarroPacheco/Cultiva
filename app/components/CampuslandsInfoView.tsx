@@ -7,7 +7,6 @@ import { PublicHeader } from "./PublicHeader";
 import { PageTransition } from "./PageTransition";
 import { DiscoveryModal } from "./DiscoveryModal";
 import {
-  SproutIcon,
   CodeIcon,
   CpuIcon,
   SmartphoneIcon,
@@ -49,8 +48,11 @@ export function CampuslandsInfoView({ userRole }: CampuslandsInfoViewProps) {
             {/* 5.1 Hero / Encabezado Principal */}
             <section className="relative overflow-hidden rounded-3xl bg-slate-900 p-8 sm:p-14 text-white shadow-2xl border border-slate-800">
               <div className="relative z-10 max-w-3xl space-y-6">
-                <div className="inline-flex items-center gap-2 rounded-full bg-emerald-950 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-emerald-300 border border-emerald-800/80">
-                  <SproutIcon className="w-4 h-4 text-emerald-400" /> Campuslands Tech Solutions
+                <div className="inline-flex items-center gap-2.5 rounded-full bg-emerald-950 py-1.5 pl-2 pr-4 text-sm font-bold uppercase tracking-wider text-emerald-300 border border-emerald-800/80">
+                  <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white overflow-hidden p-0.5">
+                    <Image src="/logos/campuslands.png" alt="Campuslands" width={24} height={24} className="h-full w-full object-contain" />
+                  </div>
+                  Campuslands Tech Solutions
                 </div>
 
                 <h1 className="font-display text-3xl font-bold tracking-tight sm:text-5xl lg:text-6xl leading-[1.15] text-white">
