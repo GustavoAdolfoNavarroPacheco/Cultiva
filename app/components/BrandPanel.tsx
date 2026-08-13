@@ -24,7 +24,7 @@ export function BrandPanel() {
         </div>
         <div className="flex flex-col">
           <span className="font-display text-2xl font-bold leading-none tracking-tight text-slate-900 sm:text-3xl">
-            Plataforma<span className="text-emerald-700"> Educativa Sector Agro</span>
+            Plataforma<span className="text-emerald-700"> Educativa</span>
           </span>
           <p className="mt-2 text-xs font-normal uppercase tracking-widest text-emerald-800">
             Capacitación Agropecuaria

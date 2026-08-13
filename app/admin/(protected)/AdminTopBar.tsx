@@ -19,7 +19,7 @@ export function AdminTopBar({
             <SproutIcon className="w-5 h-5 text-white" />
           </div>
           <span className="font-display text-base font-bold text-slate-900">
-            Plataforma<span className="text-emerald-700"> Educativa Sector Agro</span>
+            Plataforma<span className="text-emerald-700"> Educativa</span>
           </span>
         </Link>
         <div className="hidden sm:block text-xs font-semibold uppercase tracking-wider text-slate-400">

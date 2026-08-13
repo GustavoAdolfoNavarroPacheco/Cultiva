@@ -38,7 +38,7 @@ export function AdminSidebar() {
         </div>
         <div>
           <span className="font-display text-base font-bold tracking-tight text-white block leading-tight">
-            Plataforma<span className="text-emerald-500"> Educativa Sector Agro</span>
+            Plataforma<span className="text-emerald-500"> Educativa</span>
           </span>
           <p className="text-[10px] font-normal uppercase tracking-widest text-emerald-400 mt-0.5">
             Panel Administrativo

@@ -289,63 +289,63 @@ export function CampuslandsInfoView({ userRole }: CampuslandsInfoViewProps) {
             </section>
 
             {/* 5.4 Problema que resolvemos */}
-            <section className="card-farmer p-8 sm:p-12 bg-gradient-to-br from-slate-900 to-slate-950 text-white border-slate-800">
+            <section className="card-farmer p-8 sm:p-12">
               <div className="max-w-3xl mb-8">
-                <span className="text-xs font-bold uppercase tracking-widest text-emerald-300 bg-emerald-950 px-3.5 py-1 rounded-xl border border-emerald-800/80">
+                <span className="text-xs font-bold uppercase tracking-widest text-emerald-800 bg-emerald-100/80 px-3.5 py-1 rounded-xl">
                   Desafíos Empresariales
                 </span>
-                <h2 className="font-display text-3xl font-bold text-white mt-3 sm:text-4xl">
+                <h2 className="font-display text-3xl font-bold text-slate-900 mt-3 sm:text-4xl">
                   Problemas que Resolvemos
                 </h2>
-                <p className="mt-2 text-base text-slate-300 font-medium leading-relaxed">
+                <p className="mt-2 text-base text-slate-600 font-medium leading-relaxed">
                   Ayudamos a las empresas a superar las barreras tecnológicas que frenan su crecimiento operativo e innovación.
                 </p>
               </div>
 
               <div className="grid gap-6 md:grid-cols-2">
-                <div className="p-6 bg-slate-800/60 rounded-2xl border border-slate-700/60 flex items-start gap-4">
-                  <div className="p-2.5 bg-rose-500/10 text-rose-400 rounded-xl shrink-0 border border-rose-500/20">
+                <div className="p-6 bg-slate-50/90 rounded-2xl border border-slate-200/90 hover:border-emerald-600 transition-all flex items-start gap-4 shadow-2xs">
+                  <div className="p-3 bg-rose-100 text-rose-700 rounded-xl shrink-0 border border-rose-200">
                     <AlertTriangleIcon className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-white text-lg">Procesos Manuales e Ineficiencias</h3>
-                    <p className="mt-1 text-sm text-slate-300 leading-relaxed font-normal">
+                    <h3 className="font-bold text-slate-900 text-lg">Procesos Manuales e Ineficiencias</h3>
+                    <p className="mt-1 text-sm text-slate-600 leading-relaxed font-normal">
                       Reemplazamos planillas dispersas y tareas repetitivas por plataformas automatizadas que liberan tiempo valioso de tu equipo.
                     </p>
                   </div>
                 </div>
 
-                <div className="p-6 bg-slate-800/60 rounded-2xl border border-slate-700/60 flex items-start gap-4">
-                  <div className="p-2.5 bg-amber-500/10 text-amber-400 rounded-xl shrink-0 border border-amber-500/20">
+                <div className="p-6 bg-slate-50/90 rounded-2xl border border-slate-200/90 hover:border-emerald-600 transition-all flex items-start gap-4 shadow-2xs">
+                  <div className="p-3 bg-amber-100 text-amber-700 rounded-xl shrink-0 border border-amber-200">
                     <LayersIcon className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-white text-lg">Sistemas que no se Comunican</h3>
-                    <p className="mt-1 text-sm text-slate-300 leading-relaxed font-normal">
+                    <h3 className="font-bold text-slate-900 text-lg">Sistemas que no se Comunican</h3>
+                    <p className="mt-1 text-sm text-slate-600 leading-relaxed font-normal">
                       Conectamos herramientas aisladas para garantizar un flujo de datos centralizado, coherente y disponible en tiempo real.
                     </p>
                   </div>
                 </div>
 
-                <div className="p-6 bg-slate-800/60 rounded-2xl border border-slate-700/60 flex items-start gap-4">
-                  <div className="p-2.5 bg-emerald-500/10 text-emerald-400 rounded-xl shrink-0 border border-emerald-500/20">
+                <div className="p-6 bg-slate-50/90 rounded-2xl border border-slate-200/90 hover:border-emerald-600 transition-all flex items-start gap-4 shadow-2xs">
+                  <div className="p-3 bg-emerald-100 text-emerald-800 rounded-xl shrink-0 border border-emerald-200">
                     <CpuIcon className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-white text-lg">Adopción Compleja de Inteligencia Artificial</h3>
-                    <p className="mt-1 text-sm text-slate-300 leading-relaxed font-normal">
+                    <h3 className="font-bold text-slate-900 text-lg">Adopción Compleja de Inteligencia Artificial</h3>
+                    <p className="mt-1 text-sm text-slate-600 leading-relaxed font-normal">
                       Facilitamos la incorporación práctica de la IA en la operación diaria, evitando proyectos teóricos o de poco valor real.
                     </p>
                   </div>
                 </div>
 
-                <div className="p-6 bg-slate-800/60 rounded-2xl border border-slate-700/60 flex items-start gap-4">
-                  <div className="p-2.5 bg-sky-500/10 text-sky-400 rounded-xl shrink-0 border border-sky-500/20">
+                <div className="p-6 bg-slate-50/90 rounded-2xl border border-slate-200/90 hover:border-emerald-600 transition-all flex items-start gap-4 shadow-2xs">
+                  <div className="p-3 bg-sky-100 text-sky-700 rounded-xl shrink-0 border border-sky-200">
                     <SmartphoneIcon className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-white text-lg">Brechas de Conectividad y Accesibilidad</h3>
-                    <p className="mt-1 text-sm text-slate-300 leading-relaxed font-normal">
+                    <h3 className="font-bold text-slate-900 text-lg">Brechas de Conectividad y Accesibilidad</h3>
+                    <p className="mt-1 text-sm text-slate-600 leading-relaxed font-normal">
                       Diseñamos soluciones optimizadas con soporte offline e interfaces intuitivas para entornos rurales o de conectividad limitada.
                     </p>
                   </div>
