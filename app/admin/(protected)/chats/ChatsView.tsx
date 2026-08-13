@@ -9,6 +9,7 @@ import {
   CheckCircleIcon,
   SparklesIcon,
   ArrowRightIcon,
+  ArrowLeftIcon,
   PaperclipIcon,
 } from "@/app/components/icons";
 
@@ -108,6 +109,7 @@ export function ChatsView() {
   const [showQuickAnswers, setShowQuickAnswers] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const hasAutoSelected = useRef(false);
 
   const fetchConversations = async () => {
     try {
@@ -115,7 +117,8 @@ export function ChatsView() {
       if (res.ok) {
         const data = await res.json();
         setConversations(data.conversations ?? []);
-        if (!selectedConvId && data.conversations?.length > 0) {
+        if (!selectedConvId && !hasAutoSelected.current && data.conversations?.length > 0) {
+          hasAutoSelected.current = true;
           setSelectedConvId(data.conversations[0].id);
         }
       }
@@ -228,8 +231,12 @@ export function ChatsView() {
     <div className="h-full flex flex-col bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
       <div className="flex-1 flex min-h-0 divide-x divide-slate-200">
         
-        {/* COLUMNA 1: LISTA DE CHATS */}
-        <div className="w-72 md:w-80 flex flex-col bg-slate-50/50 shrink-0">
+        {/* COLUMNA 1: LISTA DE CHATS (en móvil se oculta al seleccionar un chat) */}
+        <div
+          className={`${
+            selectedConvId ? "hidden md:flex" : "flex"
+          } w-full md:w-60 lg:w-80 flex-col bg-slate-50/50 shrink-0`}
+        >
           {/* Buscador */}
           <div className="p-4 border-b border-slate-200 bg-white">
             <div className="relative">
@@ -332,8 +339,20 @@ export function ChatsView() {
           <div className="flex-1 flex flex-col min-w-0 bg-white">
             
             {/* Header del Chat */}
-            <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-white shrink-0">
+            <div className="px-4 sm:px-6 py-4 border-b border-slate-200 flex items-center justify-between gap-3 bg-white shrink-0">
               <div className="flex items-center gap-3 min-w-0">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedConvId(null);
+                    setSelectedConv(null);
+                  }}
+                  title="Volver a la lista de chats"
+                  aria-label="Volver a la lista de chats"
+                  className="flex md:hidden h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors cursor-pointer"
+                >
+                  <ArrowLeftIcon className="w-4 h-4" />
+                </button>
                 <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-900 text-white font-bold text-sm shrink-0 shadow-xs">
                   {studentInitials}
                 </div>
@@ -348,26 +367,28 @@ export function ChatsView() {
               </div>
 
               {/* Toggle de Modo Atención (Agente IA vs Admin) */}
-              <div className="flex items-center gap-2 bg-slate-100 p-1 rounded-2xl border border-slate-200">
+              <div className="flex items-center gap-1.5 sm:gap-2 bg-slate-100 p-1 rounded-2xl border border-slate-200 shrink-0">
                 <button
                   onClick={() => handleToggleMode("AGENTE_IA")}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  title="Agente IA"
+                  className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                     selectedConv.mode === "AGENTE_IA"
                       ? "bg-emerald-600 text-white shadow-xs"
                       : "text-slate-600 hover:text-slate-900"
                   }`}
                 >
-                  <SparklesIcon className="w-3.5 h-3.5" /> Agente IA
+                  <SparklesIcon className="w-3.5 h-3.5" /> <span className="inline md:hidden lg:inline">Agente IA</span>
                 </button>
                 <button
                   onClick={() => handleToggleMode("MANUAL")}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  title="Admin (Manual)"
+                  className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                     selectedConv.mode === "MANUAL"
                       ? "bg-amber-600 text-white shadow-xs"
                       : "text-slate-600 hover:text-slate-900"
                   }`}
                 >
-                  <UserIcon className="w-3.5 h-3.5" /> Admin (Manual)
+                  <UserIcon className="w-3.5 h-3.5" /> <span className="inline md:hidden lg:inline">Admin (Manual)</span>
                 </button>
               </div>
             </div>
@@ -498,7 +519,7 @@ export function ChatsView() {
             )}
           </div>
         ) : (
-          <div className="flex-1 flex items-center justify-center p-8 text-center text-slate-400 bg-slate-50/20">
+          <div className="hidden md:flex flex-1 items-center justify-center p-8 text-center text-slate-400 bg-slate-50/20">
             <div>
               <ChatIcon className="w-12 h-12 mx-auto mb-3 text-slate-300" />
               <p className="text-sm font-bold text-slate-700">
