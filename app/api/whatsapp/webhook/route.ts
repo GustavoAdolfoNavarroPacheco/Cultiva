@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { eq, desc, and, ne, sql } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { db } from "@/lib/db";
-import { whatsappConversations, whatsappMessages, students, courses } from "@/lib/db/schema";
+import { whatsappConversations, whatsappMessages } from "@/lib/db/schema";
 import {
   verifyWebhook,
   verifyWebhookSignature,
@@ -9,8 +9,7 @@ import {
   sendWhatsAppMessage,
   markMessageAsRead,
 } from "@/lib/whatsapp";
-import { enviarMensaje, getAgentConfig } from "@/lib/ai";
-import { buildSystemPrompt } from "@/lib/ai-prompts";
+import { generateAndSendAiReply } from "@/lib/ai-reply";
 import { logger } from "@/lib/log";
 
 
@@ -119,97 +118,9 @@ async function processMessage(body: unknown) {
   }
 
   // ── Generar respuesta con IA ──
-  try {
-
-    const historialDesc = await db
-      .select()
-      .from(whatsappMessages)
-      .where(
-        and(
-          eq(whatsappMessages.conversationId, conversation.id),
-          ne(whatsappMessages.type, "WHATSAPP_ID")
-        )
-      )
-      .orderBy(desc(whatsappMessages.createdAt))
-      .limit(30);
-
-    const historial = historialDesc.reverse();
-    const agentConfig = await getAgentConfig();
-
-    // ── Consultar información del estudiante en el LMS de KHC ──
-    const rawPhone = telefono.replace(/^\+/, "");
-    const [matchingStudent] = await db
-      .select()
-      .from(students)
-      .where(sql`replace(${students.phone}, '+', '') = ${rawPhone}`)
-      .limit(1);
-
-    const studentName = matchingStudent?.name || conversation.name || profileName;
-
-    // ── Consultar catálogo de cursos publicados en KHC ──
-    const publishedCourses = await db
-      .select({
-        id: courses.id,
-        title: courses.title,
-        category: courses.category,
-        description: courses.description,
-      })
-      .from(courses)
-      .where(eq(courses.published, true))
-      .limit(10);
-
-    const coursesContext = publishedCourses.length > 0
-      ? publishedCourses
-          .map((c) => `- ${c.title} (${c.category || "Agro"})${c.description ? `: ${c.description}` : ""}`)
-          .join("\n")
-      : "- Cursos de Agroindustria, Innovación Agropecuaria, Manejo de Suelos y Tecnología Agrícola.";
-
-    const systemPrompt = buildSystemPrompt({
-      nombre: agentConfig.nombre || "KHC Bot Agro",
-      tono: agentConfig.tono || "EMPRENDEDOR",
-      instrucciones: agentConfig.systemPrompt,
-      studentName,
-      coursesContext,
-    });
-
-    const mensajesAI = [
-      { rol: "system" as const, contenido: systemPrompt },
-      ...historial.map((m) => ({
-        rol: (m.author === "STUDENT" ? "user" : "assistant") as "user" | "assistant",
-        contenido: m.content,
-      })),
-      { rol: "user" as const, contenido: text },
-    ];
-
-
-    const respuesta = await enviarMensaje(mensajesAI);
-
-    let contenidoLimpio = respuesta.contenido
-      .replace(/\[ETAPA:\s*\w+\s*\]/gi, "")
-      .replace(/\*\*(.*?)\*\*/g, "*$1*")
-      .replace(/\n{3,}/g, "\n\n")
-      .trim();
-
-
-    if (!contenidoLimpio) {
-      contenidoLimpio = "Gracias por tu mensaje. ¿En qué más puedo ayudarte en KHC?";
-    }
-
-    // ── Guardar respuesta del agente ──
-    await db.insert(whatsappMessages).values({
-      conversationId: conversation.id,
-      author: "AGENTE_IA",
-      type: "TEXTO",
-      content: contenidoLimpio,
-    });
-
-    // ── Enviar respuesta por WhatsApp ──
-    const sendResult = await sendWhatsAppMessage(telefono, contenidoLimpio);
-    if (!sendResult.success) {
-      logger.error("WHATSAPP", `Error al enviar respuesta por WhatsApp: ${sendResult.error}`);
-    }
-  } catch (error) {
-    logger.error("WHATSAPP", "Error procesando respuesta de IA", error);
+  const result = await generateAndSendAiReply(conversation.id);
+  if (!result.success) {
+    logger.error("WHATSAPP", `Error procesando respuesta de IA: ${result.error}`);
     await sendWhatsAppMessage(
       telefono,
       "Hola, en este momento tenemos problemas técnicos temporales. Intenta de nuevo más tarde."

@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
-import { asc, eq, ne, and, sql } from "drizzle-orm";
+import { asc, desc, eq, ne, and, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { whatsappConversations, whatsappMessages, students, courses } from "@/lib/db/schema";
 import { getCurrentUser } from "@/lib/auth/current-user";
+import { generateAndSendAiReply } from "@/lib/ai-reply";
 
 export const dynamic = "force-dynamic";
 
@@ -97,6 +98,25 @@ export async function PATCH(
     .set({ mode })
     .where(eq(whatsappConversations.id, conversationId))
     .returning();
+
+  // ── Si se reactiva el Agente IA y el estudiante quedó sin respuesta, responder de inmediato ──
+  if (mode === "AGENTE_IA") {
+    const [lastMessage] = await db
+      .select()
+      .from(whatsappMessages)
+      .where(
+        and(
+          eq(whatsappMessages.conversationId, conversationId),
+          ne(whatsappMessages.type, "WHATSAPP_ID")
+        )
+      )
+      .orderBy(desc(whatsappMessages.createdAt))
+      .limit(1);
+
+    if (lastMessage?.author === "STUDENT") {
+      await generateAndSendAiReply(conversationId);
+    }
+  }
 
   return NextResponse.json({ conversation: updated });
 }

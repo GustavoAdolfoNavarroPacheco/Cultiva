@@ -5,8 +5,8 @@ export const dynamic = "force-dynamic";
 
 export default function AdminChatsPage() {
   return (
-    <div className="space-y-4">
-      <div>
+    <div className="flex flex-col h-full gap-4">
+      <div className="shrink-0">
         <h1 className="font-display text-2xl font-bold text-slate-900">
           Gestión de Chats en Vivo
         </h1>
@@ -15,7 +15,9 @@ export default function AdminChatsPage() {
         </p>
       </div>
 
-      <ChatsView />
+      <div className="flex-1 min-h-0">
+        <ChatsView />
+      </div>
     </div>
   );
 }

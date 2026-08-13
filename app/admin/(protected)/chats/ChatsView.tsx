@@ -9,6 +9,7 @@ import {
   CheckCircleIcon,
   SparklesIcon,
   ArrowRightIcon,
+  PaperclipIcon,
 } from "@/app/components/icons";
 
 export type ConversationItem = {
@@ -61,6 +62,26 @@ function getInitials(name: string): string {
     return (parts[0][0] + parts[1][0]).toUpperCase();
   }
   return name.slice(0, 2).toUpperCase();
+}
+
+const WHATSAPP_FORMAT_REGEX = /(\*\*[^*\n]+\*\*|\*[^*\n]+\*|_[^_\n]+_|~[^~\n]+~)/g;
+
+function renderWhatsAppText(content: string): React.ReactNode[] {
+  return content.split(WHATSAPP_FORMAT_REGEX).map((part, idx) => {
+    if (/^\*\*[^*\n]+\*\*$/.test(part)) {
+      return <strong key={idx}>{part.slice(2, -2)}</strong>;
+    }
+    if (/^\*[^*\n]+\*$/.test(part)) {
+      return <strong key={idx}>{part.slice(1, -1)}</strong>;
+    }
+    if (/^_[^_\n]+_$/.test(part)) {
+      return <em key={idx}>{part.slice(1, -1)}</em>;
+    }
+    if (/^~[^~\n]+~$/.test(part)) {
+      return <s key={idx}>{part.slice(1, -1)}</s>;
+    }
+    return part;
+  });
 }
 
 function formatDateLabel(dateStr: string): string {
@@ -204,7 +225,7 @@ export function ChatsView() {
   const studentInitials = getInitials(studentDisplayName);
 
   return (
-    <div className="h-[calc(100vh-6rem)] flex flex-col bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
+    <div className="h-full flex flex-col bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
       <div className="flex-1 flex min-h-0 divide-x divide-slate-200">
         
         {/* COLUMNA 1: LISTA DE CHATS */}
@@ -277,7 +298,15 @@ export function ChatsView() {
                               : "bg-amber-50 text-amber-700 border border-amber-200"
                           }`}
                         >
-                          {conv.mode === "AGENTE_IA" ? "🤖 Agente IA" : "👤 Admin"}
+                          {conv.mode === "AGENTE_IA" ? (
+                            <>
+                              <SparklesIcon className="w-3 h-3" /> Agente IA
+                            </>
+                          ) : (
+                            <>
+                              <UserIcon className="w-3 h-3" /> Admin
+                            </>
+                          )}
                         </span>
 
                         {conv.unreadCount > 0 && (
@@ -322,23 +351,23 @@ export function ChatsView() {
               <div className="flex items-center gap-2 bg-slate-100 p-1 rounded-2xl border border-slate-200">
                 <button
                   onClick={() => handleToggleMode("AGENTE_IA")}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                     selectedConv.mode === "AGENTE_IA"
                       ? "bg-emerald-600 text-white shadow-xs"
                       : "text-slate-600 hover:text-slate-900"
                   }`}
                 >
-                  🤖 Agente IA
+                  <SparklesIcon className="w-3.5 h-3.5" /> Agente IA
                 </button>
                 <button
                   onClick={() => handleToggleMode("MANUAL")}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                     selectedConv.mode === "MANUAL"
                       ? "bg-amber-600 text-white shadow-xs"
                       : "text-slate-600 hover:text-slate-900"
                   }`}
                 >
-                  👤 Admin (Manual)
+                  <UserIcon className="w-3.5 h-3.5" /> Admin (Manual)
                 </button>
               </div>
             </div>
@@ -373,29 +402,21 @@ export function ChatsView() {
                       className={`max-w-lg rounded-2xl px-4 py-3 text-xs leading-relaxed shadow-xs ${
                         isStudent
                           ? "bg-white text-slate-800 border border-slate-200 rounded-tl-xs"
-                          : isAi
-                          ? "bg-slate-900 text-slate-100 rounded-tr-xs"
-                          : isAdmin
-                          ? "bg-emerald-700 text-white rounded-tr-xs"
+                          : isAi || isAdmin
+                          ? "bg-[#d9fdd3] text-slate-900 border border-[#bce8b0] rounded-tr-xs"
                           : "bg-slate-200 text-slate-700 italic"
                       }`}
                     >
-                      <p className="whitespace-pre-wrap">{msg.content}</p>
+                      <p className="whitespace-pre-wrap">{renderWhatsAppText(msg.content)}</p>
 
                       {/* Adjunto si aplica */}
                       {msg.fileUrl && (
-                        <div className="mt-2 pt-2 border-t border-white/20 text-[11px]">
-                          📄 {msg.fileName || "Archivo adjunto"}
+                        <div className="mt-2 pt-2 border-t border-slate-900/10 text-[11px] flex items-center gap-1.5">
+                          <PaperclipIcon className="w-3 h-3" /> {msg.fileName || "Archivo adjunto"}
                         </div>
                       )}
 
-                      <div
-                        className={`text-[9px] mt-1 text-right font-mono ${
-                          isStudent
-                            ? "text-slate-400"
-                            : "text-slate-300"
-                        }`}
-                      >
+                      <div className="text-[9px] mt-1 text-right font-mono text-slate-500/80">
                         {formatDateLabel(msg.createdAt)}
                       </div>
                     </div>
@@ -405,63 +426,76 @@ export function ChatsView() {
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Respuestas Rápidas sugeridas */}
-            {showQuickAnswers && (
-              <div className="p-3 bg-emerald-50 border-t border-emerald-200 space-y-1.5">
-                <p className="text-[10px] font-bold uppercase text-emerald-800 px-1 mb-1">
-                  Respuestas Rápidas Sugeridas:
+            {selectedConv.mode === "AGENTE_IA" ? (
+              /* Aviso: Agente IA a cargo, no se permite escritura manual */
+              <div className="p-4 border-t border-slate-200 bg-emerald-50/60 flex items-center gap-3 shrink-0">
+                <SparklesIcon className="w-4 h-4 text-emerald-600 shrink-0" />
+                <p className="text-xs text-emerald-900 font-medium">
+                  El Agente IA está respondiendo automáticamente. Activa el modo{" "}
+                  <span className="font-bold">Admin (Manual)</span> para escribir tú mismo.
                 </p>
-                {quickAnswersList.map((qa, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => {
-                      setInputText(qa);
-                      setShowQuickAnswers(false);
-                    }}
-                    className="block w-full text-left p-2 rounded-xl bg-white hover:bg-emerald-100 text-xs text-emerald-950 font-medium transition-colors border border-emerald-200 cursor-pointer"
-                  >
-                    {qa}
-                  </button>
-                ))}
               </div>
+            ) : (
+              <>
+                {/* Respuestas Rápidas sugeridas */}
+                {showQuickAnswers && (
+                  <div className="p-3 bg-emerald-50 border-t border-emerald-200 space-y-1.5">
+                    <p className="text-[10px] font-bold uppercase text-emerald-800 px-1 mb-1">
+                      Respuestas Rápidas Sugeridas:
+                    </p>
+                    {quickAnswersList.map((qa, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => {
+                          setInputText(qa);
+                          setShowQuickAnswers(false);
+                        }}
+                        className="block w-full text-left p-2 rounded-xl bg-white hover:bg-emerald-100 text-xs text-emerald-950 font-medium transition-colors border border-emerald-200 cursor-pointer"
+                      >
+                        {qa}
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {/* Input de Respuesta Admin */}
+                <form
+                  onSubmit={handleSendMessage}
+                  className="p-4 border-t border-slate-200 bg-white flex items-center gap-3 shrink-0"
+                >
+                  <button
+                    type="button"
+                    onClick={() => setShowQuickAnswers(!showQuickAnswers)}
+                    title="Escribe / para respuestas rápidas"
+                    className="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-bold text-slate-700 transition-colors cursor-pointer border border-slate-200"
+                  >
+                    / Respuestas
+                  </button>
+
+                  <input
+                    type="text"
+                    placeholder="Envía un mensaje por WhatsApp o escribe / para respuestas rápidas..."
+                    value={inputText}
+                    onChange={(e) => {
+                      setInputText(e.target.value);
+                      if (e.target.value.startsWith("/")) {
+                        setShowQuickAnswers(true);
+                      }
+                    }}
+                    className="flex-1 rounded-2xl bg-slate-100 px-4 py-3 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 border border-slate-200 font-medium"
+                  />
+
+                  <button
+                    type="submit"
+                    disabled={sending || !inputText.trim()}
+                    className="btn-farmer-primary text-xs px-5 py-3 shrink-0 disabled:opacity-50"
+                  >
+                    <span>{sending ? "Enviando..." : "Enviar"}</span>
+                    <ArrowRightIcon className="w-4 h-4" />
+                  </button>
+                </form>
+              </>
             )}
-
-            {/* Input de Respuesta Admin */}
-            <form
-              onSubmit={handleSendMessage}
-              className="p-4 border-t border-slate-200 bg-white flex items-center gap-3 shrink-0"
-            >
-              <button
-                type="button"
-                onClick={() => setShowQuickAnswers(!showQuickAnswers)}
-                title="Escribe / para respuestas rápidas"
-                className="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-bold text-slate-700 transition-colors cursor-pointer border border-slate-200"
-              >
-                / Respuestas
-              </button>
-
-              <input
-                type="text"
-                placeholder="Envía un mensaje por WhatsApp o escribe / para respuestas rápidas..."
-                value={inputText}
-                onChange={(e) => {
-                  setInputText(e.target.value);
-                  if (e.target.value.startsWith("/")) {
-                    setShowQuickAnswers(true);
-                  }
-                }}
-                className="flex-1 rounded-2xl bg-slate-100 px-4 py-3 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 border border-slate-200 font-medium"
-              />
-
-              <button
-                type="submit"
-                disabled={sending || !inputText.trim()}
-                className="btn-farmer-primary text-xs px-5 py-3 shrink-0 disabled:opacity-50"
-              >
-                <span>{sending ? "Enviando..." : "Enviar"}</span>
-                <ArrowRightIcon className="w-4 h-4" />
-              </button>
-            </form>
           </div>
         ) : (
           <div className="flex-1 flex items-center justify-center p-8 text-center text-slate-400 bg-slate-50/20">

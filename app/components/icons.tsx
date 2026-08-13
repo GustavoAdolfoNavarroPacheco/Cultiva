@@ -698,3 +698,20 @@ export function SparklesIcon(props: IconProps) {
   );
 }
 
+export function PaperclipIcon(props: IconProps) {
+  return (
+    <svg
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      viewBox="0 0 24 24"
+      className={props.className ?? "w-4 h-4"}
+      {...props}
+    >
+      <path d="M21.44 11.05 12.25 20.24a5.5 5.5 0 0 1-7.78-7.78L13.66 3.27a3.67 3.67 0 0 1 5.19 5.19L9.6 17.71a1.83 1.83 0 0 1-2.6-2.6l8.49-8.48" />
+    </svg>
+  );
+}
+
