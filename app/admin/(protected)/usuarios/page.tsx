@@ -17,11 +17,11 @@ export default async function UsersPage() {
     <div className="space-y-8">
       {/* Header matched strictly to Panel Principal font hierarchy */}
       <div>
-        <h1 className="font-display text-3xl sm:text-4xl font-black text-slate-900">
+        <h1 className="font-display text-3xl sm:text-4xl font-bold text-slate-900">
           Usuarios Administrativos
         </h1>
-        <p className="mt-1 text-base text-slate-600 font-medium">
-          Cuentas autorizadas con acceso a la gestión de contenidos de Plataforma Educativa.
+        <p className="mt-1 text-base text-slate-600 font-normal">
+          Cuentas autorizadas con acceso a la gestión de contenidos de Plataforma Educativa Sector Agro.
         </p>
       </div>
 
@@ -43,19 +43,19 @@ export default async function UsersPage() {
           <table className="w-full min-w-[560px] text-left border-collapse">
             <thead>
               <tr className="border-b border-slate-200 bg-slate-100/50 text-slate-500">
-                <th className="px-6 py-3.5 text-xs font-bold uppercase tracking-wider">Nombre</th>
-                <th className="px-6 py-3.5 text-xs font-bold uppercase tracking-wider">Correo Electrónico</th>
-                <th className="px-6 py-3.5 text-xs font-bold uppercase tracking-wider">Rol</th>
-                <th className="px-6 py-3.5 text-right text-xs font-bold uppercase tracking-wider">Acciones</th>
+                <th className="px-6 py-3.5 text-xs font-normal uppercase tracking-wider">Nombre</th>
+                <th className="px-6 py-3.5 text-xs font-normal uppercase tracking-wider">Correo Electrónico</th>
+                <th className="px-6 py-3.5 text-xs font-normal uppercase tracking-wider">Rol</th>
+                <th className="px-6 py-3.5 text-right text-xs font-normal uppercase tracking-wider">Acciones</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200">
               {userList.map((user) => (
                 <tr key={user.id} className="transition-colors hover:bg-slate-50/80">
                   <td className="px-6 py-4.5 font-bold text-slate-900 text-base">{user.name}</td>
-                  <td className="px-6 py-4.5 text-slate-600 font-medium">{user.email}</td>
+                  <td className="px-6 py-4.5 text-slate-600 font-normal">{user.email}</td>
                   <td className="px-6 py-4.5">
-                    <span className="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold uppercase tracking-wider text-emerald-900 border border-emerald-300">
+                    <span className="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-xs font-normal uppercase tracking-wider text-emerald-900 border border-emerald-300">
                       {user.role}
                     </span>
                   </td>
@@ -67,7 +67,7 @@ export default async function UsersPage() {
                       >
                         <button
                           type="submit"
-                          className="text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-rose-600 cursor-pointer transition-colors"
+                          className="text-xs font-normal uppercase tracking-wider text-slate-400 hover:text-rose-600 cursor-pointer transition-colors"
                         >
                           Eliminar
                         </button>

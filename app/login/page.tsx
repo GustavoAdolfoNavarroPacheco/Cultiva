@@ -3,7 +3,7 @@ import { getCurrentUser } from "@/lib/auth/current-user";
 import { BrandPanel } from "@/app/components/BrandPanel";
 import { AuthPanel } from "@/app/components/AuthPanel";
 
-export const metadata = { title: "Iniciar Sesión — Plataforma Educativa" };
+export const metadata = { title: "Iniciar Sesión — Plataforma Educativa Sector Agro" };
 
 export default async function LoginPage() {
   const user = await getCurrentUser();

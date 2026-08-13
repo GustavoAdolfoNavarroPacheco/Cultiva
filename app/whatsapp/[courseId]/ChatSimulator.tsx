@@ -339,7 +339,7 @@ export function ChatSimulator({
             <div className="inline-flex p-3 bg-emerald-800 text-white rounded-full mb-2">
               <CheckIcon className="w-6 h-6" />
             </div>
-            <h3 className="text-xl font-black text-emerald-950">¡Curso Completado con Éxito!</h3>
+            <h3 className="text-xl font-bold text-emerald-950">¡Curso Completado con Éxito!</h3>
             <p className="mt-1 text-sm font-bold text-emerald-900">
               Respondiste correctamente {correctCount} de {questionCount} preguntas.
             </p>

@@ -28,10 +28,10 @@ export default async function CoursesPage() {
     <div className="space-y-8">
       {/* Header matched strictly to Panel Principal font hierarchy */}
       <div>
-        <h1 className="font-display text-3xl sm:text-4xl font-black text-slate-900">
+        <h1 className="font-display text-3xl sm:text-4xl font-bold text-slate-900">
           Gestión de Cursos
         </h1>
-        <p className="mt-1 text-base text-slate-600 font-medium">
+        <p className="mt-1 text-base text-slate-600 font-normal">
           Cada curso alimenta a la vez las lecciones descargables y el flujo interactivo del agente de WhatsApp.
         </p>
       </div>
@@ -54,11 +54,11 @@ export default async function CoursesPage() {
           <table className="w-full min-w-[640px] text-left border-collapse">
             <thead>
               <tr className="border-b border-slate-200 bg-slate-100/50 text-slate-500">
-                <th className="px-6 py-3.5 text-xs font-bold uppercase tracking-wider">Nombre del Curso</th>
-                <th className="px-6 py-3.5 text-xs font-bold uppercase tracking-wider">Categoría</th>
-                <th className="px-6 py-3.5 text-xs font-bold uppercase tracking-wider">Lecciones</th>
-                <th className="px-6 py-3.5 text-xs font-bold uppercase tracking-wider">Estado</th>
-                <th className="px-6 py-3.5 text-right text-xs font-bold uppercase tracking-wider">Acciones</th>
+                <th className="px-6 py-3.5 text-xs font-normal uppercase tracking-wider">Nombre del Curso</th>
+                <th className="px-6 py-3.5 text-xs font-normal uppercase tracking-wider">Categoría</th>
+                <th className="px-6 py-3.5 text-xs font-normal uppercase tracking-wider">Lecciones</th>
+                <th className="px-6 py-3.5 text-xs font-normal uppercase tracking-wider">Estado</th>
+                <th className="px-6 py-3.5 text-right text-xs font-normal uppercase tracking-wider">Acciones</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200">
@@ -70,7 +70,7 @@ export default async function CoursesPage() {
                   <td className="px-6 py-4.5 font-bold text-slate-900 text-base">
                     {course.title}
                   </td>
-                  <td className="px-6 py-4.5 text-slate-600 font-medium">
+                  <td className="px-6 py-4.5 text-slate-600 font-normal">
                     <span className="inline-flex items-center rounded-lg bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-700 border border-slate-200">
                       {course.category ?? "General"}
                     </span>
@@ -103,7 +103,7 @@ export default async function CoursesPage() {
               ))}
               {courseList.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-slate-500 font-medium">
+                  <td colSpan={5} className="px-6 py-12 text-center text-slate-500 font-normal">
                     Todavía no hay cursos registrados. Utiliza el formulario superior para crear el primero.
                   </td>
                 </tr>

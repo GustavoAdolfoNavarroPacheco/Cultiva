@@ -109,7 +109,7 @@ export function PdfViewerModal({
                   <div className="flex flex-col items-center justify-center h-full p-8 text-center bg-slate-50">
                     <PdfIcon className="w-16 h-16 text-emerald-700 mb-4" />
                     <p className="text-xl font-bold text-slate-900 mb-2">{title}</p>
-                    <p className="text-slate-600 font-medium mb-6 max-w-md">
+                    <p className="text-slate-600 font-normal mb-6 max-w-md">
                       Tu navegador no soporta la vista previa directa. Puedes descargar el archivo PDF con el botón a continuación.
                     </p>
                     <a href={pdfUrl} download className="btn-farmer-primary text-base">

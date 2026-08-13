@@ -7,7 +7,7 @@ import { PageTransition } from "@/app/components/PageTransition";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { SignalIcon, MapPinIcon, BuildingIcon, UserIcon, ArrowRightIcon } from "@/app/components/icons";
 
-export const metadata = { title: "Modo Offline — Plataforma Educativa" };
+export const metadata = { title: "Modo Offline — Plataforma Educativa Sector Agro" };
 export const dynamic = "force-dynamic";
 
 export default async function PuntosPublicPage() {
@@ -26,10 +26,10 @@ export default async function PuntosPublicPage() {
             {/* Hero Banner for Farmers */}
             <div className="rounded-3xl bg-slate-900 p-8 sm:p-12 text-white shadow-xl relative overflow-hidden border border-slate-800">
               <div className="relative z-10 max-w-3xl">
-                <span className="inline-flex items-center gap-2 rounded-full bg-emerald-950 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-emerald-300 border border-emerald-800/80 mb-4">
+                <span className="inline-flex items-center gap-2 rounded-full bg-emerald-950 px-3.5 py-1 text-xs font-normal uppercase tracking-wider text-emerald-300 border border-emerald-800/80 mb-4">
                   <SignalIcon className="w-4 h-4 text-emerald-400" /> Modo Offline Sin Conexión
                 </span>
-                <h1 className="font-display text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl leading-tight text-white">
+                <h1 className="font-display text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl leading-tight text-white">
                   ¿Dónde te encuentras hoy?
                 </h1>
                 <p className="mt-3 text-lg text-slate-300 font-medium leading-relaxed">
@@ -43,7 +43,7 @@ export default async function PuntosPublicPage() {
               <div className="flex items-center justify-between gap-4 mb-6">
                 <div className="flex items-center gap-2.5">
                   <MapPinIcon className="w-6 h-6 text-emerald-700" />
-                  <h2 className="text-2xl font-black text-slate-900">
+                  <h2 className="text-2xl font-bold text-slate-900">
                     Puntos de Acceso Offline Disponibles ({puntos.length})
                   </h2>
                 </div>
@@ -57,7 +57,7 @@ export default async function PuntosPublicPage() {
                   >
                     <div>
                       <div className="flex items-center justify-between gap-2 mb-4">
-                        <span className="rounded-xl bg-emerald-50 px-3 py-1 text-xs font-bold uppercase tracking-wider text-emerald-800 border border-emerald-200">
+                        <span className="rounded-xl bg-emerald-50 px-3 py-1 text-xs font-normal uppercase tracking-wider text-emerald-800 border border-emerald-200">
                           {punto.zona}
                         </span>
                         <BuildingIcon className="w-5 h-5 text-slate-400" />
@@ -68,7 +68,7 @@ export default async function PuntosPublicPage() {
                       </h3>
 
                       {punto.responsable && (
-                        <p className="mt-2.5 text-sm text-slate-600 font-medium flex items-center gap-2">
+                        <p className="mt-2.5 text-sm text-slate-600 font-normal flex items-center gap-2">
                           <UserIcon className="w-4 h-4 text-slate-400 shrink-0" />
                           Encargado: <span className="font-semibold text-slate-800">{punto.responsable}</span>
                         </p>

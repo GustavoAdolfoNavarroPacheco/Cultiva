@@ -85,8 +85,8 @@ function StatCard({
   return (
     <div className="card-farmer p-6 flex items-center justify-between">
       <div>
-        <p className="text-xs font-bold uppercase tracking-wider text-slate-500">{label}</p>
-        <p className="mt-1 font-display text-4xl font-black text-slate-900">{value}</p>
+        <p className="text-xs font-normal uppercase tracking-wider text-slate-500">{label}</p>
+        <p className="mt-1 font-display text-4xl font-bold text-slate-900">{value}</p>
       </div>
       <div className="p-3 bg-emerald-50 rounded-2xl text-emerald-800 shrink-0">
         <IconComponent className="w-6 h-6" />
@@ -109,11 +109,11 @@ export default async function AdminDashboardPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="font-display text-3xl sm:text-4xl font-black text-slate-900">
+        <h1 className="font-display text-3xl sm:text-4xl font-bold text-slate-900">
           Panel General de Control
         </h1>
-        <p className="mt-1 text-base text-slate-600 font-medium">
-          Resumen en tiempo real de los tres pilares de la Plataforma Educativa.
+        <p className="mt-1 text-base text-slate-600 font-normal">
+          Resumen en tiempo real de los tres pilares de la Plataforma Educativa Sector Agro.
         </p>
       </div>
 
@@ -132,7 +132,7 @@ export default async function AdminDashboardPage() {
             <DownloadIcon className="w-5 h-5 text-emerald-700" />
             <h2 className="font-display text-xl font-bold text-slate-900">Descargas Recientes</h2>
           </div>
-          <p className="text-sm text-slate-500 font-medium">Actividad en el Modo Offline</p>
+          <p className="text-sm text-slate-500 font-normal">Actividad en el Modo Offline</p>
 
           {recentDownloads.length === 0 ? (
             <p className="mt-6 text-base font-medium text-slate-400">Todavía no hay descargas registradas.</p>
@@ -142,7 +142,7 @@ export default async function AdminDashboardPage() {
                 <li key={row.id} className="border-t border-slate-100 pt-3.5 text-sm font-medium">
                   <div className="flex items-center justify-between gap-2">
                     <span className="font-bold text-slate-900">{row.puntoName ?? "Punto no disponible"}</span>
-                    <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider text-slate-700">
+                    <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-normal uppercase tracking-wider text-slate-700">
                       {row.fileType}
                     </span>
                   </div>
@@ -163,7 +163,7 @@ export default async function AdminDashboardPage() {
             <ChatIcon className="w-5 h-5 text-emerald-700" />
             <h2 className="font-display text-xl font-bold text-slate-900">Sesiones de WhatsApp</h2>
           </div>
-          <p className="text-sm text-slate-500 font-medium">Progreso del asistente interactivo</p>
+          <p className="text-sm text-slate-500 font-normal">Progreso del asistente interactivo</p>
 
           {recentChats.length === 0 ? (
             <p className="mt-6 text-base font-medium text-slate-400">Todavía no hay sesiones de chat.</p>
@@ -174,7 +174,7 @@ export default async function AdminDashboardPage() {
                   <div className="flex items-center justify-between gap-2">
                     <span className="font-bold text-slate-900">{row.courseTitle}</span>
                     <span
-                      className={`rounded-full px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider ${row.completed
+                      className={`rounded-full px-2.5 py-0.5 text-xs font-normal uppercase tracking-wider ${row.completed
                           ? "bg-emerald-100 text-emerald-900 border border-emerald-300"
                           : "bg-slate-100 text-slate-700 border border-slate-300"
                         }`}

@@ -37,9 +37,9 @@
   --color-green-800: var(--green-800);
   --color-green-900: var(--green-900);
 
-  --font-display: var(--font-manrope);
-  --font-sans: var(--font-manrope);
-  --font-mono: var(--font-jetbrains-mono);
+  --font-display: var(--font-poppins), sans-serif;
+  --font-sans: var(--font-poppins), sans-serif;
+  --font-mono: var(--font-poppins), sans-serif;
 }
 
 /* Fix for Scrollbar Layout Shift across routes */
@@ -54,6 +54,53 @@ body {
   min-height: 100dvh;
   font-size: 1rem;
   line-height: 1.6;
+  font-weight: 400;
+}
+
+/* ---------- Typography weight hierarchy (Poppins) ---------- */
+/* Base rules for elements without an explicit weight utility class. */
+
+p,
+li,
+td,
+th,
+dd,
+dt,
+label {
+  font-weight: 400;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+}
+
+h4,
+h5,
+h6 {
+  font-weight: 600;
+}
+
+button,
+input[type="submit"],
+input[type="button"],
+[role="button"] {
+  font-weight: 600;
+}
+
+small,
+figcaption,
+caption,
+.text-caption {
+  font-weight: 400;
+}
+
+.text-caption-light {
+  font-weight: 300;
 }
 
 /* Strict Cursor Pointer Enforcement for all interactive elements */
@@ -108,7 +155,7 @@ summary,
   min-height: 48px;
   padding: 0.75rem 1.5rem;
   font-size: 0.95rem;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.01em;
   color: #ffffff;
   background: #047857;
@@ -136,7 +183,7 @@ summary,
   min-height: 48px;
   padding: 0.75rem 1.5rem;
   font-size: 0.95rem;
-  font-weight: 700;
+  font-weight: 600;
   color: #0f172a;
   background: #ffffff;
   border: 1.5px solid #cbd5e1;

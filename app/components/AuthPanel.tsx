@@ -13,7 +13,7 @@ const headings: Record<Mode, { icon: typeof LockIcon; title: string; subtitle: s
   admin: {
     icon: LockIcon,
     title: "Acceso Administrativo",
-    subtitle: "Entra a Plataforma Educativa para gestionar contenidos.",
+    subtitle: "Entra a Plataforma Educativa Sector Agro para gestionar contenidos.",
   },
   "student-login": {
     icon: PhoneIcon,
@@ -63,7 +63,7 @@ export function AuthPanel() {
           type="button"
           onClick={() => setMode("admin")}
           className={`relative z-10 flex-1 rounded-xl py-2.5 text-sm font-bold transition-colors cursor-pointer select-none ${
-            isAdminSelected ? "text-emerald-950 font-black" : "text-slate-500 hover:text-slate-800"
+            isAdminSelected ? "text-emerald-950 font-bold" : "text-slate-500 hover:text-slate-800"
           }`}
         >
           {isAdminSelected && (
@@ -80,7 +80,7 @@ export function AuthPanel() {
           type="button"
           onClick={() => setMode((current) => (current === "admin" ? "student-login" : current))}
           className={`relative z-10 flex-1 rounded-xl py-2.5 text-sm font-bold transition-colors cursor-pointer select-none ${
-            !isAdminSelected ? "text-emerald-950 font-black" : "text-slate-500 hover:text-slate-800"
+            !isAdminSelected ? "text-emerald-950 font-bold" : "text-slate-500 hover:text-slate-800"
           }`}
         >
           {!isAdminSelected && (
@@ -115,7 +115,7 @@ export function AuthPanel() {
               <HeadingIcon className="w-6 h-6" />
             </motion.button>
             <div>
-              <h1 className="font-display text-xl font-black text-slate-900 sm:text-2xl">{heading.title}</h1>
+              <h1 className="font-display text-xl font-bold text-slate-900 sm:text-2xl">{heading.title}</h1>
               <p className="mt-0.5 text-sm font-medium text-slate-500">{heading.subtitle}</p>
             </div>
           </div>

@@ -43,8 +43,8 @@ export default async function CourseDetailPage({
 
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="font-display text-3xl sm:text-4xl font-black text-slate-900">{course.title}</h1>
-          <p className="mt-1 text-base text-slate-600 font-medium">Gestión de lecciones y flujo del agente de WhatsApp</p>
+          <h1 className="font-display text-3xl sm:text-4xl font-bold text-slate-900">{course.title}</h1>
+          <p className="mt-1 text-base text-slate-600 font-normal">Gestión de lecciones y flujo del agente de WhatsApp</p>
         </div>
         <ConfirmDeleteForm
           action={deleteCourse.bind(null, course.id)}
@@ -52,7 +52,7 @@ export default async function CourseDetailPage({
         >
           <button
             type="submit"
-            className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-rose-700 transition-colors hover:bg-rose-100 cursor-pointer shadow-2xs"
+            className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-2.5 text-xs font-normal uppercase tracking-wider text-rose-700 transition-colors hover:bg-rose-100 cursor-pointer shadow-2xs"
           >
             Eliminar Curso
           </button>

@@ -7,7 +7,7 @@ import { PageTransition } from "@/app/components/PageTransition";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { ChatIcon, BookIcon, TagIcon, ArrowRightIcon } from "@/app/components/icons";
 
-export const metadata = { title: "Agente de WhatsApp — Plataforma Educativa" };
+export const metadata = { title: "Agente de WhatsApp — Plataforma Educativa Sector Agro" };
 export const dynamic = "force-dynamic";
 
 export default async function WhatsappCoursesPage() {
@@ -39,10 +39,10 @@ export default async function WhatsappCoursesPage() {
             {/* Hero Banner */}
             <div className="rounded-3xl bg-slate-900 p-8 sm:p-12 text-white shadow-xl border border-slate-800">
               <div className="max-w-3xl">
-                <span className="inline-flex items-center gap-2 rounded-full bg-emerald-950 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-emerald-300 border border-emerald-800/80 mb-4">
+                <span className="inline-flex items-center gap-2 rounded-full bg-emerald-950 px-3.5 py-1 text-xs font-normal uppercase tracking-wider text-emerald-300 border border-emerald-800/80 mb-4">
                   <ChatIcon className="w-4 h-4 text-emerald-400" /> Asistente Virtual Interactivo
                 </span>
-                <h1 className="font-display text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl leading-tight text-white">
+                <h1 className="font-display text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl leading-tight text-white">
                   Aprende desde tu WhatsApp
                 </h1>
                 <p className="mt-3 text-lg text-slate-300 font-medium leading-relaxed">
@@ -55,7 +55,7 @@ export default async function WhatsappCoursesPage() {
             <div>
               <div className="flex items-center gap-2.5 mb-6">
                 <BookIcon className="w-6 h-6 text-emerald-700" />
-                <h2 className="text-2xl font-black text-slate-900">
+                <h2 className="text-2xl font-bold text-slate-900">
                   Cursos Disponibles para WhatsApp ({coursesWithSteps.length})
                 </h2>
               </div>
@@ -67,10 +67,10 @@ export default async function WhatsappCoursesPage() {
                     className="card-farmer p-7 sm:p-9"
                   >
                     <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-                      <span className="inline-flex items-center gap-1.5 rounded-xl bg-slate-100 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-slate-700 border border-slate-200">
+                      <span className="inline-flex items-center gap-1.5 rounded-xl bg-slate-100 px-3.5 py-1 text-xs font-normal uppercase tracking-wider text-slate-700 border border-slate-200">
                         <TagIcon className="w-3.5 h-3.5 text-slate-500" /> {course.category ?? "Agroindustria"}
                       </span>
-                      <span className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-50 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-emerald-900 border border-emerald-200">
+                      <span className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-50 px-3.5 py-1 text-xs font-normal uppercase tracking-wider text-emerald-900 border border-emerald-200">
                         <ChatIcon className="w-3.5 h-3.5 text-emerald-700" /> {course.stepCount} Pasos de Chat
                       </span>
                     </div>
@@ -80,7 +80,7 @@ export default async function WhatsappCoursesPage() {
                     </h3>
 
                     {course.description && (
-                      <p className="mt-2 text-base text-slate-600 font-medium leading-relaxed">
+                      <p className="mt-2 text-base text-slate-600 font-normal leading-relaxed">
                         {course.description}
                       </p>
                     )}

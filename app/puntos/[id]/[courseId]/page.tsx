@@ -51,14 +51,14 @@ export default async function PuntoCoursePage({
           {/* Course Banner Header */}
           <div className="rounded-3xl bg-slate-900 p-8 sm:p-11 text-white shadow-xl border border-slate-800">
             <div className="flex items-center gap-2 mb-3">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-800 px-3 py-1 text-xs font-bold uppercase tracking-wider text-slate-200 border border-slate-700">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-800 px-3 py-1 text-xs font-normal uppercase tracking-wider text-slate-200 border border-slate-700">
                 <MapPinIcon className="w-3.5 h-3.5 text-emerald-400" /> {punto.name}
               </span>
-              <span className="rounded-full bg-emerald-700 text-white px-3 py-1 text-xs font-bold uppercase tracking-wider">
+              <span className="rounded-full bg-emerald-700 text-white px-3 py-1 text-xs font-normal uppercase tracking-wider">
                 {courseLessons.length} Lecciones
               </span>
             </div>
-            <h1 className="font-display text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl leading-tight text-white">
+            <h1 className="font-display text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl leading-tight text-white">
               {course.title}
             </h1>
             {course.description && (
@@ -72,7 +72,7 @@ export default async function PuntoCoursePage({
           <div className="space-y-6">
             <div className="flex items-center gap-2.5">
               <BookIcon className="w-6 h-6 text-emerald-700" />
-              <h2 className="text-2xl font-black text-slate-900">
+              <h2 className="text-2xl font-bold text-slate-900">
                 Lecciones para Descarga Directa
               </h2>
             </div>
@@ -86,7 +86,7 @@ export default async function PuntoCoursePage({
                   <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-800 font-display text-sm font-bold text-white shadow-xs">
                     {lesson.order}
                   </span>
-                  <span className="text-xs font-bold uppercase tracking-wider text-emerald-800">
+                  <span className="text-xs font-normal uppercase tracking-wider text-emerald-800">
                     Lección {lesson.order}
                   </span>
                 </div>
@@ -96,7 +96,7 @@ export default async function PuntoCoursePage({
                 </h3>
 
                 {lesson.summary && (
-                  <p className="mt-2 text-base text-slate-600 font-medium leading-relaxed">
+                  <p className="mt-2 text-base text-slate-600 font-normal leading-relaxed">
                     {lesson.summary}
                   </p>
                 )}

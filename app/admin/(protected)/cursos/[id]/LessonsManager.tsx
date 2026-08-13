@@ -16,7 +16,7 @@ type Lesson = {
 
 const fieldClass =
   "mt-1.5 w-full rounded-xl border-2 border-slate-200 bg-white px-3.5 py-2.5 text-sm font-medium text-slate-900 placeholder:text-slate-400 outline-none transition-all focus:border-emerald-700 focus:bg-white focus:ring-4 focus:ring-emerald-700/10 shadow-2xs";
-const labelClass = "block text-xs font-bold uppercase tracking-wider text-slate-700";
+const labelClass = "block text-xs font-normal uppercase tracking-wider text-slate-700";
 const primaryBtnSm =
   "btn-farmer-primary rounded-xl text-sm font-bold cursor-pointer disabled:opacity-60 min-h-[42px] px-5";
 
@@ -64,7 +64,7 @@ function LessonEditForm({ lesson, courseId, onDone }: { lesson: Lesson; courseId
         <button
           type="button"
           onClick={onDone}
-          className="text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-slate-900 cursor-pointer"
+          className="text-xs font-normal uppercase tracking-wider text-slate-500 hover:text-slate-900 cursor-pointer"
         >
           Cancelar
         </button>
@@ -87,10 +87,10 @@ function LessonRow({ lesson, courseId }: { lesson: Lesson; courseId: number }) {
           <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-800 font-bold text-white text-xs">
             {lesson.order}
           </span>
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Lección {lesson.order}</span>
+          <span className="text-xs font-normal uppercase tracking-wider text-slate-400">Lección {lesson.order}</span>
         </div>
         <p className="font-bold text-slate-900 text-base">{lesson.title}</p>
-        {lesson.summary && <p className="text-sm text-slate-600 font-medium mt-0.5">{lesson.summary}</p>}
+        {lesson.summary && <p className="text-sm text-slate-600 font-normal mt-0.5">{lesson.summary}</p>}
         <div className="mt-2.5 flex items-center gap-3 text-xs font-bold text-emerald-800">
           {lesson.videoUrl && (
             <span className="inline-flex items-center gap-1 bg-emerald-50 border border-emerald-200 rounded-lg px-2 py-0.5">
@@ -109,7 +109,7 @@ function LessonRow({ lesson, courseId }: { lesson: Lesson; courseId: number }) {
         <button
           type="button"
           onClick={() => setEditing(true)}
-          className="text-xs font-bold uppercase tracking-wider text-emerald-800 hover:text-emerald-950 cursor-pointer"
+          className="text-xs font-normal uppercase tracking-wider text-emerald-800 hover:text-emerald-950 cursor-pointer"
         >
           Editar
         </button>
@@ -119,7 +119,7 @@ function LessonRow({ lesson, courseId }: { lesson: Lesson; courseId: number }) {
         >
           <button
             type="submit"
-            className="text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-rose-600 cursor-pointer transition-colors"
+            className="text-xs font-normal uppercase tracking-wider text-slate-400 hover:text-rose-600 cursor-pointer transition-colors"
           >
             Eliminar
           </button>

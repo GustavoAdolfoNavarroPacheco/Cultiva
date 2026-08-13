@@ -23,10 +23,10 @@ export function BrandPanel() {
           <SproutIcon className="w-7 h-7 text-white" />
         </div>
         <div className="flex flex-col">
-          <span className="font-display text-3xl font-black leading-none tracking-tight text-slate-900 sm:text-4xl">
-            Plataforma<span className="text-emerald-700"> Educativa</span>
+          <span className="font-display text-2xl font-bold leading-none tracking-tight text-slate-900 sm:text-3xl">
+            Plataforma<span className="text-emerald-700"> Educativa Sector Agro</span>
           </span>
-          <p className="mt-2 text-xs font-bold uppercase tracking-widest text-emerald-800">
+          <p className="mt-2 text-xs font-normal uppercase tracking-widest text-emerald-800">
             Capacitación Agropecuaria
           </p>
         </div>
@@ -35,7 +35,7 @@ export function BrandPanel() {
       <h2 className="mt-6 text-xl font-bold leading-tight text-slate-900 sm:text-2xl">
         Conocimiento para el campo, accesible para todos.
       </h2>
-      <p className="mt-2.5 text-base leading-relaxed text-slate-600 font-medium">
+      <p className="mt-2.5 text-base leading-relaxed text-slate-600 font-normal">
         Letras grandes, explicaciones sencillas y descargas sin internet.
       </p>
 

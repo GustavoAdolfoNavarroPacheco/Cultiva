@@ -36,10 +36,10 @@ export function AdminSidebar() {
           <SproutIcon className="w-6 h-6" />
         </div>
         <div>
-          <span className="font-display text-lg font-black tracking-tight text-white block leading-tight">
-            Plataforma<span className="text-emerald-500"> Educativa</span>
+          <span className="font-display text-base font-bold tracking-tight text-white block leading-tight">
+            Plataforma<span className="text-emerald-500"> Educativa Sector Agro</span>
           </span>
-          <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-400 mt-0.5">
+          <p className="text-[10px] font-normal uppercase tracking-widest text-emerald-400 mt-0.5">
             Panel Administrativo
           </p>
         </div>
@@ -47,7 +47,7 @@ export function AdminSidebar() {
 
       {/* Primary Navigation with smooth sliding layoutId animation */}
       <nav className="space-y-1.5 flex-1">
-        <p className="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">
+        <p className="px-3 text-[10px] font-normal uppercase tracking-widest text-slate-400 mb-2">
           Navegación
         </p>
         {navLinks.map((link) => {
@@ -57,7 +57,7 @@ export function AdminSidebar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`relative flex items-center gap-3 rounded-xl px-3.5 py-3 text-sm font-bold transition-colors min-h-[46px] select-none cursor-pointer ${active ? "text-white font-extrabold" : "text-slate-300 hover:bg-slate-800/60 hover:text-white"
+              className={`relative flex items-center gap-3 rounded-xl px-3.5 py-3 text-sm font-bold transition-colors min-h-[46px] select-none cursor-pointer ${active ? "text-white font-bold" : "text-slate-300 hover:bg-slate-800/60 hover:text-white"
                 }`}
             >
               {active && (
@@ -76,7 +76,7 @@ export function AdminSidebar() {
 
       {/* Demo Links */}
       <div className="pt-5 border-t border-slate-800 mt-auto">
-        <p className="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">
+        <p className="px-3 text-[10px] font-normal uppercase tracking-widest text-slate-400 mb-2">
           Vistas Públicas
         </p>
         <div className="space-y-1.5">

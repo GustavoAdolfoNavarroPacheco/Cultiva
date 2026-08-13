@@ -8,7 +8,7 @@ const initialState: UserFormState = {};
 
 const fieldClass =
   "mt-1.5 w-full rounded-xl border-2 border-slate-200 bg-white px-4 py-3 text-base font-medium text-slate-900 placeholder:text-slate-400 outline-none transition-all focus:border-emerald-700 focus:bg-white focus:ring-4 focus:ring-emerald-700/10 shadow-2xs";
-const labelClass = "block text-xs font-bold uppercase tracking-wider text-slate-700";
+const labelClass = "block text-xs font-normal uppercase tracking-wider text-slate-700";
 
 export function UserCreateForm() {
   const [state, formAction, pending] = useActionState(createUser, initialState);

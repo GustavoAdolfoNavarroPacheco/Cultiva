@@ -53,17 +53,17 @@ export default async function PuntoDetailPage({ params }: { params: Promise<{ id
             {/* Punto Info Card */}
             <div className="rounded-3xl bg-white p-7 sm:p-9 border border-slate-200 shadow-sm">
               <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
-                <span className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-50 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-emerald-800 border border-emerald-200">
+                <span className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-50 px-3.5 py-1 text-xs font-normal uppercase tracking-wider text-emerald-800 border border-emerald-200">
                   <MapPinIcon className="w-3.5 h-3.5" /> {punto.zona}
                 </span>
                 <span className="text-sm font-semibold text-slate-500">
                   {publishedCourses.length} cursos disponibles
                 </span>
               </div>
-              <h1 className="font-display text-3xl font-black text-slate-900 sm:text-4xl">
+              <h1 className="font-display text-3xl font-bold text-slate-900 sm:text-4xl">
                 {punto.name}
               </h1>
-              <p className="mt-2 text-base text-slate-600 font-medium">
+              <p className="mt-2 text-base text-slate-600 font-normal">
                 Elige el curso que deseas capacitarte para descargar sus lecciones en video o formato PDF directamente a tu dispositivo.
               </p>
             </div>
@@ -76,10 +76,10 @@ export default async function PuntoDetailPage({ params }: { params: Promise<{ id
                   className="card-farmer p-7 sm:p-9"
                 >
                   <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-                    <span className="inline-flex items-center gap-1.5 rounded-xl bg-slate-100 px-3 py-1 text-xs font-bold uppercase tracking-wider text-slate-700 border border-slate-200">
+                    <span className="inline-flex items-center gap-1.5 rounded-xl bg-slate-100 px-3 py-1 text-xs font-normal uppercase tracking-wider text-slate-700 border border-slate-200">
                       <TagIcon className="w-3.5 h-3.5 text-slate-500" /> {course.category ?? "Capacitación"}
                     </span>
-                    <span className="inline-flex items-center gap-1.5 rounded-xl bg-amber-50 px-3 py-1 text-xs font-bold uppercase tracking-wider text-amber-900 border border-amber-200">
+                    <span className="inline-flex items-center gap-1.5 rounded-xl bg-amber-50 px-3 py-1 text-xs font-normal uppercase tracking-wider text-amber-900 border border-amber-200">
                       <BookIcon className="w-3.5 h-3.5 text-amber-700" /> {course.lessonCount} Lecciones
                     </span>
                   </div>
@@ -89,7 +89,7 @@ export default async function PuntoDetailPage({ params }: { params: Promise<{ id
                   </h3>
 
                   {course.description && (
-                    <p className="mt-2 text-base text-slate-600 font-medium leading-relaxed">
+                    <p className="mt-2 text-base text-slate-600 font-normal leading-relaxed">
                       {course.description}
                     </p>
                   )}

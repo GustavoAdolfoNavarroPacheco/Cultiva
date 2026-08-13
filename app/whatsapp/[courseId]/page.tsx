@@ -55,10 +55,10 @@ export default async function WhatsappCoursePage({
 
           {/* Header */}
           <div>
-            <h1 className="font-display text-3xl font-black text-slate-900 sm:text-4xl">
+            <h1 className="font-display text-3xl font-bold text-slate-900 sm:text-4xl">
               {course.title}
             </h1>
-            <p className="mt-2 text-base text-slate-600 font-medium">
+            <p className="mt-2 text-base text-slate-600 font-normal">
               Simulador interactivo del Agente de Plataforma Educativa. Responde las preguntas para completar el curso.
             </p>
           </div>

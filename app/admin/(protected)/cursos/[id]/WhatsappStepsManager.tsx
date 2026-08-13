@@ -24,7 +24,7 @@ type Lesson = { id: number; title: string };
 
 const fieldClass =
   "mt-1.5 w-full rounded-xl border-2 border-slate-200 bg-white px-3.5 py-2.5 text-sm font-medium text-slate-900 placeholder:text-slate-400 outline-none transition-all focus:border-emerald-700 focus:bg-white focus:ring-4 focus:ring-emerald-700/10 shadow-2xs";
-const labelClass = "block text-xs font-bold uppercase tracking-wider text-slate-700";
+const labelClass = "block text-xs font-normal uppercase tracking-wider text-slate-700";
 const primaryBtnSm =
   "btn-farmer-primary rounded-xl text-sm font-bold cursor-pointer disabled:opacity-60 min-h-[42px] px-5";
 
@@ -157,7 +157,7 @@ function StepEditForm({
         <button
           type="button"
           onClick={onDone}
-          className="text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-slate-900 cursor-pointer"
+          className="text-xs font-normal uppercase tracking-wider text-slate-500 hover:text-slate-900 cursor-pointer"
         >
           Cancelar
         </button>
@@ -186,7 +186,7 @@ function StepRow({
     <li className="flex flex-wrap items-start justify-between gap-3 rounded-2xl border border-slate-200 bg-white p-5 transition-colors hover:bg-slate-50/80 shadow-2xs">
       <div>
         <div className="flex items-center gap-2 mb-1">
-          <span className="rounded-lg bg-emerald-100 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider text-emerald-900 border border-emerald-300">
+          <span className="rounded-lg bg-emerald-100 px-2.5 py-0.5 text-xs font-normal uppercase tracking-wider text-emerald-900 border border-emerald-300">
             Paso {step.order} · {kindLabels[step.kind] ?? step.kind}
           </span>
           {lessonTitle && <span className="text-xs font-semibold text-slate-500">Lección: {lessonTitle}</span>}
@@ -213,7 +213,7 @@ function StepRow({
         <button
           type="button"
           onClick={() => setEditing(true)}
-          className="text-xs font-bold uppercase tracking-wider text-emerald-800 hover:text-emerald-950 cursor-pointer"
+          className="text-xs font-normal uppercase tracking-wider text-emerald-800 hover:text-emerald-950 cursor-pointer"
         >
           Editar
         </button>
@@ -223,7 +223,7 @@ function StepRow({
         >
           <button
             type="submit"
-            className="text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-rose-600 cursor-pointer transition-colors"
+            className="text-xs font-normal uppercase tracking-wider text-slate-400 hover:text-rose-600 cursor-pointer transition-colors"
           >
             Eliminar
           </button>

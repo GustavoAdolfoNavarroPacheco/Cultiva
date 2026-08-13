@@ -14,10 +14,10 @@ export default async function PuntosPage() {
     <div className="space-y-8">
       {/* Header matched strictly to Panel Principal font hierarchy */}
       <div>
-        <h1 className="font-display text-3xl sm:text-4xl font-black text-slate-900">
+        <h1 className="font-display text-3xl sm:text-4xl font-bold text-slate-900">
           Modo Offline
         </h1>
-        <p className="mt-1 text-base text-slate-600 font-medium">
+        <p className="mt-1 text-base text-slate-600 font-normal">
           Gestión de puntos físicos de acceso donde los estudiantes descargan contenido técnico sin necesidad de internet.
         </p>
       </div>
@@ -42,7 +42,7 @@ export default async function PuntosPage() {
               style={{ animationDelay: `${100 + index * 60}ms` }}
             >
               <div>
-                <span className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-50 px-3 py-1 text-xs font-bold uppercase tracking-wider text-emerald-800 border border-emerald-200 mb-3">
+                <span className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-50 px-3 py-1 text-xs font-normal uppercase tracking-wider text-emerald-800 border border-emerald-200 mb-3">
                   <MapPinIcon className="w-3.5 h-3.5" /> {punto.zona}
                 </span>
 
@@ -51,7 +51,7 @@ export default async function PuntosPage() {
                 </h3>
 
                 {punto.responsable && (
-                  <p className="mt-2 text-sm text-slate-600 font-medium flex items-center gap-2">
+                  <p className="mt-2 text-sm text-slate-600 font-normal flex items-center gap-2">
                     <UserIcon className="w-4 h-4 text-slate-400 shrink-0" />
                     Encargado: <span className="font-semibold text-slate-800">{punto.responsable}</span>
                   </p>
@@ -74,7 +74,7 @@ export default async function PuntosPage() {
                 >
                   <button
                     type="submit"
-                    className="text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-rose-600 cursor-pointer transition-colors"
+                    className="text-xs font-normal uppercase tracking-wider text-slate-400 hover:text-rose-600 cursor-pointer transition-colors"
                   >
                     Eliminar
                   </button>
