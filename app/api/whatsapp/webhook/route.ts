@@ -112,8 +112,15 @@ async function processMessage(body: unknown) {
     })
     .where(eq(whatsappConversations.id, conversation.id));
 
+  // ── Si la conversación está en modo MANUAL (atención por un administrador), no responder con IA ──
+  if (conversation.mode === "MANUAL") {
+    logger.info("WHATSAPP", `Conversación #${conversation.id} está en modo MANUAL. Omitiendo respuesta de IA.`);
+    return;
+  }
+
   // ── Generar respuesta con IA ──
   try {
+
     const historialDesc = await db
       .select()
       .from(whatsappMessages)

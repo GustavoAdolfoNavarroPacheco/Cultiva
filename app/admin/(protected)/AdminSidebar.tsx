@@ -16,10 +16,12 @@ import {
 const navLinks = [
   { href: "/admin", label: "Panel Principal", icon: DashboardIcon, exact: true },
   { href: "/admin/cursos", label: "Gestión Cursos", icon: BookIcon },
+  { href: "/admin/chats", label: "Chats en Vivo", icon: ChatIcon },
   { href: "/admin/puntos", label: "Modo Offline", icon: SignalIcon },
   { href: "/admin/usuarios", label: "Usuarios Admin", icon: UsersIcon },
   { href: "/admin/whatsapp", label: "Bot WhatsApp IA", icon: ChatIcon },
 ];
+
 
 
 const demoLinks = [
