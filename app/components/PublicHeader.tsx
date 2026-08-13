@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
-import { SproutIcon, SignalIcon, ChatIcon, LockIcon, LogoutIcon, UserIcon } from "./icons";
+import { SproutIcon, SignalIcon, ChatIcon, LockIcon, LogoutIcon, UserIcon, BookIcon } from "./icons";
 import { logoutAction } from "@/lib/auth/actions";
 
 export function PublicHeader({ role }: { role?: string }) {
@@ -12,6 +12,7 @@ export function PublicHeader({ role }: { role?: string }) {
   const isStaff = role === "admin" || role === "editor";
 
   const isInfo = pathname === "/" || pathname === "/info";
+  const isPlataforma = pathname.startsWith("/plataforma");
   const isPuntos = pathname.startsWith("/puntos");
   const isWhatsapp = pathname.startsWith("/whatsapp");
 
@@ -38,7 +39,7 @@ export function PublicHeader({ role }: { role?: string }) {
             {/* Info Access Link - Available for all */}
             <Link
               href="/"
-              className={`relative flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-bold transition-colors min-h-[42px] select-none cursor-pointer ${
+              className={`relative flex items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-bold transition-colors min-h-[42px] select-none cursor-pointer ${
                 isInfo ? "text-white font-bold" : "text-slate-600 hover:text-slate-900"
               }`}
             >
@@ -53,12 +54,31 @@ export function PublicHeader({ role }: { role?: string }) {
               <span className="relative z-10">Info</span>
             </Link>
 
+            {/* Plataforma Educativa Sector Agro - Available for all */}
+            <Link
+              href="/plataforma"
+              className={`relative flex items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-bold transition-colors min-h-[42px] select-none cursor-pointer ${
+                isPlataforma ? "text-white font-bold" : "text-slate-600 hover:text-slate-900"
+              }`}
+              title="Plataforma Educativa Sector Agro"
+            >
+              {isPlataforma && (
+                <motion.span
+                  layoutId="active-public-nav-indicator"
+                  transition={{ type: "spring", stiffness: 450, damping: 32 }}
+                  className="absolute inset-0 rounded-xl bg-emerald-800 shadow-md border border-emerald-700"
+                />
+              )}
+              <BookIcon className="relative z-10 w-4 h-4" />
+              <span className="relative z-10">Plataforma Agro</span>
+            </Link>
+
             {/* Protected navigation items - ONLY for authenticated users */}
             {isLoggedIn && (
               <>
                 <Link
                   href="/puntos"
-                  className={`relative flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-bold transition-colors min-h-[42px] select-none cursor-pointer ${
+                  className={`relative flex items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-bold transition-colors min-h-[42px] select-none cursor-pointer ${
                     isPuntos ? "text-white font-bold" : "text-slate-600 hover:text-slate-900"
                   }`}
                 >
@@ -75,7 +95,7 @@ export function PublicHeader({ role }: { role?: string }) {
 
                 <Link
                   href="/whatsapp"
-                  className={`relative flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-bold transition-colors min-h-[42px] select-none cursor-pointer ${
+                  className={`relative flex items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-bold transition-colors min-h-[42px] select-none cursor-pointer ${
                     isWhatsapp ? "text-white font-bold" : "text-slate-600 hover:text-slate-900"
                   }`}
                 >

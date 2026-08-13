@@ -21,6 +21,7 @@ const navLinks = [
 ];
 
 const demoLinks = [
+  { href: "/plataforma", label: "Plataforma Agro", icon: BookIcon },
   { href: "/puntos", label: "Modo Offline", icon: SignalIcon },
   { href: "/whatsapp", label: "Simular WhatsApp", icon: ChatIcon },
 ];
