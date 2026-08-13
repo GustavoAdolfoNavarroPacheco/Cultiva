@@ -51,12 +51,12 @@ export async function getAgentConfig() {
     const [created] = await db
       .insert(agentIaConfig)
       .values({
-        nombre: "KHC Bot",
-        tono: "PROFESIONAL",
+        nombre: "KHC Bot Agro",
+        tono: "EMPRENDEDOR",
         modelo: process.env.DEEPSEEK_MODEL || "deepseek-v4-pro",
         maxTokens: 2048,
         temperatura: "0.7",
-        systemPrompt: "Eres el asistente virtual de la plataforma educativa KHC.",
+        systemPrompt: "Eres el asistente virtual y tutor interactivo de la plataforma educativa KHC (Sector Agro). Tu misión es acompañar, motivar y orientar a los estudiantes en su aprendizaje.",
       })
       .returning();
 
@@ -64,14 +64,15 @@ export async function getAgentConfig() {
   } catch (error) {
     logger.warn("IA", "No se pudo consultar agentIaConfig en DB, usando defaults", error);
     return {
-      nombre: "KHC Bot",
-      tono: "PROFESIONAL",
+      nombre: "KHC Bot Agro",
+      tono: "EMPRENDEDOR",
       modelo: process.env.DEEPSEEK_MODEL || "deepseek-v4-pro",
       maxTokens: 2048,
       temperatura: "0.7",
-      systemPrompt: "Eres el asistente virtual de la plataforma educativa KHC.",
+      systemPrompt: "Eres el asistente virtual y tutor interactivo de la plataforma educativa KHC (Sector Agro). Tu misión es acompañar, motivar y orientar a los estudiantes en su aprendizaje.",
     };
   }
+
 }
 
 // ─── Función principal para enviar mensajes a la IA ───

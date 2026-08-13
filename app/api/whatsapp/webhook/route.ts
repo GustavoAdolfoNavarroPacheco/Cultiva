@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { eq, desc, and, ne } from "drizzle-orm";
+import { eq, desc, and, ne, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
-import { whatsappConversations, whatsappMessages } from "@/lib/db/schema";
+import { whatsappConversations, whatsappMessages, students, courses } from "@/lib/db/schema";
 import {
   verifyWebhook,
   verifyWebhookSignature,
@@ -12,6 +12,7 @@ import {
 import { enviarMensaje, getAgentConfig } from "@/lib/ai";
 import { buildSystemPrompt } from "@/lib/ai-prompts";
 import { logger } from "@/lib/log";
+
 
 // ─── Webhook: GET (Verificación de Meta) ───
 
@@ -127,10 +128,41 @@ async function processMessage(body: unknown) {
 
     const historial = historialDesc.reverse();
     const agentConfig = await getAgentConfig();
+
+    // ── Consultar información del estudiante en el LMS de KHC ──
+    const rawPhone = telefono.replace(/^\+/, "");
+    const [matchingStudent] = await db
+      .select()
+      .from(students)
+      .where(sql`replace(${students.phone}, '+', '') = ${rawPhone}`)
+      .limit(1);
+
+    const studentName = matchingStudent?.name || conversation.name || profileName;
+
+    // ── Consultar catálogo de cursos publicados en KHC ──
+    const publishedCourses = await db
+      .select({
+        id: courses.id,
+        title: courses.title,
+        category: courses.category,
+        description: courses.description,
+      })
+      .from(courses)
+      .where(eq(courses.published, true))
+      .limit(10);
+
+    const coursesContext = publishedCourses.length > 0
+      ? publishedCourses
+          .map((c) => `- ${c.title} (${c.category || "Agro"})${c.description ? `: ${c.description}` : ""}`)
+          .join("\n")
+      : "- Cursos de Agroindustria, Innovación Agropecuaria, Manejo de Suelos y Tecnología Agrícola.";
+
     const systemPrompt = buildSystemPrompt({
-      nombre: agentConfig.nombre || "KHC Bot",
-      tono: agentConfig.tono || "PROFESIONAL",
+      nombre: agentConfig.nombre || "KHC Bot Agro",
+      tono: agentConfig.tono || "EMPRENDEDOR",
       instrucciones: agentConfig.systemPrompt,
+      studentName,
+      coursesContext,
     });
 
     const mensajesAI = [
@@ -141,6 +173,7 @@ async function processMessage(body: unknown) {
       })),
       { rol: "user" as const, contenido: text },
     ];
+
 
     const respuesta = await enviarMensaje(mensajesAI);
 
