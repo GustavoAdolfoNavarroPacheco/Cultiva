@@ -27,7 +27,7 @@ export default async function WhatsappCoursesPage() {
     getCurrentUser(),
   ]);
 
-  const coursesWithSteps = publishedCourses.filter((course) => course.stepCount > 0);
+  const coursesList = publishedCourses;
 
   return (
     <div className="flex min-h-screen flex-col bg-slate-50/50">
@@ -46,7 +46,7 @@ export default async function WhatsappCoursesPage() {
                   Aprende desde tu WhatsApp
                 </h1>
                 <p className="mt-3 text-lg text-slate-300 font-medium leading-relaxed">
-                  Selecciona un curso a continuación para simular una conversación interactiva con nuestro asistente de inteligencia agropecuaria.
+                  Selecciona un curso a continuación para interactuar paso a paso con nuestro tutor de inteligencia agropecuaria, resolver quizzes y descargar guías en PDF.
                 </p>
               </div>
             </div>
@@ -56,12 +56,12 @@ export default async function WhatsappCoursesPage() {
               <div className="flex items-center gap-2.5 mb-6">
                 <BookIcon className="w-6 h-6 text-emerald-700" />
                 <h2 className="text-2xl font-bold text-slate-900">
-                  Cursos Disponibles para WhatsApp ({coursesWithSteps.length})
+                  Cursos Disponibles para WhatsApp ({coursesList.length})
                 </h2>
               </div>
 
               <div className="space-y-5">
-                {coursesWithSteps.map((course) => (
+                {coursesList.map((course) => (
                   <div
                     key={course.id}
                     className="card-farmer p-7 sm:p-9"
@@ -71,7 +71,7 @@ export default async function WhatsappCoursesPage() {
                         <TagIcon className="w-3.5 h-3.5 text-slate-500" /> {course.category ?? "Agroindustria"}
                       </span>
                       <span className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-50 px-3.5 py-1 text-xs font-normal uppercase tracking-wider text-emerald-900 border border-emerald-200">
-                        <ChatIcon className="w-3.5 h-3.5 text-emerald-700" /> {course.stepCount} Pasos de Chat
+                        <ChatIcon className="w-3.5 h-3.5 text-emerald-700" /> Tutor IA Activo
                       </span>
                     </div>
 
@@ -97,11 +97,11 @@ export default async function WhatsappCoursesPage() {
                   </div>
                 ))}
 
-                {coursesWithSteps.length === 0 && (
+                {coursesList.length === 0 && (
                   <div className="text-center py-12 bg-white rounded-3xl border border-slate-200 p-8">
                     <ChatIcon className="w-10 h-10 text-slate-300 mx-auto" />
                     <p className="mt-3 text-lg font-bold text-slate-900">
-                      Todavía no hay cursos con un flujo de WhatsApp configurado.
+                      Todavía no hay cursos publicados.
                     </p>
                   </div>
                 )}

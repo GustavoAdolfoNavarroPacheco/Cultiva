@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { CampuslandsInfoView } from "@/app/components/CampuslandsInfoView";
 
@@ -9,5 +10,9 @@ export const metadata = {
 
 export default async function HomePage() {
   const user = await getCurrentUser();
+  if (user?.role === "student") {
+    redirect("/whatsapp");
+  }
   return <CampuslandsInfoView userRole={user?.role} />;
 }
+

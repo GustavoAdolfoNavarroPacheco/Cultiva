@@ -41,14 +41,12 @@ export async function POST(
 
   const textTrimmed = text.trim();
 
-  // 1. Enviar mensaje por Meta WhatsApp API
-  const sendResult = await sendWhatsAppMessage(conversation.phone, textTrimmed);
-
-  if (!sendResult.success) {
-    return NextResponse.json(
-      { error: `Error enviando por WhatsApp: ${sendResult.error}` },
-      { status: 500 }
-    );
+  // 1. Intentar enviar mensaje por Meta WhatsApp API si está configurado
+  if (process.env.WHATSAPP_TOKEN && process.env.WHATSAPP_PHONE_NUMBER_ID) {
+    const sendResult = await sendWhatsAppMessage(conversation.phone, textTrimmed);
+    if (!sendResult.success) {
+      console.warn("WhatsApp Cloud API aviso:", sendResult.error);
+    }
   }
 
   // 2. Guardar mensaje enviado por el Admin en la BD

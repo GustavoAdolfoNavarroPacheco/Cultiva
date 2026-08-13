@@ -65,7 +65,14 @@ export default async function WhatsappCoursePage({
 
           {/* Simulator Component */}
           <div>
-            <ChatSimulator courseId={courseId} steps={steps} lessonsById={lessonsById} studentId={studentId} />
+            <ChatSimulator
+              courseId={courseId}
+              courseTitle={course.title}
+              courseCategory={course.category || "Agroindustria"}
+              studentId={studentId}
+              studentName={user?.name || null}
+              studentPhone={user?.phone || null}
+            />
           </div>
         </div>
       </main>

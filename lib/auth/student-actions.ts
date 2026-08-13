@@ -71,7 +71,7 @@ export async function studentLoginAction(
   const store = await cookies();
   store.set(SESSION_COOKIE, token, sessionCookieOptions);
 
-  redirect("/puntos");
+  redirect("/whatsapp");
 }
 
 export async function studentRegisterAction(
@@ -110,5 +110,5 @@ export async function studentRegisterAction(
   const store = await cookies();
   store.set(SESSION_COOKIE, token, sessionCookieOptions);
 
-  redirect("/puntos");
+  redirect("/whatsapp");
 }

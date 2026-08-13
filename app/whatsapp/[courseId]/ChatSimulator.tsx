@@ -1,14 +1,18 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import Image from "next/image";
-import { motion } from "motion/react";
-import { advanceChatSession, startOrResumeChatSession, submitAnswer } from "@/lib/actions/chat";
-import type { ChatAnswer } from "@/lib/db/schema";
+import { motion, AnimatePresence } from "motion/react";
+import {
+  getOrCreateStudentConversation,
+  sendStudentMessage,
+  getCourseChatMessages,
+  resetStudentConversation,
+  type StudentChatMessage,
+} from "@/lib/actions/student-chat";
 import { PdfViewerModal } from "@/app/components/PdfViewerModal";
 import { VideoViewerModal } from "@/app/components/VideoViewerModal";
 import {
-  VideoIcon,
   PdfIcon,
   DownloadIcon,
   EyeIcon,
@@ -16,336 +20,594 @@ import {
   CheckIcon,
   CloseIcon,
   ArrowRightIcon,
+  SendIcon,
+  PaperclipIcon,
+  RotateCcwIcon,
+  SparklesIcon,
+  CheckCircleIcon,
+  UserIcon,
 } from "@/app/components/icons";
 
-type Step = {
-  id: number;
-  order: number;
-  kind: string;
-  lessonId: number | null;
-  messageText: string;
-  question: string | null;
-  options: string[] | null;
-  correctOptionIndex: number | null;
-};
-
-type Lesson = { id: number; title: string; videoUrl: string | null; pdfUrl: string | null };
-
-type Session = {
-  token: string;
-  currentStepOrder: number;
-  answers: ChatAnswer[];
-  completed: boolean;
-};
-
-function storageKey(courseId: number) {
-  return `plataforma_educativa_chat_token_${courseId}`;
+interface ChatSimulatorProps {
+  courseId: number;
+  courseTitle: string;
+  courseCategory?: string;
+  studentId: number | null;
+  studentName: string | null;
+  studentPhone: string | null;
 }
 
-function resolvePdfUrl(url: string | null): string {
-  if (!url || url.includes("cultiva.demo") || url.includes("example.com")) {
-    return "/guias/guia-buenas-practicas-agroindustria.pdf";
+const WHATSAPP_FORMAT_REGEX = /(\*[^*\n]+\*|_[^_\n]+_|~[^~\n]+~)/g;
+
+function renderWhatsAppText(content: string): React.ReactNode[] {
+  return content.split(WHATSAPP_FORMAT_REGEX).map((part, idx) => {
+    if (/^\*[^*\n]+\*$/.test(part)) {
+      return (
+        <strong key={idx} className="font-bold text-slate-900">
+          {part.slice(1, -1)}
+        </strong>
+      );
+    }
+    if (/^_[^_\n]+_$/.test(part)) {
+      return (
+        <em key={idx} className="italic">
+          {part.slice(1, -1)}
+        </em>
+      );
+    }
+    if (/^~[^~\n]+~$/.test(part)) {
+      return (
+        <s key={idx} className="line-through opacity-75">
+          {part.slice(1, -1)}
+        </s>
+      );
+    }
+    return part;
+  });
+}
+
+function formatMessageTime(date: Date | string): string {
+  try {
+    const d = new Date(date);
+    return d.toLocaleTimeString("es-CO", { hour: "2-digit", minute: "2-digit" });
+  } catch {
+    return "";
   }
-  return url;
-}
-
-function resolveVideoUrl(url: string | null): string {
-  if (!url || url.includes("cultiva.demo") || url.includes("example.com")) {
-    return "/videos/video-leccion-oficial.mp4";
-  }
-  return url;
-}
-
-function LessonBubbleExtra({ lesson }: { lesson?: Lesson }) {
-  const [isPdfPreviewOpen, setIsPdfPreviewOpen] = useState(false);
-  const [isVideoPreviewOpen, setIsVideoPreviewOpen] = useState(false);
-
-  if (!lesson) return null;
-
-  const activePdfUrl = resolvePdfUrl(lesson.pdfUrl);
-  const activeVideoUrl = resolveVideoUrl(lesson.videoUrl);
-
-  return (
-    <div className="mt-3 flex flex-wrap gap-2.5 pt-2.5 border-t border-slate-200">
-      {/* Video Direct Download */}
-      {lesson.videoUrl && (
-        <a
-          href={activeVideoUrl}
-          download
-          className="inline-flex items-center gap-2 rounded-xl bg-emerald-800 px-4 py-2 text-xs font-bold text-white shadow-xs hover:bg-emerald-900 transition-colors min-h-[40px] cursor-pointer"
-        >
-          <VideoIcon className="w-4 h-4" />
-          <span>Descargar Video (MP4)</span>
-          <DownloadIcon className="w-3.5 h-3.5 opacity-70" />
-        </a>
-      )}
-
-      {/* Video Modal Preview Button */}
-      {lesson.videoUrl && (
-        <button
-          type="button"
-          onClick={() => setIsVideoPreviewOpen(true)}
-          className="inline-flex items-center gap-2 rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-2 text-xs font-bold text-emerald-900 hover:bg-emerald-100 transition-colors min-h-[40px] cursor-pointer"
-        >
-          <EyeIcon className="w-4 h-4 text-emerald-700" />
-          <span>Ver Video (Previsualizar)</span>
-        </button>
-      )}
-
-      {/* PDF Direct Download */}
-      {lesson.pdfUrl && (
-        <a
-          href={activePdfUrl}
-          download
-          className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-slate-50 px-4 py-2 text-xs font-bold text-slate-800 hover:bg-slate-100 transition-colors min-h-[40px] cursor-pointer"
-        >
-          <PdfIcon className="w-4 h-4 text-emerald-700" />
-          <span>Descargar PDF</span>
-          <DownloadIcon className="w-3.5 h-3.5 opacity-70" />
-        </a>
-      )}
-
-      {/* PDF Modal Preview Button */}
-      {lesson.pdfUrl && (
-        <button
-          type="button"
-          onClick={() => setIsPdfPreviewOpen(true)}
-          className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-colors min-h-[40px] cursor-pointer"
-        >
-          <EyeIcon className="w-4 h-4 text-slate-600" />
-          <span>Ver PDF (Previsualizar)</span>
-        </button>
-      )}
-
-      {/* PDF Viewer Modal */}
-      {lesson.pdfUrl && (
-        <PdfViewerModal
-          isOpen={isPdfPreviewOpen}
-          onClose={() => setIsPdfPreviewOpen(false)}
-          pdfUrl={activePdfUrl}
-          title={`Guía PDF: ${lesson.title}`}
-        />
-      )}
-
-      {/* Video Viewer Modal */}
-      {lesson.videoUrl && (
-        <VideoViewerModal
-          isOpen={isVideoPreviewOpen}
-          onClose={() => setIsVideoPreviewOpen(false)}
-          videoUrl={activeVideoUrl}
-          title={`Video Lección: ${lesson.title}`}
-        />
-      )}
-    </div>
-  );
-}
-
-function BotBubble({ children }: { children: React.ReactNode }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 8, scale: 0.98 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-      className="max-w-[90%] sm:max-w-[85%] rounded-2xl rounded-tl-xs bg-white border border-slate-200 p-4.5 text-base leading-relaxed text-slate-900 shadow-xs"
-    >
-      {children}
-    </motion.div>
-  );
 }
 
 export function ChatSimulator({
   courseId,
-  steps,
-  lessonsById,
+  courseTitle,
+  courseCategory,
   studentId,
-}: {
-  courseId: number;
-  steps: Step[];
-  lessonsById: Record<number, Lesson>;
-  studentId: number | null;
-}) {
-  const [session, setSession] = useState<Session | null>(null);
-  const [pending, setPending] = useState(false);
+  studentName,
+  studentPhone,
+}: ChatSimulatorProps) {
+  const [conversationId, setConversationId] = useState<number | null>(null);
+  const [messages, setMessages] = useState<StudentChatMessage[]>([]);
+  const [inputText, setInputText] = useState("");
+  const [isSending, setIsSending] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAiTyping, setIsAiTyping] = useState(false);
+
+  // Modales
+  const [pdfModal, setPdfModal] = useState<{ isOpen: boolean; url: string; title: string }>({
+    isOpen: false,
+    url: "",
+    title: "",
+  });
+
+  const [videoModal, setVideoModal] = useState<{ isOpen: boolean; url: string; title: string }>({
+    isOpen: false,
+    url: "",
+    title: "",
+  });
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const bootstrapped = useRef(false);
 
+  // Carga inicial
   useEffect(() => {
     if (bootstrapped.current) return;
     bootstrapped.current = true;
 
-    const existingToken = studentId ? null : window.localStorage.getItem(storageKey(courseId));
-    startOrResumeChatSession(courseId, { studentId, existingToken }).then((result) => {
-      if (!studentId) {
-        window.localStorage.setItem(storageKey(courseId), result.token);
+    async function init() {
+      setIsLoading(true);
+      try {
+        const res = await getOrCreateStudentConversation(courseId, {
+          studentId,
+          studentName,
+          studentPhone,
+        });
+        setConversationId(res.conversation.id);
+        setMessages(res.messages);
+      } catch (err) {
+        console.error("Error inicializando chat:", err);
+      } finally {
+        setIsLoading(false);
       }
-      setSession({
-        token: result.token,
-        currentStepOrder: result.currentStepOrder,
-        answers: result.answers,
-        completed: result.completed,
-      });
-    });
-  }, [courseId, studentId]);
+    }
 
-  if (!session) {
+    init();
+  }, [courseId, studentId, studentName, studentPhone]);
+
+  // Polling cada 3 segundos para sincronización en tiempo real con panel de administración
+  useEffect(() => {
+    if (!conversationId) return;
+
+    const interval = setInterval(async () => {
+      try {
+        const res = await getCourseChatMessages(conversationId);
+        // Solo actualizar si hay cambios en la longitud o último mensaje
+        setMessages((prev) => {
+          if (res.messages.length !== prev.length || (res.messages[res.messages.length - 1]?.id !== prev[prev.length - 1]?.id)) {
+            return res.messages;
+          }
+          return prev;
+        });
+      } catch (err) {
+        // Silenciar errores de polling para no interrumpir la experiencia
+      }
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [conversationId]);
+
+  // Auto-scroll
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, isAiTyping]);
+
+  // Enviar mensaje
+  const handleSendMessage = async (textToSend?: string) => {
+    const text = (textToSend || inputText).trim();
+    if (!text || !conversationId || isSending) return;
+
+    if (!textToSend) {
+      setInputText("");
+    }
+
+    // Optimistic UI
+    const tempId = -Date.now();
+    const optimisticMessage: StudentChatMessage = {
+      id: tempId,
+      conversationId,
+      author: "STUDENT",
+      type: "TEXTO",
+      content: text,
+      fileName: null,
+      fileUrl: null,
+      fileMimeType: null,
+      createdAt: new Date(),
+    };
+
+    setMessages((prev) => [...prev, optimisticMessage]);
+    setIsSending(true);
+    setIsAiTyping(true);
+
+    try {
+      const result = await sendStudentMessage(conversationId, courseId, text, studentId);
+      if (result.success && result.messages) {
+        setMessages(result.messages);
+      }
+    } catch (err) {
+      console.error("Error enviando mensaje:", err);
+      alert("No se pudo enviar el mensaje. Intenta de nuevo.");
+    } finally {
+      setIsSending(false);
+      setIsAiTyping(false);
+    }
+  };
+
+  // Reiniciar chat
+  const handleResetChat = async () => {
+    if (!conversationId) return;
+    if (!window.confirm("¿Deseas reiniciar la conversación de este curso desde el inicio?")) return;
+
+    setIsLoading(true);
+    try {
+      const res = await resetStudentConversation(conversationId, courseId);
+      setMessages(res.messages);
+    } catch (err) {
+      console.error("Error reiniciando conversación:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Renderizador de burbuja con detección de PDF, Quiz y Curso Completado
+  const renderMessageContent = (msg: StudentChatMessage) => {
+    let content = msg.content;
+    const isStudent = msg.author === "STUDENT";
+    const isAi = msg.author === "AGENTE_IA";
+    const isAdmin = msg.author === "ADMIN";
+
+    // 1. Detección de PDF: [PDF: <url> | <titulo>]
+    const pdfRegex = /\[PDF:\s*(.+?)\s*\|\s*(.+?)\s*\]/gi;
+    const pdfMatches = [...content.matchAll(pdfRegex)];
+    content = content.replace(pdfRegex, "");
+
+    // 2. Detección de Quiz: [QUIZ: <pregunta> | <opcion1> | <opcion2> ... ]
+    const quizRegex = /\[QUIZ:\s*(.+?)\s*\|\s*(.+?)\s*\]/gi;
+    const quizMatches = [...content.matchAll(quizRegex)];
+    content = content.replace(quizRegex, "");
+
+    // 3. Detección de Curso Completado: [CURSO_COMPLETADO]
+    const isCourseCompleted = content.includes("[CURSO_COMPLETADO]");
+    content = content.replace(/\[CURSO_COMPLETADO\]/gi, "");
+
+    const cleanLines = content.trim().split("\n");
+
     return (
-      <div className="rounded-2xl bg-white border border-slate-200 p-10 text-center text-base font-bold text-slate-600 animate-pulse">
-        Conectando con el Agente de Plataforma Educativa…
-      </div>
-    );
-  }
-
-  const visibleSteps = steps.filter((step) => step.order <= session.currentStepOrder);
-  const lastStep = visibleSteps[visibleSteps.length - 1];
-
-  async function handleAdvance() {
-    setPending(true);
-    const updated = await advanceChatSession(session!.token);
-    setSession({
-      token: updated.token,
-      currentStepOrder: updated.currentStepOrder,
-      answers: updated.answers,
-      completed: updated.completed,
-    });
-    setPending(false);
-  }
-
-  async function handleAnswer(stepId: number, optionIndex: number) {
-    setPending(true);
-    const { session: updated } = await submitAnswer(session!.token, stepId, optionIndex);
-    setSession({
-      token: updated.token,
-      currentStepOrder: updated.currentStepOrder,
-      answers: updated.answers,
-      completed: updated.completed,
-    });
-    setPending(false);
-  }
-
-  const correctCount = session.answers.filter((answer) => answer.correct).length;
-  const questionCount = steps.filter((step) => step.kind === "question").length;
-
-  return (
-    <div className="overflow-hidden rounded-3xl border border-slate-300 bg-slate-900 shadow-xl">
-      {/* WhatsApp Header */}
-      <div className="flex items-center gap-3.5 border-b border-slate-800 bg-slate-900 px-5 py-4 text-white shadow-xs">
-        <div className="relative flex h-11 w-11 items-center justify-center rounded-xl bg-white shadow-xs overflow-hidden p-1.5">
-          <Image src="/logos/campuslands.png" alt="Campuslands" width={44} height={44} className="h-full w-full object-contain" />
-          <span className="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full bg-emerald-400 border-2 border-slate-900" />
-        </div>
-        <div>
-          <p className="text-base font-bold leading-tight text-white">Agente Plataforma Educativa</p>
-          <p className="text-xs font-semibold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5 mt-0.5">
-            <span className="inline-block h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
-            {session.completed ? "Curso Finalizado" : "En línea — Asistente de Capacitación"}
-          </p>
-        </div>
-      </div>
-
-      {/* Chat Messages Body */}
-      <div className="space-y-6 px-4 py-6 sm:p-6 bg-[#f0f2f0] min-h-[420px]">
-        {visibleSteps.map((step) => {
-          const answer = session.answers.find((a) => a.stepId === step.id);
-          const isCurrentUnanswered = step.id === lastStep?.id && step.kind === "question" && !answer;
-
-          return (
-            <div key={step.id} className="space-y-3">
-              <BotBubble>
-                <p className="font-medium text-slate-900">{step.messageText}</p>
-                {step.kind === "lesson" && step.lessonId && (
-                  <LessonBubbleExtra lesson={lessonsById[step.lessonId]} />
-                )}
-                {step.kind === "question" && step.question && (
-                  <div className="mt-3 font-bold text-slate-900 text-base border-t border-slate-200 pt-2.5 flex items-start gap-2">
-                    <HelpCircleIcon className="w-5 h-5 text-emerald-700 shrink-0 mt-0.5" />
-                    <span>{step.question}</span>
-                  </div>
-                )}
-              </BotBubble>
-
-              {step.kind === "question" && step.options && (
-                <div className="ml-1 sm:ml-4 space-y-2.5 max-w-[95%]">
-                  {step.options.map((option, index) => {
-                    const isChosen = answer?.optionIndex === index;
-                    const showResult = Boolean(answer);
-
-                    let buttonStyle = "border-2 border-emerald-700/30 bg-white text-slate-900 hover:bg-emerald-50 hover:border-emerald-700";
-                    if (showResult) {
-                      if (isChosen) {
-                        buttonStyle = answer!.correct
-                          ? "border-2 border-emerald-600 bg-emerald-100 text-emerald-950 font-bold shadow-xs"
-                          : "border-2 border-rose-500 bg-rose-50 text-rose-950 font-bold";
-                      } else {
-                        buttonStyle = "border border-slate-200 bg-slate-100/80 text-slate-400 opacity-60";
-                      }
-                    }
-
-                    return (
-                      <motion.button
-                        key={option}
-                        type="button"
-                        disabled={!isCurrentUnanswered || pending}
-                        onClick={() => handleAnswer(step.id, index)}
-                        whileHover={isCurrentUnanswered ? { scale: 1.01 } : undefined}
-                        whileTap={isCurrentUnanswered ? { scale: 0.98 } : undefined}
-                        className={`w-full text-left min-h-[50px] rounded-2xl px-5 py-3.5 text-base transition-all flex items-center justify-between gap-3 shadow-xs ${buttonStyle}`}
-                      >
-                        <span className="font-semibold">{option}</span>
-                        {showResult && isChosen && (
-                          <span className="flex items-center gap-1.5 text-sm font-bold shrink-0">
-                            {answer!.correct ? (
-                              <>
-                                <CheckIcon className="w-5 h-5 text-emerald-700" />
-                                <span className="text-emerald-800">¡Correcto!</span>
-                              </>
-                            ) : (
-                              <>
-                                <CloseIcon className="w-5 h-5 text-rose-600" />
-                                <span className="text-rose-800">Incorrecto</span>
-                              </>
-                            )}
-                          </span>
-                        )}
-                      </motion.button>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          );
-        })}
-
-        {!session.completed && lastStep && lastStep.kind !== "question" && (
-          <div className="pt-2 flex justify-start">
-            <motion.button
-              type="button"
-              onClick={handleAdvance}
-              disabled={pending}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.96 }}
-              className="btn-farmer-primary text-base px-7"
-            >
-              <span>{pending ? "Cargando…" : "Siguiente Paso"}</span>
-              <ArrowRightIcon className="w-5 h-5" />
-            </motion.button>
+      <div className="space-y-3">
+        {/* Texto formateado */}
+        {cleanLines.length > 0 && cleanLines[0] !== "" && (
+          <div className="text-sm sm:text-base leading-relaxed text-slate-800 space-y-2">
+            {cleanLines.map((line, lIdx) => (
+              <p key={lIdx} className="min-h-[1.25rem]">
+                {renderWhatsAppText(line)}
+              </p>
+            ))}
           </div>
         )}
 
-        {session.completed && (
+        {/* Tarjetas Interactivas de PDF */}
+        {pdfMatches.length > 0 && (
+          <div className="space-y-2 pt-2 border-t border-slate-200/80">
+            {pdfMatches.map((match, pIdx) => {
+              const url = match[1].trim();
+              const title = match[2].trim();
+              const activeUrl =
+                !url || url.includes("cultiva.demo") || url.includes("example.com")
+                  ? "/guias/guia-buenas-practicas-agroindustria.pdf"
+                  : url;
+
+              return (
+                <div
+                  key={pIdx}
+                  className="rounded-2xl bg-emerald-50/80 border border-emerald-200 p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs"
+                >
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-700 text-white shadow-xs">
+                      <PdfIcon className="w-5 h-5" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-xs font-bold text-emerald-950 truncate">{title}</p>
+                      <p className="text-[11px] font-medium text-emerald-700">Documento PDF Oficial</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 w-full sm:w-auto shrink-0 justify-end">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setPdfModal({
+                          isOpen: true,
+                          url: activeUrl,
+                          title,
+                        })
+                      }
+                      className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-300 bg-white px-3 py-1.5 text-xs font-bold text-emerald-900 hover:bg-emerald-100 transition-colors cursor-pointer"
+                    >
+                      <EyeIcon className="w-3.5 h-3.5 text-emerald-700" />
+                      <span>Ver PDF</span>
+                    </button>
+
+                    <a
+                      href={activeUrl}
+                      download
+                      className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-800 px-3 py-1.5 text-xs font-bold text-white hover:bg-emerald-900 transition-colors shadow-2xs cursor-pointer"
+                    >
+                      <DownloadIcon className="w-3.5 h-3.5" />
+                      <span>Descargar</span>
+                    </a>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Tarjeta Interactiva de Quiz */}
+        {quizMatches.length > 0 && (
+          <div className="space-y-3 pt-2">
+            {quizMatches.map((match, qIdx) => {
+              const question = match[1].trim();
+              const options = match[2]
+                .split("|")
+                .map((o) => o.trim())
+                .filter(Boolean);
+
+              return (
+                <div
+                  key={qIdx}
+                  className="rounded-2xl bg-amber-50/60 border-2 border-amber-200 p-4 space-y-3 shadow-xs"
+                >
+                  <div className="flex items-start gap-2.5">
+                    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-amber-500 text-white font-bold text-xs mt-0.5">
+                      ?
+                    </div>
+                    <p className="text-sm font-bold text-slate-900 leading-snug">{question}</p>
+                  </div>
+
+                  <div className="space-y-2 pt-1">
+                    {options.map((opt, oIdx) => (
+                      <button
+                        key={oIdx}
+                        type="button"
+                        onClick={() => handleSendMessage(opt)}
+                        disabled={isSending}
+                        className="w-full text-left rounded-xl border border-amber-300/80 bg-white px-4 py-2.5 text-xs sm:text-sm font-semibold text-slate-800 hover:bg-amber-100/70 hover:border-amber-400 hover:text-amber-950 transition-all flex items-center justify-between gap-2 cursor-pointer shadow-2xs group"
+                      >
+                        <span>{opt}</span>
+                        <ArrowRightIcon className="w-4 h-4 text-amber-600 transition-transform group-hover:translate-x-1 shrink-0" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Banner de Curso Completado */}
+        {isCourseCompleted && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="rounded-2xl bg-emerald-100 border border-emerald-400/60 p-6 text-center shadow-sm"
+            className="rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white p-5 text-center shadow-md space-y-3"
           >
-            <div className="inline-flex p-3 bg-emerald-800 text-white rounded-full mb-2">
-              <CheckIcon className="w-6 h-6" />
+            <div className="inline-flex p-3 bg-white/20 rounded-full">
+              <CheckCircleIcon className="w-7 h-7 text-white" />
             </div>
-            <h3 className="text-xl font-bold text-emerald-950">¡Curso Completado con Éxito!</h3>
-            <p className="mt-1 text-sm font-bold text-emerald-900">
-              Respondiste correctamente {correctCount} de {questionCount} preguntas.
+            <h4 className="text-lg font-bold">¡Felicitaciones! Curso Completado</h4>
+            <p className="text-xs sm:text-sm text-emerald-100 font-medium">
+              Has respondido con éxito las preguntas y completado todas las lecciones de{" "}
+              <strong>{courseTitle}</strong>.
             </p>
           </motion.div>
         )}
       </div>
+    );
+  };
+
+  const quickPrompts = [
+    "¡Comenzar curso! 🚀",
+    "Descargar Guía en PDF 📄",
+    "Hacer quiz de prueba ✍️",
+    "Ver temario 🌾",
+    "Tengo una duda ❓",
+  ];
+
+  if (isLoading) {
+    return (
+      <div className="rounded-3xl bg-white border border-slate-200 p-12 text-center shadow-lg space-y-4">
+        <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700 animate-bounce">
+          <SparklesIcon className="w-6 h-6" />
+        </div>
+        <h3 className="text-lg font-bold text-slate-900">Conectando con el Agente de WhatsApp...</h3>
+        <p className="text-xs text-slate-500">Cargando tutor interactivo y material didáctico del curso</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="overflow-hidden rounded-3xl border border-slate-300 bg-[#efeae2] shadow-2xl flex flex-col h-[700px] max-h-[85vh]">
+      {/* WhatsApp Header */}
+      <div className="flex items-center justify-between border-b border-emerald-950/20 bg-emerald-900 px-4 sm:px-6 py-3.5 text-white shadow-md shrink-0">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white ring-2 ring-emerald-400/50 overflow-hidden p-1 shadow-xs">
+            <Image
+              src="/logos/campuslands.png"
+              alt="Campuslands"
+              width={40}
+              height={40}
+              className="h-full w-full object-contain"
+            />
+            <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-emerald-400 ring-2 ring-emerald-900" />
+          </div>
+
+          <div className="min-w-0">
+            <div className="flex items-center gap-2">
+              <h3 className="text-sm sm:text-base font-bold text-white truncate">
+                Tutor Agro IA — {courseTitle}
+              </h3>
+            </div>
+            <p className="text-xs text-emerald-200 font-medium flex items-center gap-1.5">
+              {isAiTyping ? (
+                <>
+                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-300 animate-ping" />
+                  <span className="italic font-bold text-emerald-300">Escribiendo respuesta...</span>
+                </>
+              ) : (
+                <>
+                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                  <span>En línea • Asistente Oficial</span>
+                </>
+              )}
+            </p>
+          </div>
+        </div>
+
+        {/* Header Actions */}
+        <div className="flex items-center gap-2 shrink-0">
+          <button
+            type="button"
+            onClick={handleResetChat}
+            title="Reiniciar Curso"
+            className="flex items-center gap-1.5 rounded-xl bg-emerald-800/80 hover:bg-emerald-700 px-3 py-1.5 text-xs font-bold text-white transition-colors cursor-pointer border border-emerald-700"
+          >
+            <RotateCcwIcon className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Reiniciar</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Chat Messages Body */}
+      <div
+        className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4"
+        style={{
+          backgroundImage: `radial-gradient(#d1d5db 1px, transparent 1px)`,
+          backgroundSize: "20px 20px",
+        }}
+      >
+        <div className="text-center my-2">
+          <span className="inline-block rounded-lg bg-white/80 backdrop-blur-xs border border-slate-200/80 px-3 py-1 text-[11px] font-bold text-slate-500 shadow-2xs uppercase tracking-wider">
+            Sesión de Aprendizaje Interactivo • Plataforma Agro
+          </span>
+        </div>
+
+        <AnimatePresence initial={false}>
+          {messages.map((msg) => {
+            const isStudent = msg.author === "STUDENT";
+            const isAi = msg.author === "AGENTE_IA";
+            const isAdmin = msg.author === "ADMIN";
+
+            return (
+              <motion.div
+                key={msg.id}
+                initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.25 }}
+                className={`flex flex-col ${isStudent ? "items-end" : "items-start"}`}
+              >
+                {/* Bubble */}
+                <div
+                  className={`relative max-w-[88%] sm:max-w-[80%] rounded-2xl p-4 shadow-xs ${
+                    isStudent
+                      ? "rounded-tr-xs bg-[#d9fdd3] text-slate-900 border border-emerald-200/60"
+                      : "rounded-tl-xs bg-white text-slate-900 border border-slate-200"
+                  }`}
+                >
+                  {/* Sender Tag */}
+                  {!isStudent && (
+                    <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-emerald-800 mb-1.5 pb-1 border-b border-slate-100">
+                      {isAi ? (
+                        <>
+                          <SparklesIcon className="w-3.5 h-3.5 text-emerald-600" />
+                          <span>Tutor Agro IA</span>
+                        </>
+                      ) : isAdmin ? (
+                        <>
+                          <UserIcon className="w-3.5 h-3.5 text-amber-600" />
+                          <span>Asesor Docente KHC</span>
+                        </>
+                      ) : (
+                        <span>Sistema</span>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Message Content */}
+                  {renderMessageContent(msg)}
+
+                  {/* Time and Status Footer */}
+                  <div className="flex items-center justify-end gap-1 mt-2 text-[10px] text-slate-400 font-medium">
+                    <span>{formatMessageTime(msg.createdAt)}</span>
+                    {isStudent && (
+                      <span className="text-emerald-700 font-bold" title="Entregado y leido">
+                        ✓✓
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
+
+        {/* AI Typing Indicator */}
+        {isAiTyping && (
+          <motion.div
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex items-start"
+          >
+            <div className="rounded-2xl rounded-tl-xs bg-white border border-slate-200 px-4 py-3 shadow-xs flex items-center gap-2">
+              <span className="text-xs font-bold text-emerald-800">Tutor Agro IA está respondiendo</span>
+              <div className="flex items-center gap-1">
+                <span className="h-2 w-2 rounded-full bg-emerald-600 animate-bounce [animation-delay:-0.3s]" />
+                <span className="h-2 w-2 rounded-full bg-emerald-600 animate-bounce [animation-delay:-0.15s]" />
+                <span className="h-2 w-2 rounded-full bg-emerald-600 animate-bounce" />
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        <div ref={messagesEndRef} />
+      </div>
+
+      {/* Quick Prompts Chips */}
+      <div className="bg-[#f0f2f5] border-t border-slate-200 px-4 py-2 flex items-center gap-2 overflow-x-auto no-scrollbar shrink-0">
+        <span className="text-[10px] font-bold text-slate-500 uppercase shrink-0">Opciones Rápidas:</span>
+        {quickPrompts.map((prompt) => (
+          <button
+            key={prompt}
+            type="button"
+            onClick={() => handleSendMessage(prompt)}
+            disabled={isSending}
+            className="rounded-full bg-white hover:bg-emerald-50 border border-slate-300 hover:border-emerald-400 px-3 py-1 text-xs font-semibold text-slate-700 hover:text-emerald-900 transition-colors shrink-0 shadow-2xs cursor-pointer"
+          >
+            {prompt}
+          </button>
+        ))}
+      </div>
+
+      {/* WhatsApp Input Bar */}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSendMessage();
+        }}
+        className="flex items-center gap-2.5 bg-[#f0f2f5] px-4 py-3 border-t border-slate-200/80 shrink-0"
+      >
+        <button
+          type="button"
+          onClick={() => handleSendMessage("Descargar Guía en PDF")}
+          title="Ver material didáctico en PDF"
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-slate-500 hover:bg-slate-200 hover:text-slate-800 transition-colors cursor-pointer"
+        >
+          <PaperclipIcon className="w-5 h-5" />
+        </button>
+
+        <input
+          type="text"
+          value={inputText}
+          onChange={(e) => setInputText(e.target.value)}
+          placeholder="Escribe un mensaje o responde la pregunta..."
+          disabled={isSending}
+          className="flex-1 rounded-full bg-white border border-slate-300 px-5 py-2.5 text-sm font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-600/30 focus:border-emerald-600 transition-all shadow-inner"
+        />
+
+        <button
+          type="submit"
+          disabled={!inputText.trim() || isSending}
+          className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition-all shadow-md cursor-pointer ${
+            inputText.trim() && !isSending
+              ? "bg-emerald-700 text-white hover:bg-emerald-800 hover:scale-105 active:scale-95"
+              : "bg-slate-300 text-slate-400 cursor-not-allowed"
+          }`}
+          title="Enviar mensaje"
+        >
+          <SendIcon className="w-5 h-5 translate-x-0.5" />
+        </button>
+      </form>
+
+      {/* PDF Modal Viewer */}
+      <PdfViewerModal
+        isOpen={pdfModal.isOpen}
+        onClose={() => setPdfModal({ isOpen: false, url: "", title: "" })}
+        pdfUrl={pdfModal.url}
+        title={pdfModal.title}
+      />
+
+      {/* Video Modal Viewer */}
+      <VideoViewerModal
+        isOpen={videoModal.isOpen}
+        onClose={() => setVideoModal({ isOpen: false, url: "", title: "" })}
+        videoUrl={videoModal.url}
+        title={videoModal.title}
+      />
     </div>
   );
 }

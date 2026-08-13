@@ -8,7 +8,7 @@ export const metadata = { title: "Iniciar Sesión — Plataforma Educativa Secto
 export default async function LoginPage() {
   const user = await getCurrentUser();
   if (user) {
-    redirect(user.role === "student" ? "/puntos" : "/admin");
+    redirect(user.role === "student" ? "/whatsapp" : "/admin");
   }
 
   return (
