@@ -51,7 +51,7 @@ export function DiscoveryModal({ isOpen, onClose }: DiscoveryModalProps) {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 16 }}
           transition={{ type: "spring", duration: 0.5, bounce: 0.2 }}
-          className="relative z-10 w-full max-w-xl rounded-3xl bg-white p-6 sm:p-10 shadow-2xl border border-slate-200 overflow-hidden"
+          className="relative z-10 w-full max-w-xl max-h-[90vh] overflow-y-auto rounded-3xl bg-white p-6 sm:p-10 shadow-2xl border border-slate-200"
         >
           {/* Close button */}
           <button

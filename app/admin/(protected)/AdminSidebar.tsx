@@ -18,7 +18,9 @@ const navLinks = [
   { href: "/admin/cursos", label: "Gestión Cursos", icon: BookIcon },
   { href: "/admin/puntos", label: "Modo Offline", icon: SignalIcon },
   { href: "/admin/usuarios", label: "Usuarios Admin", icon: UsersIcon },
+  { href: "/admin/whatsapp", label: "Bot WhatsApp IA", icon: ChatIcon },
 ];
+
 
 const demoLinks = [
   { href: "/plataforma", label: "Plataforma Agro", icon: BookIcon },

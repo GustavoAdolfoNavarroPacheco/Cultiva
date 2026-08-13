@@ -614,7 +614,7 @@ export function CampuslandsInfoView({ userRole }: CampuslandsInfoViewProps) {
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(true)}
-                  className="btn-farmer-primary text-base whitespace-nowrap shadow-lg cursor-pointer"
+                  className="btn-farmer-primary text-base shadow-lg cursor-pointer"
                 >
                   <span>Agenda una sesión de descubrimiento</span>
                   <ArrowRightIcon className="w-5 h-5" />

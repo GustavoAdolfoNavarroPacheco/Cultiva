@@ -109,3 +109,55 @@ export const chatSessions = pgTable("chat_sessions", {
   startedAt: timestamp("started_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
+
+export const agentIaConfig = pgTable("agent_ia_config", {
+  id: serial("id").primaryKey(),
+  nombre: text("nombre").notNull().default("KHC Bot"),
+  tono: text("tono").notNull().default("PROFESIONAL"),
+  modelo: text("modelo").notNull().default("deepseek-v4-pro"),
+  maxTokens: integer("max_tokens").notNull().default(2048),
+  temperatura: text("temperatura").notNull().default("0.7"),
+  systemPrompt: text("system_prompt").notNull().default(""),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const whatsappConversations = pgTable("whatsapp_conversations", {
+  id: serial("id").primaryKey(),
+  phone: text("phone").notNull(),
+  name: text("name"),
+  studentId: integer("student_id").references(() => students.id, { onDelete: "set null" }),
+  mode: text("mode").notNull().default("AGENTE_IA"),
+  etapaActual: text("etapa_actual").notNull().default("INICIO"),
+  unreadCount: integer("unread_count").notNull().default(0),
+  lastMessageAt: timestamp("last_message_at", { withTimezone: true }).notNull().defaultNow(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const whatsappMessages = pgTable("whatsapp_messages", {
+  id: serial("id").primaryKey(),
+  conversationId: integer("conversation_id")
+    .notNull()
+    .references(() => whatsappConversations.id, { onDelete: "cascade" }),
+  author: text("author").notNull(),
+  type: text("type").notNull().default("TEXTO"),
+  content: text("content").notNull(),
+  fileName: text("file_name"),
+  fileUrl: text("file_url"),
+  fileMimeType: text("file_mime_type"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const whatsappBusinessConfig = pgTable("whatsapp_business_config", {
+  id: serial("id").primaryKey(),
+  phoneNumber: text("phone_number").notNull().default(""),
+  businessName: text("business_name").notNull().default(""),
+  wabaId: text("waba_id").notNull().default(""),
+  phoneNumberId: text("phone_number_id").notNull().default(""),
+  qualityRating: text("quality_rating").notNull().default(""),
+  messagingTier: text("messaging_tier").notNull().default(""),
+  webhookUrl: text("webhook_url").notNull().default(""),
+  webhookToken: text("webhook_token").notNull().default(""),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+

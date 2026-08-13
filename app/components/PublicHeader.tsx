@@ -41,7 +41,8 @@ export function PublicHeader({ role }: { role?: string }) {
               {/* Info Access Link - Available for all */}
               <Link
                 href="/"
-                className={`relative flex items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-bold transition-colors min-h-[42px] select-none cursor-pointer ${
+                title="Info"
+                className={`relative flex items-center gap-2 rounded-xl px-3 sm:px-3.5 py-2 text-sm font-bold transition-colors min-h-[42px] select-none cursor-pointer ${
                   isInfo ? "text-white font-bold" : "text-slate-600 hover:text-slate-900"
                 }`}
               >
@@ -54,13 +55,13 @@ export function PublicHeader({ role }: { role?: string }) {
                   />
                 )}
                 <SproutIcon className="relative z-10 w-4 h-4" />
-                <span className="relative z-10">Info</span>
+                <span className="relative z-10 hidden sm:inline">Info</span>
               </Link>
 
               {/* Plataforma Educativa Sector Agro - Available for all */}
               <Link
                 href="/plataforma"
-                className={`relative flex items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-bold transition-colors min-h-[42px] select-none cursor-pointer ${
+                className={`relative flex items-center gap-2 rounded-xl px-3 sm:px-3.5 py-2 text-sm font-bold transition-colors min-h-[42px] select-none cursor-pointer ${
                   isPlataforma ? "text-white font-bold" : "text-slate-600 hover:text-slate-900"
                 }`}
                 title="Plataforma Educativa Sector Agro"
@@ -74,7 +75,7 @@ export function PublicHeader({ role }: { role?: string }) {
                   />
                 )}
                 <BookIcon className="relative z-10 w-4 h-4" />
-                <span className="relative z-10">Plataforma Agro</span>
+                <span className="relative z-10 hidden sm:inline">Plataforma Agro</span>
               </Link>
 
               {/* Protected navigation items - ONLY for authenticated users */}
@@ -82,7 +83,8 @@ export function PublicHeader({ role }: { role?: string }) {
                 <>
                   <Link
                     href="/puntos"
-                    className={`relative flex items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-bold transition-colors min-h-[42px] select-none cursor-pointer ${
+                    title="Modo Offline"
+                    className={`relative flex items-center gap-2 rounded-xl px-3 sm:px-3.5 py-2 text-sm font-bold transition-colors min-h-[42px] select-none cursor-pointer ${
                       isPuntos ? "text-white font-bold" : "text-slate-600 hover:text-slate-900"
                     }`}
                   >
@@ -95,12 +97,13 @@ export function PublicHeader({ role }: { role?: string }) {
                       />
                     )}
                     <SignalIcon className="relative z-10 w-4 h-4" />
-                    <span className="relative z-10">Modo Offline</span>
+                    <span className="relative z-10 hidden sm:inline">Modo Offline</span>
                   </Link>
 
                   <Link
                     href="/whatsapp"
-                    className={`relative flex items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-bold transition-colors min-h-[42px] select-none cursor-pointer ${
+                    title="Agente WhatsApp"
+                    className={`relative flex items-center gap-2 rounded-xl px-3 sm:px-3.5 py-2 text-sm font-bold transition-colors min-h-[42px] select-none cursor-pointer ${
                       isWhatsapp ? "text-white font-bold" : "text-slate-600 hover:text-slate-900"
                     }`}
                   >
@@ -113,7 +116,7 @@ export function PublicHeader({ role }: { role?: string }) {
                       />
                     )}
                     <ChatIcon className="relative z-10 w-4 h-4" />
-                    <span className="relative z-10">Agente WhatsApp</span>
+                    <span className="relative z-10 hidden sm:inline">Agente WhatsApp</span>
                   </Link>
                 </>
               )}
