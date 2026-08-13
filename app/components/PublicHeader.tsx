@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "motion/react";
+import { motion, LayoutGroup } from "motion/react";
 import { SproutIcon, SignalIcon, ChatIcon, LockIcon, LogoutIcon, UserIcon, BookIcon, DashboardIcon } from "./icons";
 import { logoutAction } from "@/lib/auth/actions";
 
@@ -35,83 +35,89 @@ export function PublicHeader({ role }: { role?: string }) {
 
         {/* Access navigation */}
         <div className="flex items-center gap-3 flex-wrap">
-          <nav className="relative flex items-center gap-1 p-1 rounded-2xl bg-slate-100/90 border border-slate-200/80">
-            {/* Info Access Link - Available for all */}
-            <Link
-              href="/"
-              className={`relative flex items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-bold transition-colors min-h-[42px] select-none cursor-pointer ${
-                isInfo ? "text-white font-bold" : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              {isInfo && (
-                <motion.span
-                  layoutId="active-public-nav-indicator"
-                  transition={{ type: "spring", stiffness: 450, damping: 32 }}
-                  className="absolute inset-0 rounded-xl bg-emerald-800 shadow-md border border-emerald-700"
-                />
+          <LayoutGroup id="public-header-nav">
+            <nav className="relative flex items-center gap-1 p-1 rounded-2xl bg-slate-100/90 border border-slate-200/80">
+              {/* Info Access Link - Available for all */}
+              <Link
+                href="/"
+                className={`relative flex items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-bold transition-colors min-h-[42px] select-none cursor-pointer ${
+                  isInfo ? "text-white font-bold" : "text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                {isInfo && (
+                  <motion.span
+                    layoutId="active-public-nav-indicator"
+                    layout="x"
+                    transition={{ type: "spring", stiffness: 450, damping: 32 }}
+                    className="absolute inset-0 rounded-xl bg-emerald-800 shadow-md border border-emerald-700"
+                  />
+                )}
+                <SproutIcon className="relative z-10 w-4 h-4" />
+                <span className="relative z-10">Info</span>
+              </Link>
+
+              {/* Plataforma Educativa Sector Agro - Available for all */}
+              <Link
+                href="/plataforma"
+                className={`relative flex items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-bold transition-colors min-h-[42px] select-none cursor-pointer ${
+                  isPlataforma ? "text-white font-bold" : "text-slate-600 hover:text-slate-900"
+                }`}
+                title="Plataforma Educativa Sector Agro"
+              >
+                {isPlataforma && (
+                  <motion.span
+                    layoutId="active-public-nav-indicator"
+                    layout="x"
+                    transition={{ type: "spring", stiffness: 450, damping: 32 }}
+                    className="absolute inset-0 rounded-xl bg-emerald-800 shadow-md border border-emerald-700"
+                  />
+                )}
+                <BookIcon className="relative z-10 w-4 h-4" />
+                <span className="relative z-10">Plataforma Agro</span>
+              </Link>
+
+              {/* Protected navigation items - ONLY for authenticated users */}
+              {isLoggedIn && (
+                <>
+                  <Link
+                    href="/puntos"
+                    className={`relative flex items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-bold transition-colors min-h-[42px] select-none cursor-pointer ${
+                      isPuntos ? "text-white font-bold" : "text-slate-600 hover:text-slate-900"
+                    }`}
+                  >
+                    {isPuntos && (
+                      <motion.span
+                        layoutId="active-public-nav-indicator"
+                        layout="x"
+                        transition={{ type: "spring", stiffness: 450, damping: 32 }}
+                        className="absolute inset-0 rounded-xl bg-emerald-800 shadow-md border border-emerald-700"
+                      />
+                    )}
+                    <SignalIcon className="relative z-10 w-4 h-4" />
+                    <span className="relative z-10">Modo Offline</span>
+                  </Link>
+
+                  <Link
+                    href="/whatsapp"
+                    className={`relative flex items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-bold transition-colors min-h-[42px] select-none cursor-pointer ${
+                      isWhatsapp ? "text-white font-bold" : "text-slate-600 hover:text-slate-900"
+                    }`}
+                  >
+                    {isWhatsapp && (
+                      <motion.span
+                        layoutId="active-public-nav-indicator"
+                        layout="x"
+                        transition={{ type: "spring", stiffness: 450, damping: 32 }}
+                        className="absolute inset-0 rounded-xl bg-emerald-800 shadow-md border border-emerald-700"
+                      />
+                    )}
+                    <ChatIcon className="relative z-10 w-4 h-4" />
+                    <span className="relative z-10">Agente WhatsApp</span>
+                  </Link>
+                </>
               )}
-              <SproutIcon className="relative z-10 w-4 h-4" />
-              <span className="relative z-10">Info</span>
-            </Link>
-
-            {/* Plataforma Educativa Sector Agro - Available for all */}
-            <Link
-              href="/plataforma"
-              className={`relative flex items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-bold transition-colors min-h-[42px] select-none cursor-pointer ${
-                isPlataforma ? "text-white font-bold" : "text-slate-600 hover:text-slate-900"
-              }`}
-              title="Plataforma Educativa Sector Agro"
-            >
-              {isPlataforma && (
-                <motion.span
-                  layoutId="active-public-nav-indicator"
-                  transition={{ type: "spring", stiffness: 450, damping: 32 }}
-                  className="absolute inset-0 rounded-xl bg-emerald-800 shadow-md border border-emerald-700"
-                />
-              )}
-              <BookIcon className="relative z-10 w-4 h-4" />
-              <span className="relative z-10">Plataforma Agro</span>
-            </Link>
-
-            {/* Protected navigation items - ONLY for authenticated users */}
-            {isLoggedIn && (
-              <>
-                <Link
-                  href="/puntos"
-                  className={`relative flex items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-bold transition-colors min-h-[42px] select-none cursor-pointer ${
-                    isPuntos ? "text-white font-bold" : "text-slate-600 hover:text-slate-900"
-                  }`}
-                >
-                  {isPuntos && (
-                    <motion.span
-                      layoutId="active-public-nav-indicator"
-                      transition={{ type: "spring", stiffness: 450, damping: 32 }}
-                      className="absolute inset-0 rounded-xl bg-emerald-800 shadow-md border border-emerald-700"
-                    />
-                  )}
-                  <SignalIcon className="relative z-10 w-4 h-4" />
-                  <span className="relative z-10">Modo Offline</span>
-                </Link>
-
-                <Link
-                  href="/whatsapp"
-                  className={`relative flex items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-bold transition-colors min-h-[42px] select-none cursor-pointer ${
-                    isWhatsapp ? "text-white font-bold" : "text-slate-600 hover:text-slate-900"
-                  }`}
-                >
-                  {isWhatsapp && (
-                    <motion.span
-                      layoutId="active-public-nav-indicator"
-                      transition={{ type: "spring", stiffness: 450, damping: 32 }}
-                      className="absolute inset-0 rounded-xl bg-emerald-800 shadow-md border border-emerald-700"
-                    />
-                  )}
-                  <ChatIcon className="relative z-10 w-4 h-4" />
-                  <span className="relative z-10">Agente WhatsApp</span>
-                </Link>
-              </>
-            )}
-          </nav>
+            </nav>
+          </LayoutGroup>
 
           {isStaff && (
             <Link
