@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { PublicHeader } from "./PublicHeader";
 import { PageTransition } from "./PageTransition";
 import { DiscoveryModal } from "./DiscoveryModal";
@@ -25,6 +26,15 @@ import {
 interface CampuslandsInfoViewProps {
   userRole?: string;
 }
+
+const clientLogos = [
+  { name: "Conexalab", src: "/logos/conexalab.png" },
+  { name: "Fundación Cardiovascular", src: "/logos/fundacion-cardiovascular.png" },
+  { name: "Mantis", src: "/logos/mantis.png" },
+  { name: "Solvo", src: "/logos/solvo.png" },
+  { name: "Disfarma", src: "/logos/disfarma.png" },
+  { name: "Globant", src: "/logos/globant.png" },
+];
 
 export function CampuslandsInfoView({ userRole }: CampuslandsInfoViewProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -545,49 +555,42 @@ export function CampuslandsInfoView({ userRole }: CampuslandsInfoViewProps) {
               </div>
             </section>
 
-            {/* 5.8 Datos, resultados y experiencia (Marco Estructural Limpio) */}
-            <section className="card-farmer p-8 sm:p-10 bg-gradient-to-br from-white to-emerald-50/40">
-              <div className="max-w-3xl mb-6">
+            {/* 5.8 Clientes */}
+            <section className="card-farmer p-8 sm:p-10 bg-gradient-to-br from-white to-emerald-50/40 overflow-hidden">
+              <div className="max-w-3xl mb-8">
                 <span className="text-xs font-bold uppercase tracking-widest text-emerald-800 bg-emerald-100/70 px-3.5 py-1 rounded-xl">
-                  Experiencia y Garantía
+                  Alianzas Estratégicas
                 </span>
                 <h2 className="font-display text-2xl sm:text-3xl font-bold text-slate-900 mt-3">
-                  Marco de Impacto y Evaluación
+                  Clientes
                 </h2>
                 <p className="text-slate-600 font-normal text-sm sm:text-base leading-relaxed">
-                  Estructura preparada para la medición de resultados operacionales, indicadores de rendimiento e hitos de proyecto.
+                  Empresas y organizaciones que confían en Campuslands para su transformación digital.
                 </p>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-3">
-                <div className="p-5 bg-white rounded-2xl border border-slate-200 shadow-2xs">
-                  <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
-                    Métricas Operativas
-                  </span>
-                  <h3 className="font-bold text-slate-900 text-base mt-3">Medición Continuada</h3>
-                  <p className="text-xs text-slate-500 font-normal mt-1">
-                    Monitoreo de tiempos de respuesta, disponibilidad y tasa de uso de los sistemas construidos.
-                  </p>
-                </div>
-
-                <div className="p-5 bg-white rounded-2xl border border-slate-200 shadow-2xs">
-                  <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
-                    Calidad Certificada
-                  </span>
-                  <h3 className="font-bold text-slate-900 text-base mt-3">Control de Calidad</h3>
-                  <p className="text-xs text-slate-500 font-normal mt-1">
-                    Suite de pruebas automatizadas que respaldan la estabilidad de las aplicaciones.
-                  </p>
-                </div>
-
-                <div className="p-5 bg-white rounded-2xl border border-slate-200 shadow-2xs">
-                  <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
-                    Casos de Éxito
-                  </span>
-                  <h3 className="font-bold text-slate-900 text-base mt-3">Plataforma Educativa Sector Agro</h3>
-                  <p className="text-xs text-slate-500 font-normal mt-1">
-                    Solución estructurada en 3 pilares con capacidad de capacitación online, offline y asistente virtual por WhatsApp.
-                  </p>
+              <div
+                className="relative -mx-8 sm:-mx-10 overflow-hidden"
+                style={{
+                  maskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
+                  WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
+                }}
+              >
+                <div className="flex w-max items-center gap-6 animate-marquee motion-reduce:animate-none">
+                  {[...clientLogos, ...clientLogos].map((client, index) => (
+                    <div
+                      key={`${client.name}-${index}`}
+                      className="flex h-24 w-48 shrink-0 items-center justify-center rounded-2xl border border-slate-200 bg-white p-5 shadow-2xs"
+                    >
+                      <Image
+                        src={client.src}
+                        alt={client.name}
+                        width={160}
+                        height={64}
+                        className="h-full w-full object-contain"
+                      />
+                    </div>
+                  ))}
                 </div>
               </div>
             </section>

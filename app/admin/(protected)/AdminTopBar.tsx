@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "motion/react";
 import { logoutAction } from "@/lib/auth/actions";
-import { LogoutIcon, UserIcon, SproutIcon } from "@/app/components/icons";
+import { LogoutIcon, UserIcon } from "@/app/components/icons";
 
 export function AdminTopBar({
   user,
@@ -15,8 +16,8 @@ export function AdminTopBar({
       {/* Left side: Mobile brand title & breadcrumb info */}
       <div className="flex items-center gap-3">
         <Link href="/info" className="flex md:hidden items-center gap-2 cursor-pointer" title="Ver información de Plataforma Educativa">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-800 text-white font-bold">
-            <SproutIcon className="w-5 h-5 text-white" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white ring-1 ring-slate-200 overflow-hidden p-1">
+            <Image src="/logos/campuslands.png" alt="Campuslands" width={32} height={32} className="h-full w-full object-contain" />
           </div>
           <span className="font-display text-base font-bold text-slate-900">
             Plataforma<span className="text-emerald-700"> Educativa</span>

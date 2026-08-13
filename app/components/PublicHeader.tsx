@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, LayoutGroup } from "motion/react";
 import { SproutIcon, SignalIcon, ChatIcon, LockIcon, LogoutIcon, UserIcon, BookIcon, DashboardIcon } from "./icons";
@@ -21,8 +22,8 @@ export function PublicHeader({ role }: { role?: string }) {
       <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 py-3 sm:px-6 sm:py-3.5">
         {/* Brand logo & tagline */}
         <Link href="/" className="flex items-center gap-3 group cursor-pointer" title="Ir al Inicio — Plataforma Educativa">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-800 text-white shadow-sm transition-transform group-hover:scale-105 shrink-0">
-            <SproutIcon className="w-5 h-5 text-white" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white ring-1 ring-slate-200 shadow-sm transition-transform group-hover:scale-105 shrink-0 overflow-hidden p-1">
+            <Image src="/logos/campuslands.png" alt="Campuslands" width={40} height={40} className="h-full w-full object-contain" priority />
           </div>
           <div>
             <div className="flex items-center gap-2">

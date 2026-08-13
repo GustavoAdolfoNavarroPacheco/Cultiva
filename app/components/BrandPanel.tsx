@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "motion/react";
-import { SproutIcon, SignalIcon, ChatIcon, DashboardIcon } from "./icons";
+import { SignalIcon, ChatIcon, DashboardIcon } from "./icons";
 
 const pillars = [
   { icon: SignalIcon, title: "Modo Offline", href: "/puntos" },
@@ -19,8 +20,8 @@ export function BrandPanel() {
       className="flex flex-col justify-center px-2 lg:px-4"
     >
       <Link href="/" className="flex items-center gap-3.5 group cursor-pointer w-fit" title="Ver información de Plataforma Educativa">
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-emerald-800 text-white shadow-md transition-transform group-hover:scale-105">
-          <SproutIcon className="w-7 h-7 text-white" />
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white ring-1 ring-slate-200 shadow-md transition-transform group-hover:scale-105 overflow-hidden p-1.5">
+          <Image src="/logos/campuslands.png" alt="Campuslands" width={48} height={48} className="h-full w-full object-contain" priority />
         </div>
         <div className="flex flex-col">
           <span className="font-display text-2xl font-bold leading-none tracking-tight text-slate-900 sm:text-3xl">

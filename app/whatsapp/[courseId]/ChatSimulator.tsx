@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { motion } from "motion/react";
 import { advanceChatSession, startOrResumeChatSession, submitAnswer } from "@/lib/actions/chat";
 import type { ChatAnswer } from "@/lib/db/schema";
 import { PdfViewerModal } from "@/app/components/PdfViewerModal";
 import { VideoViewerModal } from "@/app/components/VideoViewerModal";
 import {
-  SproutIcon,
   VideoIcon,
   PdfIcon,
   DownloadIcon,
@@ -228,8 +228,8 @@ export function ChatSimulator({
     <div className="overflow-hidden rounded-3xl border border-slate-300 bg-slate-900 shadow-xl">
       {/* WhatsApp Header */}
       <div className="flex items-center gap-3.5 border-b border-slate-800 bg-slate-900 px-5 py-4 text-white shadow-xs">
-        <div className="relative flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-800 text-white font-bold shadow-xs">
-          <SproutIcon className="w-6 h-6" />
+        <div className="relative flex h-11 w-11 items-center justify-center rounded-xl bg-white shadow-xs overflow-hidden p-1.5">
+          <Image src="/logos/campuslands.png" alt="Campuslands" width={44} height={44} className="h-full w-full object-contain" />
           <span className="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full bg-emerald-400 border-2 border-slate-900" />
         </div>
         <div>
