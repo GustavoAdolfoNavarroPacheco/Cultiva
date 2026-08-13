@@ -41,7 +41,7 @@ export default async function PlataformaEducativaPage() {
                 </div>
 
                 <h1 className="font-display text-3xl font-bold tracking-tight sm:text-5xl leading-tight text-white">
-                  Información General de la Plataforma <span className="text-emerald-500">Educativa Sector Agro</span>
+                  Plataforma Educativa <span className="text-emerald-500">Sector Agro</span>
                 </h1>
 
                 <p className="text-lg text-slate-300 font-medium leading-relaxed">

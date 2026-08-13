@@ -56,11 +56,11 @@ export function CampuslandsInfoView({ userRole }: CampuslandsInfoViewProps) {
                 </div>
 
                 <h1 className="font-display text-3xl font-bold tracking-tight sm:text-5xl lg:text-6xl leading-[1.15] text-white">
-                  Transformación Digital e <span className="text-emerald-400">Inteligencia Artificial</span> para Empresas
+                  Transformación Digital e <span className="text-emerald-400">Inteligencia Artificial</span>
                 </h1>
 
                 <p className="text-lg text-slate-300 font-medium leading-relaxed">
-                  Diseñamos y construimos plataformas de software a la medida, aplicaciones web y móviles, e integraciones de IA avanzada para impulsar la eficiencia, competitividad y escalabilidad operativa de las organizaciones.
+                  Diseñamos y construimos plataformas de software a la medida, aplicaciones web y móviles, e integraciones de IA avanzada para impulsar la educación, eficiencia, competitividad y escalabilidad operativa de la economía.
                 </p>
 
                 <div className="pt-4 flex flex-wrap items-center gap-4">
@@ -98,7 +98,7 @@ export function CampuslandsInfoView({ userRole }: CampuslandsInfoViewProps) {
                   Quiénes Somos
                 </h2>
                 <p className="text-base sm:text-lg text-slate-600 font-normal leading-relaxed">
-                  Campuslands es un equipo especializado en ingeniería de software, desarrollo de plataformas digitales e integración práctica de Inteligencia Artificial. Nos enfocamos en transformar necesidades complejas de negocio en soluciones tecnológicas robustas, escalables y orientadas a resultados.
+                  En Campuslands nos enfocamos en la educación, con nuevas tecnologías e inteligencia artificial para niños, jóvenes y adultos, vinculando su talento en casas de software, desarrollo de plataformas digitales e integración de inteligencia artificial.
                 </p>
               </div>
 
@@ -107,9 +107,9 @@ export function CampuslandsInfoView({ userRole }: CampuslandsInfoViewProps) {
                   <div className="p-2.5 bg-emerald-100/80 text-emerald-800 rounded-xl w-fit mb-3">
                     <CodeIcon className="w-5 h-5" />
                   </div>
-                  <h3 className="font-bold text-slate-900 text-base">Enfoque Enterprise</h3>
+                  <h3 className="font-bold text-slate-900 text-base">Enfoque Educativo</h3>
                   <p className="mt-1 text-xs text-slate-600 leading-relaxed">
-                    Desarrollo bajo rigurosos estándares de calidad, seguridad de datos y arquitectura limpia.
+                    Formación bajo rigurosos estándares de calidad, innovación y escalamiento.
                   </p>
                 </div>
 
@@ -603,7 +603,7 @@ export function CampuslandsInfoView({ userRole }: CampuslandsInfoViewProps) {
             <section className="flex flex-col md:flex-row items-center justify-between gap-6 p-8 sm:p-12 rounded-3xl bg-slate-900 text-white shadow-xl">
               <div className="max-w-2xl space-y-2">
                 <h2 className="text-2xl sm:text-3xl font-bold font-display">
-                  ¿Listo para impulsar la tecnología de tu empresa?
+                  ¿Listo para impulsar la tecnología en el sector agro?
                 </h2>
                 <p className="text-sm sm:text-base text-slate-300 font-medium">
                   Conversa con nuestros especialistas y agenda una sesión de descubrimiento personalizada.
