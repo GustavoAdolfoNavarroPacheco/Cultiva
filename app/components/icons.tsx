@@ -771,4 +771,42 @@ export function RotateCcwIcon(props: IconProps) {
   );
 }
 
+export function SearchIcon(props: IconProps) {
+  return (
+    <svg
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      viewBox="0 0 24 24"
+      className={props.className ?? "w-5 h-5"}
+      {...props}
+    >
+      <circle cx="11" cy="11" r="8" />
+      <line x1="21" y1="21" x2="16.65" y2="16.65" />
+    </svg>
+  );
+}
+
+export function DoubleCheckIcon(props: IconProps) {
+  return (
+    <svg
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      viewBox="0 0 24 24"
+      className={props.className ?? "w-4 h-4"}
+      {...props}
+    >
+      <path d="M18 6L7 17l-5-5" />
+      <path d="M22 10l-7.5 7.5-1.5-1.5" />
+    </svg>
+  );
+}
+
+
+
 

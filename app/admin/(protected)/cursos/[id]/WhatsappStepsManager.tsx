@@ -7,7 +7,7 @@ import {
   updateWhatsappStep,
 } from "@/lib/actions/whatsapp-steps";
 import { ConfirmDeleteForm } from "@/app/components/admin/ConfirmDeleteForm";
-import { ChatIcon, ArrowRightIcon } from "@/app/components/icons";
+import { ChatIcon, ArrowRightIcon, HelpCircleIcon, CheckIcon } from "@/app/components/icons";
 
 type Step = {
   id: number;
@@ -194,7 +194,10 @@ function StepRow({
         <p className="mt-1.5 text-sm font-semibold text-slate-900">{step.messageText}</p>
         {step.question && (
           <div className="mt-2.5 text-sm text-slate-700 bg-slate-50 p-3 rounded-xl border border-slate-200">
-            <p className="font-bold text-slate-900">❓ {step.question}</p>
+            <div className="flex items-center gap-1.5 font-bold text-slate-900">
+              <HelpCircleIcon className="w-4 h-4 text-emerald-700 shrink-0" />
+              <span>{step.question}</span>
+            </div>
             <ul className="mt-1.5 space-y-1 pl-2">
               {step.options?.map((option, index) => (
                 <li
@@ -202,7 +205,7 @@ function StepRow({
                   className={`text-xs font-semibold ${index === step.correctOptionIndex ? "text-emerald-800 font-bold" : "text-slate-600"}`}
                 >
                   • {option}
-                  {index === step.correctOptionIndex ? " (correcta ✓)" : ""}
+                  {index === step.correctOptionIndex ? " (Opción correcta)" : ""}
                 </li>
               ))}
             </ul>

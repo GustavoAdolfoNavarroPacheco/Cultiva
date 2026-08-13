@@ -26,6 +26,7 @@ import {
   SparklesIcon,
   CheckCircleIcon,
   UserIcon,
+  DoubleCheckIcon,
 } from "@/app/components/icons";
 
 interface ChatSimulatorProps {
@@ -372,11 +373,11 @@ export function ChatSimulator({
   };
 
   const quickPrompts = [
-    "¡Comenzar curso! 🚀",
-    "Descargar Guía en PDF 📄",
-    "Hacer quiz de prueba ✍️",
-    "Ver temario 🌾",
-    "Tengo una duda ❓",
+    "Comenzar curso",
+    "Descargar Guía en PDF",
+    "Hacer quiz de prueba",
+    "Ver temario",
+    "Tengo una duda",
   ];
 
   if (isLoading) {
@@ -502,11 +503,11 @@ export function ChatSimulator({
                   {renderMessageContent(msg)}
 
                   {/* Time and Status Footer */}
-                  <div className="flex items-center justify-end gap-1 mt-2 text-[10px] text-slate-400 font-medium">
+                  <div className="flex items-center justify-end gap-1.5 mt-2 text-[10px] text-slate-400 font-medium">
                     <span>{formatMessageTime(msg.createdAt)}</span>
                     {isStudent && (
-                      <span className="text-emerald-700 font-bold" title="Entregado y leido">
-                        ✓✓
+                      <span className="text-emerald-700" title="Entregado y leido">
+                        <DoubleCheckIcon className="w-3.5 h-3.5" />
                       </span>
                     )}
                   </div>
