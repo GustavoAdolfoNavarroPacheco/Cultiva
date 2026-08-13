@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
-import { CloseIcon, CheckIcon, RocketIcon } from "./icons";
+import { CloseIcon, CheckIcon } from "./icons";
 
 interface DiscoveryModalProps {
   isOpen: boolean;
@@ -64,11 +65,11 @@ export function DiscoveryModal({ isOpen, onClose }: DiscoveryModalProps) {
           {!submitted ? (
             <div>
               <div className="flex items-center gap-3 mb-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-800 text-white shadow-sm">
-                  <RocketIcon className="w-5 h-5" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white ring-1 ring-slate-200 shadow-sm shrink-0 overflow-hidden p-1.5">
+                  <Image src="/logos/campuslands.png" alt="Campuslands" width={40} height={40} className="h-full w-full object-contain" />
                 </div>
                 <div>
-                  <span className="text-xs font-normal uppercase tracking-wider text-emerald-800 bg-emerald-100/80 px-2.5 py-0.5 rounded-md">
+                  <span className="text-sm font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100/80 px-2.5 py-0.5 rounded-md">
                     Campuslands Tech
                   </span>
                 </div>
