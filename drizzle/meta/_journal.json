@@ -15,6 +15,13 @@
       "when": 1786390274619,
       "tag": "0001_cute_captain_cross",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1786641235207,
+      "tag": "0002_gorgeous_ghost_rider",
+      "breakpoints": true
     }
   ]
 }
