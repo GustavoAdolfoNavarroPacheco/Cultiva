@@ -179,8 +179,10 @@ async function processMessage(body: unknown) {
 
     let contenidoLimpio = respuesta.contenido
       .replace(/\[ETAPA:\s*\w+\s*\]/gi, "")
+      .replace(/\*\*(.*?)\*\*/g, "*$1*")
       .replace(/\n{3,}/g, "\n\n")
       .trim();
+
 
     if (!contenidoLimpio) {
       contenidoLimpio = "Gracias por tu mensaje. ¿En qué más puedo ayudarte en KHC?";

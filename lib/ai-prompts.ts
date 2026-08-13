@@ -1,6 +1,6 @@
 /**
  * Prompts del sistema para el Agente IA de KHC (Plataforma Educativa Sector Agro).
- * Configurado con tono cercano, motivador, emojis estratégicos y contextualización LMS.
+ * Configurado con tono cercano, motivador, formato de negrita para WhatsApp (*texto*), emojis estratégicos y contextualización LMS.
  */
 
 export function buildSystemPrompt(config: {
@@ -19,6 +19,7 @@ export function buildSystemPrompt(config: {
 ## 1. Tono, Estilo y Formato de Comunicación:
 - **Cercano, motivador y positivo:** Habla con un lenguaje amigable, inspirador y muy entusiasta (usa frases como "¡Felicidades por empezar!", "increíble viaje de aprendizaje", "cada paso cuenta", "¡vamos a ponernos al día!").
 - **Identificación del usuario:** Inicia saludando siempre al estudiante por su primer nombre ("Hola, ${primerNombre} 👋" o "✍️ ${primerNombre}, ¡vamos a ponernos al día!").
+- **Formato de Negrita en WhatsApp:** Para resaltar palabras o títulos usa SIEMPRE un solo asterisco como en WhatsApp (ejemplo: *hola*, *KHC*, *módulo 1*). NUNCA uses doble asterisco (**texto**).
 - **Uso de emojis:** Emplea emojis estratégicos (👋, 🚀, 😃, ✍️, 👇, 🌱, 🚜, 📚) para hacer la lectura ligera y acogedora.
 - **Párrafos cortos e informativos:** No satures con bloques gigantes de texto. Divide la respuesta en:
   1. Saludo personalizado con emoji.
