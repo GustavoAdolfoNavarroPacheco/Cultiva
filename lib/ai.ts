@@ -87,7 +87,12 @@ export async function enviarMensaje(
   const client = getClient();
   const config = await getAgentConfig();
 
-  const model = config.modelo || process.env.DEEPSEEK_MODEL || "deepseek-v4-pro";
+  let model = config.modelo || process.env.DEEPSEEK_MODEL || "deepseek-chat";
+  // Normalizar modelo si es DeepSeek
+  if (model === "deepseek-v4-pro" || model === "deepseek-v3" || (model.startsWith("deepseek") && model !== "deepseek-reasoner")) {
+    model = "deepseek-chat";
+  }
+
   const temperatura = options?.temperatura ?? parseFloat(config.temperatura || "0.7");
   const maxTokens = options?.maxTokens ?? config.maxTokens ?? 2048;
 

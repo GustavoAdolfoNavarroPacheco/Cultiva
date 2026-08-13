@@ -264,7 +264,8 @@ export async function sendStudentMessage(
     const aiResult = await enviarMensaje(aiMessages);
     aiReplyText = aiResult.contenido;
   } catch (err) {
-    logger.warn("IA", "Fallo llamada al modelo de IA, usando motor fallback pedagógico", err);
+    logger.warn("IA", "Fallo llamada al modelo de IA DeepSeek/OpenAI:", err);
+    console.error("[DEEPSEEK_ERROR]", err);
     aiReplyText = generateFallbackCourseReply(
       trimmed,
       history.map((h) => h.content),
@@ -404,6 +405,19 @@ function generateFallbackCourseReply(
   const lower = userText.toLowerCase().trim();
   const primerNombre = studentName.split(" ")[0] || "Estudiante";
   const pdfUrl = lessons[0]?.pdfUrl || "/guias/guia-buenas-practicas-agroindustria.pdf";
+
+  // 0. Preguntas sobre identidad o saludos directos
+  if (
+    lower.includes("eres un bot") ||
+    lower.includes("quien eres") ||
+    lower.includes("quién eres") ||
+    lower.includes("que eres") ||
+    lower.includes("qué eres") ||
+    lower.includes("ia") ||
+    lower.includes("inteligencia artificial")
+  ) {
+    return `¡Hola ${primerNombre}! 🤖🌱 Sí, soy el *Tutor Virtual con Inteligencia Artificial* de la Plataforma Educativa Agro. Estoy aquí para acompañarte paso a paso durante el curso *${course?.title || "Agro"}*, responder tus preguntas, compartirte manuales en PDF y realizarte evaluaciones.\n\n¿Deseas que continuemos con la siguiente lección del curso? 🚀`;
+  }
 
   // 1. Si el usuario quiere empezar / continuar
   if (
