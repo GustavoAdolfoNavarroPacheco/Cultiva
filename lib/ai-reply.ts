@@ -100,7 +100,7 @@ export async function generateAndSendAiReply(
     const videoMatches = [...rawContent.matchAll(videoRegex)];
 
     // 3. Extraer botones interactivos: [BOTONES: <texto> | <opt1> | <opt2> | <opt3>] o [BUTTONS: ...] o [QUIZ: ...]
-    const buttonsRegex = /\[(?:BOTONES|BUTTONS|QUIZ):\s*(.+?)\s*\|\s*(.+?)\s*\]/gi;
+    const buttonsRegex = /\[(?:BOTONES|BUTTONS|QUIZ):\s*([\s\S]+?)\s*\|\s*([\s\S]+?)\s*\]/i;
     const buttonsMatch = buttonsRegex.exec(rawContent);
 
     let cleanText = rawContent
@@ -113,22 +113,124 @@ export async function generateAndSendAiReply(
       .replace(/\n{3,}/g, "\n\n")
       .trim();
 
-    if (!cleanText && pdfMatches.length === 0 && videoMatches.length === 0 && !buttonsMatch) {
-      cleanText = "Gracias por tu mensaje. ¿En qué más puedo orientarte en KHC Agro?";
+    // 4. Auto-detección de botones en preguntas/quizzes (si la IA no usó la etiqueta [BOTONES:...])
+    let autoButtons: { id: string; title: string }[] | null = null;
+    let autoBodyText = cleanText;
+
+    if (!buttonsMatch && pdfMatches.length === 0 && videoMatches.length === 0) {
+      // Detectar si el texto contiene opciones tipo "A) ...", "B) ...", "C) ..."
+      const optionLinesRegex = /(?:^|\n)\s*([A-C\d][\)\.\-]\s*[^\n]+)/g;
+      const foundOptions = [...cleanText.matchAll(optionLinesRegex)].map((m) => m[1].trim());
+
+      if (foundOptions.length >= 2 && foundOptions.length <= 3) {
+        autoButtons = foundOptions.map((opt, idx) => ({
+          id: `btn_${idx + 1}`,
+          title: opt.slice(0, 20),
+        }));
+
+        const firstOptIndex = cleanText.indexOf(foundOptions[0]);
+        if (firstOptIndex > 0) {
+          autoBodyText = cleanText.substring(0, firstOptIndex).trim();
+        }
+      }
     }
 
-    // ── Enviar Botones Interactivos si existen ──
-    if (buttonsMatch) {
-      const buttonBody = buttonsMatch[1].trim() || cleanText || "¿Cómo deseas continuar?";
-      const rawOptions = buttonsMatch[2]
-        .split("|")
-        .map((o) => o.trim())
-        .filter(Boolean);
+    // ── DISPATCHING UNIFICADO (1 SOLO MENSAJE POR RESPUESTA) ──
 
-      const interactiveButtons = rawOptions.slice(0, 3).map((opt, idx) => ({
-        id: `btn_${idx + 1}`,
-        title: opt.slice(0, 20),
-      }));
+    // ── CASO A: Envío de Video MP4 (Video + Texto en un solo mensaje con caption) ──
+    if (videoMatches.length > 0) {
+      const firstVideo = videoMatches[0];
+      const videoUrl = firstVideo[1].trim();
+      const videoTitle = firstVideo[2].trim();
+
+      const captionText = cleanText
+        ? cleanText.slice(0, 1024)
+        : `🎬 ${videoTitle}`.slice(0, 1024);
+
+      await db.insert(whatsappMessages).values({
+        conversationId: conversation.id,
+        author: "AGENTE_IA",
+        type: "ARCHIVO",
+        content: captionText,
+        fileName: `${videoTitle}.mp4`,
+        fileUrl: videoUrl,
+        fileMimeType: "video/mp4",
+      });
+
+      const videoResult = await sendWhatsAppMediaFromLocalOrUrl(
+        conversation.phone,
+        "video",
+        videoUrl,
+        {
+          caption: captionText,
+        }
+      );
+
+      if (!videoResult.success) {
+        logger.error("WHATSAPP", `Error enviando video (${videoTitle}): ${videoResult.error}`);
+        await sendWhatsAppMessage(conversation.phone, captionText);
+      }
+      return { success: true };
+    }
+
+    // ── CASO B: Envío de Documento PDF (PDF + Texto en un solo mensaje con caption) ──
+    if (pdfMatches.length > 0) {
+      const firstPdf = pdfMatches[0];
+      const pdfUrl = firstPdf[1].trim();
+      const pdfTitle = firstPdf[2].trim();
+      const filename = pdfTitle.endsWith(".pdf") ? pdfTitle : `${pdfTitle}.pdf`;
+
+      const captionText = cleanText
+        ? cleanText.slice(0, 1024)
+        : `📄 ${pdfTitle}`.slice(0, 1024);
+
+      await db.insert(whatsappMessages).values({
+        conversationId: conversation.id,
+        author: "AGENTE_IA",
+        type: "ARCHIVO",
+        content: captionText,
+        fileName: filename,
+        fileUrl: pdfUrl,
+        fileMimeType: "application/pdf",
+      });
+
+      const mediaResult = await sendWhatsAppMediaFromLocalOrUrl(
+        conversation.phone,
+        "document",
+        pdfUrl,
+        {
+          filename,
+          caption: captionText,
+        }
+      );
+
+      if (!mediaResult.success) {
+        logger.error("WHATSAPP", `Error enviando PDF (${pdfTitle}): ${mediaResult.error}`);
+        await sendWhatsAppMessage(conversation.phone, captionText);
+      }
+      return { success: true };
+    }
+
+    // ── CASO C: Envío de Botones Interactivos (Etiqueta explícita o Auto-detectado) ──
+    if (buttonsMatch || autoButtons) {
+      let buttonBody = "";
+      let interactiveButtons: { id: string; title: string }[] = [];
+
+      if (buttonsMatch) {
+        buttonBody = buttonsMatch[1].trim() || cleanText || "¿Cómo deseas continuar?";
+        const rawOptions = buttonsMatch[2]
+          .split("|")
+          .map((o) => o.trim())
+          .filter(Boolean);
+
+        interactiveButtons = rawOptions.slice(0, 3).map((opt, idx) => ({
+          id: `btn_${idx + 1}`,
+          title: opt.slice(0, 20),
+        }));
+      } else if (autoButtons) {
+        buttonBody = autoBodyText || cleanText;
+        interactiveButtons = autoButtons;
+      }
 
       // Guardar en BD para visualización en panel
       const dbText = `${buttonBody}\n\n${interactiveButtons.map((b) => `🔘 ${b.title}`).join("\n")}`;
@@ -144,83 +246,30 @@ export async function generateAndSendAiReply(
         buttonBody,
         interactiveButtons
       );
+
       if (!sendBtnResult.success) {
         logger.warn("WHATSAPP", `Fallo envío de botones interactivos: ${sendBtnResult.error}`);
         await sendWhatsAppMessage(conversation.phone, dbText);
       }
-    } else if (cleanText) {
-      // ── Enviar Mensaje de Texto Regular ──
-      await db.insert(whatsappMessages).values({
-        conversationId: conversation.id,
-        author: "AGENTE_IA",
-        type: "TEXTO",
-        content: cleanText,
-      });
 
-      const sendResult = await sendWhatsAppMessage(conversation.phone, cleanText);
-      if (!sendResult.success) {
-        logger.error("WHATSAPP", `Error al enviar respuesta de IA: ${sendResult.error}`);
-      }
+      return { success: true };
     }
 
-    // ── Enviar Documentos PDF por WhatsApp si fueron solicitados ──
-    for (const match of pdfMatches) {
-      const pdfUrl = match[1].trim();
-      const pdfTitle = match[2].trim();
-      const filename = pdfTitle.endsWith(".pdf") ? pdfTitle : `${pdfTitle}.pdf`;
-
-      await db.insert(whatsappMessages).values({
-        conversationId: conversation.id,
-        author: "AGENTE_IA",
-        type: "ARCHIVO",
-        content: `📄 ${pdfTitle}`,
-        fileName: filename,
-        fileUrl: pdfUrl,
-        fileMimeType: "application/pdf",
-      });
-
-      const mediaResult = await sendWhatsAppMediaFromLocalOrUrl(
-        conversation.phone,
-        "document",
-        pdfUrl,
-        {
-          filename,
-          caption: pdfTitle,
-        }
-      );
-
-      if (!mediaResult.success) {
-        logger.error("WHATSAPP", `Error enviando PDF (${pdfTitle}): ${mediaResult.error}`);
-      }
+    // ── CASO D: Envío de Mensaje de Texto Normal (1 Solo Mensaje) ──
+    if (!cleanText) {
+      cleanText = "Gracias por tu mensaje. ¿En qué más puedo orientarte en KHC Agro?";
     }
 
-    // ── Enviar Videos MP4 por WhatsApp si fueron solicitados ──
-    for (const match of videoMatches) {
-      const videoUrl = match[1].trim();
-      const videoTitle = match[2].trim();
+    await db.insert(whatsappMessages).values({
+      conversationId: conversation.id,
+      author: "AGENTE_IA",
+      type: "TEXTO",
+      content: cleanText,
+    });
 
-      await db.insert(whatsappMessages).values({
-        conversationId: conversation.id,
-        author: "AGENTE_IA",
-        type: "ARCHIVO",
-        content: `🎬 ${videoTitle}`,
-        fileName: `${videoTitle}.mp4`,
-        fileUrl: videoUrl,
-        fileMimeType: "video/mp4",
-      });
-
-      const videoResult = await sendWhatsAppMediaFromLocalOrUrl(
-        conversation.phone,
-        "video",
-        videoUrl,
-        {
-          caption: videoTitle,
-        }
-      );
-
-      if (!videoResult.success) {
-        logger.error("WHATSAPP", `Error enviando video (${videoTitle}): ${videoResult.error}`);
-      }
+    const sendResult = await sendWhatsAppMessage(conversation.phone, cleanText);
+    if (!sendResult.success) {
+      logger.error("WHATSAPP", `Error al enviar respuesta de IA: ${sendResult.error}`);
     }
 
     return { success: true };

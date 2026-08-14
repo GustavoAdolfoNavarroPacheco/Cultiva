@@ -466,11 +466,13 @@ export async function uploadMediaToWhatsApp(
     const data = await response.json();
 
     if (!response.ok) {
+      logger.error("WHATSAPP", "Error en uploadMediaToWhatsApp:", data);
       return { error: data.error?.message ?? `Error HTTP ${response.status}` };
     }
 
     return { mediaId: data.id };
   } catch (error) {
+    logger.error("WHATSAPP", "Excepción en uploadMediaToWhatsApp:", error);
     return {
       error: error instanceof Error ? error.message : "Error desconocido al subir media",
     };
@@ -557,8 +559,31 @@ export async function sendWhatsAppMediaFromLocalOrUrl(
     const cleanPath = fileUrlOrPath.replace(/^\//, "");
     const localFilePath = path.join(process.cwd(), "public", cleanPath);
 
+    let fileBuffer: Buffer | null = null;
     if (fs.existsSync(localFilePath)) {
-      const fileBuffer = fs.readFileSync(localFilePath);
+      fileBuffer = fs.readFileSync(localFilePath);
+    } else {
+      // Fallback: descargar desde URL pública del proyecto si no está en lambda local
+      const appUrl =
+        process.env.NEXT_PUBLIC_APP_URL ||
+        (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "") ||
+        (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "");
+
+      if (appUrl) {
+        const publicUrl = `${appUrl.replace(/\/$/, "")}/${cleanPath}`;
+        try {
+          const res = await fetch(publicUrl);
+          if (res.ok) {
+            const ab = await res.arrayBuffer();
+            fileBuffer = Buffer.from(ab);
+          }
+        } catch (fetchErr) {
+          logger.warn("WHATSAPP", `No se pudo descargar archivo desde ${publicUrl}:`, fetchErr);
+        }
+      }
+    }
+
+    if (fileBuffer) {
       const mimeType =
         type === "document"
           ? "application/pdf"
@@ -580,11 +605,11 @@ export async function sendWhatsAppMediaFromLocalOrUrl(
 
       logger.warn(
         "WHATSAPP",
-        `Fallo upload directo de archivo local (${"error" in uploadResult ? uploadResult.error : "desconocido"}), intentando vía URL pública...`
+        `Fallo upload directo de archivo local (${"error" in uploadResult ? uploadResult.error : "desconocido"}), intentando enlace público...`
       );
     }
 
-    // 3. Fallback: Construir URL pública si la app está en producción / Vercel
+    // 3. Fallback: Enviar enlace público directamente a Meta
     const appUrl =
       process.env.NEXT_PUBLIC_APP_URL ||
       (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "") ||
