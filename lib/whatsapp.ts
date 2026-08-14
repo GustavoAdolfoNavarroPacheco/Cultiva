@@ -3,6 +3,8 @@
  */
 
 import { createHmac, timingSafeEqual } from "crypto";
+import fs from "fs";
+import path from "path";
 import { logger } from "@/lib/log";
 
 const GRAPH_API_VERSION = "v22.0";
@@ -70,6 +72,10 @@ export async function downloadWhatsAppMedia(
   }
 }
 
+function cleanPhoneNumber(to: string): string {
+  return to.replace(/\D/g, "");
+}
+
 // ─── Enviar mensaje de texto ───
 
 export async function sendWhatsAppMessage(
@@ -78,6 +84,7 @@ export async function sendWhatsAppMessage(
 ): Promise<{ success: boolean; messageId?: string; error?: string }> {
   try {
     const { token, phoneNumberId } = getCredentials();
+    const cleanTo = cleanPhoneNumber(to);
 
     const response = await fetch(`${GRAPH_API_BASE}/${phoneNumberId}/messages`, {
       method: "POST",
@@ -88,7 +95,7 @@ export async function sendWhatsAppMessage(
       body: JSON.stringify({
         messaging_product: "whatsapp",
         recipient_type: "individual",
-        to,
+        to: cleanTo,
         type: "text",
         text: { body },
       }),
@@ -97,14 +104,17 @@ export async function sendWhatsAppMessage(
     const data = await response.json();
 
     if (!response.ok) {
+      const errorMsg = data.error?.message ?? `Error HTTP ${response.status}`;
+      logger.error("WHATSAPP", `Error Meta Cloud API al enviar mensaje a ${cleanTo}:`, data);
       return {
         success: false,
-        error: data.error?.message ?? `Error HTTP ${response.status}`,
+        error: errorMsg,
       };
     }
 
     return { success: true, messageId: data.messages?.[0]?.id };
   } catch (error) {
+    logger.error("WHATSAPP", `Excepción al enviar mensaje a ${to}:`, error);
     return {
       success: false,
       error: error instanceof Error ? error.message : "Error desconocido",
@@ -126,6 +136,7 @@ export async function sendInteractiveListMessage(
 ): Promise<{ success: boolean; messageId?: string; error?: string }> {
   try {
     const { token, phoneNumberId } = getCredentials();
+    const cleanTo = cleanPhoneNumber(to);
 
     const response = await fetch(`${GRAPH_API_BASE}/${phoneNumberId}/messages`, {
       method: "POST",
@@ -136,7 +147,7 @@ export async function sendInteractiveListMessage(
       body: JSON.stringify({
         messaging_product: "whatsapp",
         recipient_type: "individual",
-        to,
+        to: cleanTo,
         type: "interactive",
         interactive: {
           type: "list",
@@ -153,14 +164,17 @@ export async function sendInteractiveListMessage(
     const data = await response.json();
 
     if (!response.ok) {
+      const errorMsg = data.error?.message ?? `Error HTTP ${response.status}`;
+      logger.error("WHATSAPP", `Error Meta Cloud API en lista interactiva a ${cleanTo}:`, data);
       return {
         success: false,
-        error: data.error?.message ?? `Error HTTP ${response.status}`,
+        error: errorMsg,
       };
     }
 
     return { success: true, messageId: data.messages?.[0]?.id };
   } catch (error) {
+    logger.error("WHATSAPP", `Excepción en sendInteractiveListMessage a ${to}:`, error);
     return {
       success: false,
       error: error instanceof Error ? error.message : "Error desconocido",
@@ -168,7 +182,7 @@ export async function sendInteractiveListMessage(
   }
 }
 
-// ─── Enviar mensaje con botones ───
+// ─── Enviar mensaje con botones interactivos ───
 
 export async function sendButtonMessage(
   to: string,
@@ -177,6 +191,23 @@ export async function sendButtonMessage(
 ): Promise<{ success: boolean; messageId?: string; error?: string }> {
   try {
     const { token, phoneNumberId } = getCredentials();
+    const cleanTo = cleanPhoneNumber(to);
+
+    if (!buttons || buttons.length === 0) {
+      return sendWhatsAppMessage(cleanTo, bodyText);
+    }
+
+    // Meta WhatsApp Cloud API límites:
+    // 1. Botones: entre 1 y 3 botones
+    // 2. Título de botón: máx 20 caracteres
+    // 3. Texto del cuerpo: máx 1024 caracteres
+    const validButtons = buttons.slice(0, 3).map((b, i) => ({
+      type: "reply" as const,
+      reply: {
+        id: (b.id || `btn_${i + 1}`).slice(0, 256),
+        title: (b.title || `Opción ${i + 1}`).trim().slice(0, 20),
+      },
+    }));
 
     const response = await fetch(`${GRAPH_API_BASE}/${phoneNumberId}/messages`, {
       method: "POST",
@@ -187,16 +218,13 @@ export async function sendButtonMessage(
       body: JSON.stringify({
         messaging_product: "whatsapp",
         recipient_type: "individual",
-        to,
+        to: cleanTo,
         type: "interactive",
         interactive: {
           type: "button",
-          body: { text: bodyText },
+          body: { text: bodyText.slice(0, 1024) },
           action: {
-            buttons: buttons.map((b) => ({
-              type: "reply",
-              reply: { id: b.id, title: b.title },
-            })),
+            buttons: validButtons,
           },
         },
       }),
@@ -205,14 +233,17 @@ export async function sendButtonMessage(
     const data = await response.json();
 
     if (!response.ok) {
+      const errorMsg = data.error?.message ?? `Error HTTP ${response.status}`;
+      logger.error("WHATSAPP", `Error Meta Cloud API en botones a ${cleanTo}:`, data);
       return {
         success: false,
-        error: data.error?.message ?? `Error HTTP ${response.status}`,
+        error: errorMsg,
       };
     }
 
     return { success: true, messageId: data.messages?.[0]?.id };
   } catch (error) {
+    logger.error("WHATSAPP", `Excepción en sendButtonMessage a ${to}:`, error);
     return {
       success: false,
       error: error instanceof Error ? error.message : "Error desconocido",
@@ -446,25 +477,30 @@ export async function uploadMediaToWhatsApp(
   }
 }
 
-// ─── Enviar mensaje con media ───
+// ─── Enviar mensaje con media (ID o Link URL) ───
 
 export async function sendWhatsAppMediaMessage(
   to: string,
   type: "image" | "document" | "audio" | "video",
-  mediaId: string,
+  mediaIdOrUrl: string,
   options?: { filename?: string; caption?: string }
 ): Promise<{ success: boolean; messageId?: string; error?: string }> {
   try {
     const { token, phoneNumberId } = getCredentials();
+    const cleanTo = cleanPhoneNumber(to);
 
-    const mediaObject: Record<string, unknown> = {
-      id: mediaId,
-    };
+    const mediaObject: Record<string, unknown> = {};
+    if (mediaIdOrUrl.startsWith("http://") || mediaIdOrUrl.startsWith("https://")) {
+      mediaObject.link = mediaIdOrUrl;
+    } else {
+      mediaObject.id = mediaIdOrUrl;
+    }
+
     if (type === "document" && options?.filename) {
       mediaObject.filename = options.filename;
     }
     if (options?.caption) {
-      mediaObject.caption = options.caption;
+      mediaObject.caption = options.caption.slice(0, 1024);
     }
 
     const response = await fetch(`${GRAPH_API_BASE}/${phoneNumberId}/messages`, {
@@ -476,7 +512,7 @@ export async function sendWhatsAppMediaMessage(
       body: JSON.stringify({
         messaging_product: "whatsapp",
         recipient_type: "individual",
-        to,
+        to: cleanTo,
         type,
         [type]: mediaObject,
       }),
@@ -485,17 +521,86 @@ export async function sendWhatsAppMediaMessage(
     const data = await response.json();
 
     if (!response.ok) {
+      const errorMsg = data.error?.message ?? `Error HTTP ${response.status}`;
+      logger.error("WHATSAPP", `Error Meta Cloud API al enviar media a ${cleanTo}:`, data);
       return {
         success: false,
-        error: data.error?.message ?? `Error HTTP ${response.status}`,
+        error: errorMsg,
       };
     }
 
     return { success: true, messageId: data.messages?.[0]?.id };
   } catch (error) {
+    logger.error("WHATSAPP", `Excepción en sendWhatsAppMediaMessage a ${to}:`, error);
     return {
       success: false,
       error: error instanceof Error ? error.message : "Error desconocido",
+    };
+  }
+}
+
+// ─── Enviar archivo local (en /public) o URL remota por WhatsApp ───
+
+export async function sendWhatsAppMediaFromLocalOrUrl(
+  to: string,
+  type: "image" | "document" | "audio" | "video",
+  fileUrlOrPath: string,
+  options?: { filename?: string; caption?: string }
+): Promise<{ success: boolean; messageId?: string; error?: string }> {
+  try {
+    // 1. Si ya es una URL web externa completa
+    if (fileUrlOrPath.startsWith("http://") || fileUrlOrPath.startsWith("https://")) {
+      return await sendWhatsAppMediaMessage(to, type, fileUrlOrPath, options);
+    }
+
+    // 2. Si es una ruta local en /public (ej: /guias/manual.pdf o /videos/leccion.mp4)
+    const cleanPath = fileUrlOrPath.replace(/^\//, "");
+    const localFilePath = path.join(process.cwd(), "public", cleanPath);
+
+    if (fs.existsSync(localFilePath)) {
+      const fileBuffer = fs.readFileSync(localFilePath);
+      const mimeType =
+        type === "document"
+          ? "application/pdf"
+          : type === "video"
+          ? "video/mp4"
+          : type === "image"
+          ? "image/jpeg"
+          : "audio/ogg";
+
+      const uploadFilename = options?.filename || path.basename(localFilePath);
+      const uploadResult = await uploadMediaToWhatsApp(fileBuffer, mimeType, uploadFilename);
+
+      if ("mediaId" in uploadResult && uploadResult.mediaId) {
+        return await sendWhatsAppMediaMessage(to, type, uploadResult.mediaId, {
+          ...options,
+          filename: uploadFilename,
+        });
+      }
+
+      logger.warn(
+        "WHATSAPP",
+        `Fallo upload directo de archivo local (${"error" in uploadResult ? uploadResult.error : "desconocido"}), intentando vía URL pública...`
+      );
+    }
+
+    // 3. Fallback: Construir URL pública si la app está en producción / Vercel
+    const appUrl =
+      process.env.NEXT_PUBLIC_APP_URL ||
+      (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "") ||
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "");
+
+    if (appUrl) {
+      const publicUrl = `${appUrl.replace(/\/$/, "")}/${cleanPath}`;
+      return await sendWhatsAppMediaMessage(to, type, publicUrl, options);
+    }
+
+    return { success: false, error: `No se pudo enviar el archivo ${fileUrlOrPath}` };
+  } catch (err) {
+    logger.error("WHATSAPP", "Error en sendWhatsAppMediaFromLocalOrUrl:", err);
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : "Error desconocido",
     };
   }
 }
