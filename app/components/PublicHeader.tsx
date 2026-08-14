@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, LayoutGroup } from "motion/react";
-import { SproutIcon, SignalIcon, ChatIcon, LockIcon, LogoutIcon, UserIcon, BookIcon, DashboardIcon } from "./icons";
+import { SproutIcon, SignalIcon, ChatIcon, LockIcon, LogoutIcon, UserIcon, BookIcon, DashboardIcon, FileTextIcon } from "./icons";
 import { logoutAction } from "@/lib/auth/actions";
 
 export function PublicHeader({ role }: { role?: string }) {
@@ -16,6 +16,7 @@ export function PublicHeader({ role }: { role?: string }) {
   const isPlataforma = pathname.startsWith("/plataforma");
   const isPuntos = pathname.startsWith("/puntos");
   const isWhatsapp = pathname.startsWith("/whatsapp");
+  const isOnePage = pathname.startsWith("/onepage");
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-emerald-900/10 bg-white/90 backdrop-blur-xl shadow-2xs">
@@ -79,6 +80,26 @@ export function PublicHeader({ role }: { role?: string }) {
                     )}
                     <BookIcon className="relative z-10 w-4 h-4" />
                     <span className="relative z-10 hidden sm:inline">Plataforma Agro</span>
+                  </Link>
+
+                  {/* One Page Estratégico */}
+                  <Link
+                    href="/onepage"
+                    className={`relative flex items-center gap-2 rounded-xl px-3 sm:px-3.5 py-2 text-sm font-bold transition-colors min-h-[42px] select-none cursor-pointer ${
+                      isOnePage ? "text-white font-bold" : "text-slate-600 hover:text-slate-900"
+                    }`}
+                    title="One Page Ejecutivo del Proyecto"
+                  >
+                    {isOnePage && (
+                      <motion.span
+                        layoutId="active-public-nav-indicator"
+                        layout="x"
+                        transition={{ type: "spring", stiffness: 450, damping: 32 }}
+                        className="absolute inset-0 rounded-xl bg-emerald-800 shadow-md border border-emerald-700"
+                      />
+                    )}
+                    <FileTextIcon className="relative z-10 w-4 h-4" />
+                    <span className="relative z-10 hidden md:inline">One Page</span>
                   </Link>
                 </>
               )}
@@ -184,6 +205,25 @@ export function PublicHeader({ role }: { role?: string }) {
                     )}
                     <ChatIcon className="relative z-10 w-4 h-4" />
                     <span className="relative z-10 hidden sm:inline">Agente WhatsApp</span>
+                  </Link>
+
+                  <Link
+                    href="/onepage"
+                    title="One Page Estratégico"
+                    className={`relative flex items-center gap-2 rounded-xl px-3 sm:px-3.5 py-2 text-sm font-bold transition-colors min-h-[42px] select-none cursor-pointer ${
+                      isOnePage ? "text-white font-bold" : "text-slate-600 hover:text-slate-900"
+                    }`}
+                  >
+                    {isOnePage && (
+                      <motion.span
+                        layoutId="active-public-nav-indicator"
+                        layout="x"
+                        transition={{ type: "spring", stiffness: 450, damping: 32 }}
+                        className="absolute inset-0 rounded-xl bg-emerald-800 shadow-md border border-emerald-700"
+                      />
+                    )}
+                    <FileTextIcon className="relative z-10 w-4 h-4" />
+                    <span className="relative z-10 hidden md:inline">One Page</span>
                   </Link>
                 </>
               )}
