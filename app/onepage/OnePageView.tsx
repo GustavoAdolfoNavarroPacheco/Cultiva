@@ -11,14 +11,11 @@ import {
   DashboardIcon,
   SignalIcon,
   ChatIcon,
+  BookIcon,
   CheckIcon,
   ArrowRightIcon,
-  ShieldCheckIcon,
-  SparklesIcon,
   PrinterIcon,
   ShareIcon,
-  CpuIcon,
-  LayersIcon,
   RocketIcon,
   DownloadIcon,
 } from "@/app/components/icons";
@@ -112,7 +109,7 @@ export function OnePageView({ userRole, metrics }: OnePageViewProps) {
                 </div>
                 <div>
                   <span className="text-xs font-bold uppercase tracking-widest text-emerald-800">
-                    Ficha Técnica & Ejecutiva (1 Página A4)
+                    Resumen Ejecutivo & Estratégico (1 Página A4)
                   </span>
                   <p className="text-xs text-slate-500 font-medium">
                     Proyecto Oficial: Plataforma Educativa Sector Agro
@@ -172,14 +169,14 @@ export function OnePageView({ userRole, metrics }: OnePageViewProps) {
                       Campuslands Tech Solutions & KHC Agro
                     </span>
                     <span className="text-[9px] text-slate-500 font-medium block">
-                      Alianza Estratégica EdTech Sector Rural
+                      Alianza para el Desarrollo de Capacidades del Sector Agropecuario
                     </span>
                   </div>
                 </div>
 
                 <div className="text-right">
                   <span className="inline-block text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-emerald-900 bg-emerald-100/80 px-2.5 py-0.5 rounded-md border border-emerald-300">
-                    Ficha Técnica Ejecutiva A4 • v2.4
+                    Resumen Ejecutivo A4 • v3.0
                   </span>
                 </div>
               </div>
@@ -189,263 +186,239 @@ export function OnePageView({ userRole, metrics }: OnePageViewProps) {
                 <div className="space-y-1">
                   <div className="flex items-center justify-between gap-2">
                     <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-emerald-400">
-                      Ecosistema Híbrido de Formación Rural
+                      Formación Práctica para el Sector Agropecuario
                     </span>
                     <span className="text-[9px] font-mono text-slate-400 bg-slate-800 px-2 py-0.5 rounded">
-                      Cloud + Offline + WhatsApp IA
+                      Con Internet · Sin Internet · WhatsApp
                     </span>
                   </div>
                   <h1 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-white leading-tight">
                     Plataforma Educativa <span className="text-emerald-400">Sector Agro</span>
                   </h1>
                   <p className="text-[11px] sm:text-xs text-slate-300 leading-snug font-normal">
-                    Solución integral para cerrar la brecha formativa rural mediante <strong className="text-white font-semibold">gestión administrativa Cloud</strong>, <strong className="text-white font-semibold">distribución offline en Puntos Digitales</strong> y <strong className="text-white font-semibold">tutoría 24/7 con IA DeepSeek en WhatsApp</strong> sin fricción de instalación.
+                    Formación práctica y accesible para productores, técnicos y comunidades rurales. Los contenidos se gestionan de forma centralizada y llegan a los participantes por dos caminos complementarios: <strong className="text-white font-semibold">Puntos Digitales</strong>, sedes con acceso a internet donde se conectan y descargan las lecciones, y <strong className="text-white font-semibold">Modo Offline</strong>, que permite continuar la formación de forma local en sedes rurales sin conexión — junto con acompañamiento tipo tutor por WhatsApp, sin instalar aplicaciones.
                   </p>
                 </div>
 
                 {/* 4 Indicadores Clave de Impacto */}
                 <div className="grid grid-cols-4 gap-2 pt-2 border-t border-slate-800">
                   <div className="rounded-xl bg-slate-800/80 p-2 border border-slate-700/80 text-center">
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-emerald-400 block">Acceso WhatsApp</span>
-                    <p className="text-xs sm:text-sm font-bold text-white leading-tight mt-0.5">0 Fricción</p>
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-emerald-400 block">Acceso Directo</span>
+                    <p className="text-xs sm:text-sm font-bold text-white leading-tight mt-0.5">Vía WhatsApp</p>
                     <p className="text-[8.5px] text-slate-400 leading-tight">Sin instalar apps</p>
                   </div>
                   <div className="rounded-xl bg-slate-800/80 p-2 border border-slate-700/80 text-center">
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-emerald-400 block">Puntos Digitales</span>
+                    <p className="text-xs sm:text-sm font-bold text-white leading-tight mt-0.5">Con Internet</p>
+                    <p className="text-[8.5px] text-slate-400 leading-tight">Habilitados por instituciones</p>
+                  </div>
+                  <div className="rounded-xl bg-slate-800/80 p-2 border border-slate-700/80 text-center">
                     <span className="text-[9px] font-bold uppercase tracking-wider text-emerald-400 block">Modo Offline</span>
-                    <p className="text-xs sm:text-sm font-bold text-white leading-tight mt-0.5">100% Local</p>
-                    <p className="text-[8.5px] text-slate-400 leading-tight">Zonas sin internet</p>
+                    <p className="text-xs sm:text-sm font-bold text-white leading-tight mt-0.5">Sin Internet</p>
+                    <p className="text-[8.5px] text-slate-400 leading-tight">Operación en sedes rurales</p>
                   </div>
                   <div className="rounded-xl bg-slate-800/80 p-2 border border-slate-700/80 text-center">
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-emerald-400 block">DeepSeek IA</span>
-                    <p className="text-xs sm:text-sm font-bold text-white leading-tight mt-0.5">&lt; 2s</p>
-                    <p className="text-[8.5px] text-slate-400 leading-tight">Tutor interactivo</p>
-                  </div>
-                  <div className="rounded-xl bg-slate-800/80 p-2 border border-slate-700/80 text-center">
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-emerald-400 block">Multimedia</span>
-                    <p className="text-xs sm:text-sm font-bold text-white leading-tight mt-0.5">PDF + MP4</p>
-                    <p className="text-[8.5px] text-slate-400 leading-tight">En 1 solo mensaje</p>
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-emerald-400 block">Contenido</span>
+                    <p className="text-xs sm:text-sm font-bold text-white leading-tight mt-0.5">Video + Guía PDF</p>
+                    <p className="text-[8.5px] text-slate-400 leading-tight">Aprendizaje autónomo</p>
                   </div>
                 </div>
               </div>
 
-              {/* 3. Los 3 Pilares Estratégicos del Proyecto */}
+              {/* 3. Metodología Educativa: Cómo se Desarrolla la Formación */}
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-emerald-900 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                    Los 3 Pilares del Proyecto
+                    Metodología: Cómo se Desarrolla la Formación
                   </span>
-                  <span className="text-[9.5px] text-slate-500 font-medium">Estructura Tecnológica Integral</span>
+                  <span className="text-[9.5px] text-slate-500 font-medium">Aprendizaje Práctico por Lección</span>
                 </div>
 
                 <div className="grid grid-cols-3 gap-2.5">
-                  {/* Pilar 1 */}
+                  {/* 1. Aprendizaje guiado */}
                   <div className="rounded-xl bg-slate-50/90 p-3 border border-slate-200/90 flex flex-col justify-between space-y-1.5">
                     <div className="space-y-1">
                       <div className="flex items-center justify-between">
                         <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-700 text-white shadow-2xs">
-                          <DashboardIcon className="w-3.5 h-3.5" />
+                          <ChatIcon className="w-3.5 h-3.5" />
                         </div>
-                        <span className="text-[8.5px] font-bold uppercase text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded">Pilar 1</span>
+                        <span className="text-[8.5px] font-bold uppercase text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded">01</span>
                       </div>
-                      <h3 className="text-[11px] sm:text-xs font-bold text-slate-900 leading-tight">Módulo Admin Web</h3>
+                      <h3 className="text-[11px] sm:text-xs font-bold text-slate-900 leading-tight">Aprendizaje Guiado Paso a Paso</h3>
                       <p className="text-[9px] text-slate-600 leading-tight">
-                        Panel Cloud para gestionar cursos, video-lecciones, guías PDF y supervisión en vivo con modo manual.
+                        Cada lección combina un video corto, una guía descargable y una pregunta práctica antes de avanzar a la siguiente.
                       </p>
                     </div>
                     <ul className="space-y-0.5 text-[8.5px] text-slate-700 pt-1 border-t border-slate-200">
                       <li className="flex items-center gap-1">
                         <CheckIcon className="w-2.5 h-2.5 text-emerald-700 shrink-0" />
-                        <span>Gestión curricular y reactivos</span>
+                        <span>Video breve + guía en PDF</span>
                       </li>
                       <li className="flex items-center gap-1">
                         <CheckIcon className="w-2.5 h-2.5 text-emerald-700 shrink-0" />
-                        <span>Chats en vivo con takeover</span>
+                        <span>Pregunta práctica por lección</span>
                       </li>
                       <li className="flex items-center gap-1">
                         <CheckIcon className="w-2.5 h-2.5 text-emerald-700 shrink-0" />
-                        <span>Analítica y Puntos Digitales</span>
+                        <span>Acompañamiento tipo tutor por WhatsApp</span>
                       </li>
                     </ul>
                   </div>
 
-                  {/* Pilar 2 */}
+                  {/* 2. Contenido y competencias */}
                   <div className="rounded-xl bg-slate-50/90 p-3 border border-slate-200/90 flex flex-col justify-between space-y-1.5">
                     <div className="space-y-1">
                       <div className="flex items-center justify-between">
                         <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-800 text-white shadow-2xs">
-                          <SignalIcon className="w-3.5 h-3.5" />
+                          <BookIcon className="w-3.5 h-3.5" />
                         </div>
-                        <span className="text-[8.5px] font-bold uppercase text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded">Pilar 2</span>
+                        <span className="text-[8.5px] font-bold uppercase text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded">02</span>
                       </div>
-                      <h3 className="text-[11px] sm:text-xs font-bold text-slate-900 leading-tight">Modo Offline Rural</h3>
+                      <h3 className="text-[11px] sm:text-xs font-bold text-slate-900 leading-tight">Contenido Práctico y Aplicable</h3>
                       <p className="text-[9px] text-slate-600 leading-tight">
-                        Distribución local en sedes rurales sin internet para consultar lecciones y guías con cero latencia.
+                        Cursos organizados por categoría, con lecciones ordenadas sobre prácticas concretas del campo. Ejemplo actual:
                       </p>
                     </div>
                     <ul className="space-y-0.5 text-[8.5px] text-slate-700 pt-1 border-t border-slate-200">
                       <li className="flex items-center gap-1">
                         <CheckIcon className="w-2.5 h-2.5 text-emerald-700 shrink-0" />
-                        <span>Videos y PDFs en red local</span>
+                        <span>Preparación del terreno</span>
                       </li>
                       <li className="flex items-center gap-1">
                         <CheckIcon className="w-2.5 h-2.5 text-emerald-700 shrink-0" />
-                        <span>Bitácora de descargas local</span>
+                        <span>Manejo de plagas</span>
                       </li>
                       <li className="flex items-center gap-1">
                         <CheckIcon className="w-2.5 h-2.5 text-emerald-700 shrink-0" />
-                        <span>Sincronización diferida</span>
+                        <span>Cosecha y almacenamiento</span>
                       </li>
                     </ul>
                   </div>
 
-                  {/* Pilar 3 */}
+                  {/* 3. Gestión y acompañamiento */}
                   <div className="rounded-xl bg-slate-50/90 p-3 border border-slate-200/90 flex flex-col justify-between space-y-1.5">
                     <div className="space-y-1">
                       <div className="flex items-center justify-between">
                         <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-900 text-white shadow-2xs">
-                          <ChatIcon className="w-3.5 h-3.5" />
+                          <DashboardIcon className="w-3.5 h-3.5" />
                         </div>
-                        <span className="text-[8.5px] font-bold uppercase text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded">Pilar 3</span>
+                        <span className="text-[8.5px] font-bold uppercase text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded">03</span>
                       </div>
-                      <h3 className="text-[11px] sm:text-xs font-bold text-slate-900 leading-tight">WhatsApp IA Tutor</h3>
+                      <h3 className="text-[11px] sm:text-xs font-bold text-slate-900 leading-tight">Gestión y Acompañamiento</h3>
                       <p className="text-[9px] text-slate-600 leading-tight">
-                        Tutoría pedagógica nativa vía Meta WhatsApp API con botones interactivos y entrega unificada de archivos.
+                        Un equipo central actualiza los cursos y hace seguimiento del avance por sede, con posibilidad de intervención humana.
                       </p>
                     </div>
                     <ul className="space-y-0.5 text-[8.5px] text-slate-700 pt-1 border-t border-slate-200">
                       <li className="flex items-center gap-1">
                         <CheckIcon className="w-2.5 h-2.5 text-emerald-700 shrink-0" />
-                        <span>Botones Quick Reply nativos</span>
+                        <span>Actualización centralizada de cursos</span>
                       </li>
                       <li className="flex items-center gap-1">
                         <CheckIcon className="w-2.5 h-2.5 text-emerald-700 shrink-0" />
-                        <span>PDF + MP4 en 1 solo mensaje</span>
+                        <span>Seguimiento por sede y participante</span>
                       </li>
                       <li className="flex items-center gap-1">
                         <CheckIcon className="w-2.5 h-2.5 text-emerald-700 shrink-0" />
-                        <span>Quizzes interactivos 1 a 1</span>
+                        <span>Atención humana cuando se requiere</span>
                       </li>
                     </ul>
                   </div>
                 </div>
               </div>
 
-              {/* 4. Especificaciones Técnicas & Flujo Omnicanal */}
+              {/* 4. Accesibilidad Territorial: Dos Mecanismos Complementarios */}
               <div className="rounded-2xl bg-white p-3.5 border border-slate-200 space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-900">
-                    Arquitectura & Stack Tecnológico
+                    Accesibilidad Territorial: Dos Mecanismos Complementarios
                   </span>
                   <span className="text-[9px] font-mono text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                    Next.js 15 • PostgreSQL • DeepSeek • Meta API
+                    No son lo mismo
                   </span>
                 </div>
 
-                {/* 4 Tech Chips */}
-                <div className="grid grid-cols-4 gap-2">
-                  <div className="rounded-lg bg-slate-50 p-2 border border-slate-200/80">
-                    <div className="flex items-center gap-1 text-emerald-800 font-bold text-[9px] uppercase">
-                      <CpuIcon className="w-3 h-3" />
-                      <span>Frontend & Server</span>
+                {/* Puntos Digitales vs Modo Offline */}
+                <div className="grid grid-cols-2 gap-2.5">
+                  <div className="rounded-lg bg-slate-50 p-2.5 border border-slate-200/80">
+                    <div className="flex items-center gap-1.5 text-emerald-800 font-bold text-[9px] uppercase">
+                      <SignalIcon className="w-3.5 h-3.5" />
+                      <span>Puntos Digitales · Con Internet</span>
                     </div>
-                    <p className="text-[10px] font-bold text-slate-900 leading-tight">Next.js 15 & React 19</p>
-                    <p className="text-[8px] text-slate-500">App Router & RSC Híbrido</p>
+                    <p className="text-[9px] text-slate-700 leading-snug mt-1">
+                      Sedes físicas habilitadas por alcaldías, gobernaciones u otras entidades. El participante se desplaza, se conecta a internet y descarga las lecciones a su dispositivo.
+                    </p>
                   </div>
 
-                  <div className="rounded-lg bg-slate-50 p-2 border border-slate-200/80">
-                    <div className="flex items-center gap-1 text-emerald-800 font-bold text-[9px] uppercase">
-                      <LayersIcon className="w-3 h-3" />
-                      <span>Base de Datos</span>
+                  <div className="rounded-lg bg-slate-50 p-2.5 border border-slate-200/80">
+                    <div className="flex items-center gap-1.5 text-emerald-800 font-bold text-[9px] uppercase">
+                      <DownloadIcon className="w-3.5 h-3.5" />
+                      <span>Modo Offline · Sin Internet</span>
                     </div>
-                    <p className="text-[10px] font-bold text-slate-900 leading-tight">PostgreSQL + Drizzle</p>
-                    <p className="text-[8px] text-slate-500">Type-Safe & Migraciones</p>
-                  </div>
-
-                  <div className="rounded-lg bg-slate-50 p-2 border border-slate-200/80">
-                    <div className="flex items-center gap-1 text-emerald-800 font-bold text-[9px] uppercase">
-                      <SparklesIcon className="w-3 h-3" />
-                      <span>Motor IA</span>
-                    </div>
-                    <p className="text-[10px] font-bold text-slate-900 leading-tight">DeepSeek Reasoning</p>
-                    <p className="text-[8px] text-slate-500">Prompts & Quizzes Parser</p>
-                  </div>
-
-                  <div className="rounded-lg bg-slate-50 p-2 border border-slate-200/80">
-                    <div className="flex items-center gap-1 text-emerald-800 font-bold text-[9px] uppercase">
-                      <ShieldCheckIcon className="w-3 h-3" />
-                      <span>Meta Cloud API</span>
-                    </div>
-                    <p className="text-[10px] font-bold text-slate-900 leading-tight">Graph API v22.0</p>
-                    <p className="text-[8px] text-slate-500">Webhooks HMAC SHA-256</p>
+                    <p className="text-[9px] text-slate-700 leading-snug mt-1">
+                      Con el contenido ya descargado, la formación continúa de forma local en sedes rurales sin conexión, sin depender de internet permanente.
+                    </p>
                   </div>
                 </div>
 
-                {/* Flujo Omnicanal en 4 Pasos */}
+                {/* Flujo según disponibilidad de internet */}
                 <div className="rounded-xl bg-slate-900 p-2.5 text-white">
-                  <div className="grid grid-cols-4 gap-1.5 text-center">
+                  <div className="grid grid-cols-2 gap-2 text-center">
                     <div className="rounded-lg bg-slate-800/90 p-1.5 border border-slate-700">
-                      <p className="font-bold text-emerald-400 text-[9px] leading-tight">1. Usuario WhatsApp</p>
-                      <p className="text-[8px] text-slate-300 leading-tight">Mensaje o botón Quick Reply</p>
+                      <p className="font-bold text-emerald-400 text-[9px] leading-tight">Cuando hay internet</p>
+                      <p className="text-[8px] text-slate-300 leading-tight">Punto Digital → conexión → descarga de contenidos</p>
                     </div>
                     <div className="rounded-lg bg-slate-800/90 p-1.5 border border-slate-700">
-                      <p className="font-bold text-emerald-400 text-[9px] leading-tight">2. Meta Webhook</p>
-                      <p className="text-[8px] text-slate-300 leading-tight">Valida HMAC y envía a Next.js</p>
-                    </div>
-                    <div className="rounded-lg bg-slate-800/90 p-1.5 border border-slate-700">
-                      <p className="font-bold text-emerald-400 text-[9px] leading-tight">3. DeepSeek IA + DB</p>
-                      <p className="text-[8px] text-slate-300 leading-tight">Razona y formula respuesta</p>
-                    </div>
-                    <div className="rounded-lg bg-slate-800/90 p-1.5 border border-slate-700">
-                      <p className="font-bold text-emerald-400 text-[9px] leading-tight">4. Despacho Nativo</p>
-                      <p className="text-[8px] text-slate-300 leading-tight">Entrega botones, PDF o video</p>
+                      <p className="font-bold text-emerald-400 text-[9px] leading-tight">Cuando no hay internet</p>
+                      <p className="text-[8px] text-slate-300 leading-tight">Modo Offline → operación local → continuidad de la formación</p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* 5. Matriz Comparativa de Retorno de Valor */}
+              {/* 5. Valor Estratégico para el Sector */}
               <div className="space-y-1">
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-900">
-                    Diferencial Competitivo vs LMS Tradicional
+                    Valor Estratégico frente a la Formación Tradicional
                   </span>
-                  <span className="text-[9px] text-emerald-800 font-semibold">Alto Impacto & Cero Fricción</span>
+                  <span className="text-[9px] text-emerald-800 font-semibold">Cobertura Real en el Territorio</span>
                 </div>
 
                 <div className="overflow-hidden rounded-xl border border-slate-200">
                   <table className="w-full text-left text-[9px] text-slate-700">
                     <thead className="bg-slate-100 text-[8.5px] font-bold uppercase text-slate-800 border-b border-slate-200">
                       <tr>
-                        <th className="px-3 py-1.5">Criterio de Evaluación</th>
-                        <th className="px-3 py-1.5 text-slate-500">LMS Tradicional (Moodle / Web)</th>
-                        <th className="px-3 py-1.5 text-emerald-950 font-bold bg-emerald-50">Ecosistema KHC Agro</th>
+                        <th className="px-3 py-1.5">Criterio</th>
+                        <th className="px-3 py-1.5 text-slate-500">Formación Tradicional</th>
+                        <th className="px-3 py-1.5 text-emerald-950 font-bold bg-emerald-50">Plataforma Sector Agro</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
                       <tr>
                         <td className="px-3 py-1 font-bold text-slate-900">Barrera de Entrada</td>
-                        <td className="px-3 py-1 text-slate-500">Alta (descargar apps, recordar claves)</td>
-                        <td className="px-3 py-1 font-semibold text-emerald-900 bg-emerald-50/40">Cero (acceso directo en WhatsApp)</td>
+                        <td className="px-3 py-1 text-slate-500">Alta (instalar apps, recordar claves)</td>
+                        <td className="px-3 py-1 font-semibold text-emerald-900 bg-emerald-50/40">Cero (acceso directo por WhatsApp)</td>
                       </tr>
                       <tr>
                         <td className="px-3 py-1 font-bold text-slate-900">Conectividad Rural</td>
-                        <td className="px-3 py-1 text-slate-500">Inutilizable sin conexión continua</td>
-                        <td className="px-3 py-1 font-semibold text-emerald-900 bg-emerald-50/40">100% Operativo con Puntos Digitales Offline</td>
+                        <td className="px-3 py-1 text-slate-500">Depende de conexión continua</td>
+                        <td className="px-3 py-1 font-semibold text-emerald-900 bg-emerald-50/40">Con internet en Puntos Digitales y sin internet en Modo Offline</td>
                       </tr>
                       <tr>
-                        <td className="px-3 py-1 font-bold text-slate-900">Tutoría y Soporte</td>
-                        <td className="px-3 py-1 text-slate-500">Respuestas diferidas por foros o emails</td>
-                        <td className="px-3 py-1 font-semibold text-emerald-900 bg-emerald-50/40">Tutor con IA pedagógica 24/7 en tiempo real</td>
+                        <td className="px-3 py-1 font-bold text-slate-900">Acompañamiento</td>
+                        <td className="px-3 py-1 text-slate-500">Respuestas diferidas por foros o correo</td>
+                        <td className="px-3 py-1 font-semibold text-emerald-900 bg-emerald-50/40">Tutor guiado disponible en todo momento por WhatsApp</td>
                       </tr>
                       <tr>
                         <td className="px-3 py-1 font-bold text-slate-900">Evaluación</td>
                         <td className="px-3 py-1 text-slate-500">Formularios extensos con alta deserción</td>
-                        <td className="px-3 py-1 font-semibold text-emerald-900 bg-emerald-50/40">Quizzes interactivos pregunta por pregunta</td>
+                        <td className="px-3 py-1 font-semibold text-emerald-900 bg-emerald-50/40">Preguntas breves de práctica al final de cada lección</td>
                       </tr>
                       <tr>
-                        <td className="px-3 py-1 font-bold text-slate-900">Supervisión Humana</td>
-                        <td className="px-3 py-1 text-slate-500">Difícil intervención durante la sesión</td>
-                        <td className="px-3 py-1 font-semibold text-emerald-900 bg-emerald-50/40">Conmutación inmediata a atención manual</td>
+                        <td className="px-3 py-1 font-bold text-slate-900">Seguimiento Institucional</td>
+                        <td className="px-3 py-1 text-slate-500">Difícil de verificar en territorio</td>
+                        <td className="px-3 py-1 font-semibold text-emerald-900 bg-emerald-50/40">Visibilidad del avance por sede y participante</td>
                       </tr>
                     </tbody>
                   </table>
@@ -467,13 +440,13 @@ export function OnePageView({ userRole, metrics }: OnePageViewProps) {
             <section className="rounded-3xl bg-gradient-to-br from-emerald-800 to-emerald-950 p-6 sm:p-8 text-white shadow-lg flex flex-col sm:flex-row items-center justify-between gap-6 print:hidden">
               <div className="space-y-1.5 text-center sm:text-left max-w-xl">
                 <span className="text-xs font-bold uppercase tracking-widest text-emerald-300 bg-emerald-900/60 px-3 py-1 rounded-xl border border-emerald-700/60">
-                  Despliegue & Escalabilidad
+                  Implementación en Territorio
                 </span>
                 <h3 className="font-display text-xl sm:text-2xl font-bold">
-                  ¿Listo para implementar esta solución en tu organización?
+                  ¿Listo para llevar esta formación a tu territorio?
                 </h3>
                 <p className="text-xs text-emerald-100 font-medium">
-                  Agenda una sesión ejecutiva de descubrimiento técnico con el equipo de Campuslands y explora una demostración guiada.
+                  Agenda una reunión con el equipo de Campuslands para explorar cómo adaptar esta propuesta a tus sedes y comunidades.
                 </p>
               </div>
 
@@ -484,7 +457,7 @@ export function OnePageView({ userRole, metrics }: OnePageViewProps) {
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-2xl bg-white px-5 py-3 text-xs font-bold text-emerald-950 hover:bg-emerald-50 transition-all shadow-md cursor-pointer"
                 >
                   <RocketIcon className="w-4 h-4 text-emerald-800" />
-                  <span>Agendar Sesión Técnica</span>
+                  <span>Agendar Reunión</span>
                 </button>
 
                 <Link
@@ -492,7 +465,7 @@ export function OnePageView({ userRole, metrics }: OnePageViewProps) {
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-2xl border border-emerald-500/80 bg-emerald-900/60 px-4 py-3 text-xs font-bold text-white hover:bg-emerald-800 transition-colors cursor-pointer"
                 >
                   <ChatIcon className="w-4 h-4 text-emerald-300" />
-                  <span>Probar Simulador</span>
+                  <span>Ver Cómo Funciona</span>
                 </Link>
               </div>
             </section>

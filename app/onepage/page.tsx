@@ -13,7 +13,7 @@ import { OnePageView } from "./OnePageView";
 export const metadata = {
   title: "One Page Estratégico — Plataforma Educativa Sector Agro",
   description:
-    "Ficha técnica y resumen ejecutivo del proyecto Plataforma Educativa Sector Agro: Módulo Admin Central, Modo Offline en Puntos Digitales y Bot Interactivo WhatsApp con IA DeepSeek.",
+    "Resumen ejecutivo del proyecto Plataforma Educativa Sector Agro: formación práctica para el sector agropecuario, con Puntos Digitales para conectarse a internet, Modo Offline para sedes rurales sin conexión y acompañamiento por WhatsApp.",
 };
 
 export const dynamic = "force-dynamic";
